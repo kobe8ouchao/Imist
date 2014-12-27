@@ -1,0 +1,23 @@
+//
+//  Imist-Prefix.pch
+//  Imist
+//
+//  Created by chao.ou on 14/12/27.
+//  Copyright (c) 2014年 oc. All rights reserved.
+//
+#import <Availability.h>
+#import <mach/mach.h>
+#ifdef __OBJC__
+
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #import <CoreBluetooth/CoreBluetooth.h>
+    #import <CoreLocation/CoreLocation.h>
+    #import "Macros.h"
+    #import "UIColor+InnerBand.h"
+    #import "NSDate+InnerBand.h"
+    #import "NSStringEx.h"
+    #define InterNation(X) NSLocalizedStringFromTable(X,@"Language", nil)
+    //    #define NSLog(...)
+
+#endif

@@ -9,11 +9,25 @@
 /* Begin PBXBuildFile section */
 		C3A8A0731A4EB94D004C9ADE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A8A0721A4EB94D004C9ADE /* main.m */; };
 		C3A8A0761A4EB94D004C9ADE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A8A0751A4EB94D004C9ADE /* AppDelegate.m */; };
-		C3A8A0791A4EB94D004C9ADE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A8A0781A4EB94D004C9ADE /* ViewController.m */; };
-		C3A8A07C1A4EB94D004C9ADE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3A8A07A1A4EB94D004C9ADE /* Main.storyboard */; };
 		C3A8A07E1A4EB94D004C9ADE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3A8A07D1A4EB94D004C9ADE /* Images.xcassets */; };
 		C3A8A0811A4EB94D004C9ADE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3A8A07F1A4EB94D004C9ADE /* LaunchScreen.xib */; };
 		C3A8A08D1A4EB94D004C9ADE /* ImistTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A8A08C1A4EB94D004C9ADE /* ImistTests.m */; };
+		C3A8A0981A4EB996004C9ADE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C3A8A09A1A4EB996004C9ADE /* InfoPlist.strings */; };
+		C3A8A0A11A4EBB9D004C9ADE /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A8A0A01A4EBB9D004C9ADE /* BaseViewController.m */; };
+		C3A8A0A41A4EBC3C004C9ADE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A8A0A31A4EBC3C004C9ADE /* Foundation.framework */; };
+		C3A8A0A61A4EBC49004C9ADE /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A8A0A51A4EBC49004C9ADE /* CoreBluetooth.framework */; };
+		C3A8A0A81A4EBC52004C9ADE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A8A0A71A4EBC52004C9ADE /* QuartzCore.framework */; };
+		C3A8A0AA1A4EBC66004C9ADE /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A8A0A91A4EBC66004C9ADE /* ImageIO.framework */; };
+		C3A8A0AC1A4EBC77004C9ADE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A8A0AB1A4EBC77004C9ADE /* UIKit.framework */; };
+		C3A8A0AE1A4EBC86004C9ADE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A8A0AD1A4EBC86004C9ADE /* SystemConfiguration.framework */; };
+		C3A8A0B01A4EBC94004C9ADE /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A8A0AF1A4EBC94004C9ADE /* CoreLocation.framework */; };
+		C3A8A0B21A4EBCA6004C9ADE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A8A0B11A4EBCA6004C9ADE /* CoreGraphics.framework */; };
+		C3A8A0B81A4EBDC4004C9ADE /* Functions.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A8A0B71A4EBDC4004C9ADE /* Functions.m */; };
+		C3A8A0BA1A4EBDD6004C9ADE /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A8A0B91A4EBDD6004C9ADE /* MobileCoreServices.framework */; };
+		C3A8A0BC1A4EBDE0004C9ADE /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A8A0BB1A4EBDE0004C9ADE /* MessageUI.framework */; };
+		C3A8A0C21A4EBE45004C9ADE /* NSDate+InnerBand.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A8A0C11A4EBE45004C9ADE /* NSDate+InnerBand.m */; };
+		C3A8A0C61A4EC2DC004C9ADE /* NSStringEx.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A8A0C51A4EC2DC004C9ADE /* NSStringEx.m */; };
+		C3A8A0C91A4EC57D004C9ADE /* UIColor+InnerBand.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A8A0C81A4EC57D004C9ADE /* UIColor+InnerBand.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,14 +46,36 @@
 		C3A8A0721A4EB94D004C9ADE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C3A8A0741A4EB94D004C9ADE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C3A8A0751A4EB94D004C9ADE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		C3A8A0771A4EB94D004C9ADE /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		C3A8A0781A4EB94D004C9ADE /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		C3A8A07B1A4EB94D004C9ADE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C3A8A07D1A4EB94D004C9ADE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C3A8A0801A4EB94D004C9ADE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		C3A8A0861A4EB94D004C9ADE /* ImistTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImistTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3A8A08B1A4EB94D004C9ADE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C3A8A08C1A4EB94D004C9ADE /* ImistTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImistTests.m; sourceTree = "<group>"; };
+		C3A8A0991A4EB996004C9ADE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C3A8A09B1A4EB999004C9ADE /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C3A8A09D1A4EBA1F004C9ADE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		C3A8A09F1A4EBB9D004C9ADE /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		C3A8A0A01A4EBB9D004C9ADE /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		C3A8A0A21A4EBC02004C9ADE /* Imist-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Imist-Prefix.pch"; sourceTree = "<group>"; };
+		C3A8A0A31A4EBC3C004C9ADE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C3A8A0A51A4EBC49004C9ADE /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		C3A8A0A71A4EBC52004C9ADE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C3A8A0A91A4EBC66004C9ADE /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		C3A8A0AB1A4EBC77004C9ADE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C3A8A0AD1A4EBC86004C9ADE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		C3A8A0AF1A4EBC94004C9ADE /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		C3A8A0B11A4EBCA6004C9ADE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C3A8A0B51A4EBDA6004C9ADE /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macros.h; sourceTree = "<group>"; };
+		C3A8A0B61A4EBDC4004C9ADE /* Functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Functions.h; sourceTree = "<group>"; };
+		C3A8A0B71A4EBDC4004C9ADE /* Functions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Functions.m; sourceTree = "<group>"; };
+		C3A8A0B91A4EBDD6004C9ADE /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		C3A8A0BB1A4EBDE0004C9ADE /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		C3A8A0C01A4EBE45004C9ADE /* NSDate+InnerBand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+InnerBand.h"; sourceTree = "<group>"; };
+		C3A8A0C11A4EBE45004C9ADE /* NSDate+InnerBand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+InnerBand.m"; sourceTree = "<group>"; };
+		C3A8A0C41A4EC2DC004C9ADE /* NSStringEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringEx.h; sourceTree = "<group>"; };
+		C3A8A0C51A4EC2DC004C9ADE /* NSStringEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringEx.m; sourceTree = "<group>"; };
+		C3A8A0C71A4EC57D004C9ADE /* UIColor+InnerBand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+InnerBand.h"; sourceTree = "<group>"; };
+		C3A8A0C81A4EC57D004C9ADE /* UIColor+InnerBand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+InnerBand.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +83,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3A8A0BC1A4EBDE0004C9ADE /* MessageUI.framework in Frameworks */,
+				C3A8A0BA1A4EBDD6004C9ADE /* MobileCoreServices.framework in Frameworks */,
+				C3A8A0B21A4EBCA6004C9ADE /* CoreGraphics.framework in Frameworks */,
+				C3A8A0B01A4EBC94004C9ADE /* CoreLocation.framework in Frameworks */,
+				C3A8A0AE1A4EBC86004C9ADE /* SystemConfiguration.framework in Frameworks */,
+				C3A8A0AC1A4EBC77004C9ADE /* UIKit.framework in Frameworks */,
+				C3A8A0AA1A4EBC66004C9ADE /* ImageIO.framework in Frameworks */,
+				C3A8A0A81A4EBC52004C9ADE /* QuartzCore.framework in Frameworks */,
+				C3A8A0A61A4EBC49004C9ADE /* CoreBluetooth.framework in Frameworks */,
+				C3A8A0A41A4EBC3C004C9ADE /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				C3A8A06F1A4EB94D004C9ADE /* Imist */,
+				C3A8A0B31A4EBCBB004C9ADE /* Frameworks */,
 				C3A8A0891A4EB94D004C9ADE /* ImistTests */,
 				C3A8A06E1A4EB94D004C9ADE /* Products */,
 			);
@@ -81,11 +128,9 @@
 		C3A8A06F1A4EB94D004C9ADE /* Imist */ = {
 			isa = PBXGroup;
 			children = (
+				C3A8A09E1A4EBB81004C9ADE /* Classes */,
 				C3A8A0741A4EB94D004C9ADE /* AppDelegate.h */,
 				C3A8A0751A4EB94D004C9ADE /* AppDelegate.m */,
-				C3A8A0771A4EB94D004C9ADE /* ViewController.h */,
-				C3A8A0781A4EB94D004C9ADE /* ViewController.m */,
-				C3A8A07A1A4EB94D004C9ADE /* Main.storyboard */,
 				C3A8A07D1A4EB94D004C9ADE /* Images.xcassets */,
 				C3A8A07F1A4EB94D004C9ADE /* LaunchScreen.xib */,
 				C3A8A0701A4EB94D004C9ADE /* Supporting Files */,
@@ -98,6 +143,8 @@
 			children = (
 				C3A8A0711A4EB94D004C9ADE /* Info.plist */,
 				C3A8A0721A4EB94D004C9ADE /* main.m */,
+				C3A8A09A1A4EB996004C9ADE /* InfoPlist.strings */,
+				C3A8A0A21A4EBC02004C9ADE /* Imist-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -117,6 +164,57 @@
 				C3A8A08B1A4EB94D004C9ADE /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C3A8A09E1A4EBB81004C9ADE /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				C3A8A0C31A4EBF66004C9ADE /* ViewController */,
+				C3A8A0B41A4EBD7A004C9ADE /* Helper */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		C3A8A0B31A4EBCBB004C9ADE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C3A8A0BB1A4EBDE0004C9ADE /* MessageUI.framework */,
+				C3A8A0B91A4EBDD6004C9ADE /* MobileCoreServices.framework */,
+				C3A8A0B11A4EBCA6004C9ADE /* CoreGraphics.framework */,
+				C3A8A0AF1A4EBC94004C9ADE /* CoreLocation.framework */,
+				C3A8A0AD1A4EBC86004C9ADE /* SystemConfiguration.framework */,
+				C3A8A0AB1A4EBC77004C9ADE /* UIKit.framework */,
+				C3A8A0A91A4EBC66004C9ADE /* ImageIO.framework */,
+				C3A8A0A71A4EBC52004C9ADE /* QuartzCore.framework */,
+				C3A8A0A51A4EBC49004C9ADE /* CoreBluetooth.framework */,
+				C3A8A0A31A4EBC3C004C9ADE /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C3A8A0B41A4EBD7A004C9ADE /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				C3A8A0C71A4EC57D004C9ADE /* UIColor+InnerBand.h */,
+				C3A8A0C81A4EC57D004C9ADE /* UIColor+InnerBand.m */,
+				C3A8A0C41A4EC2DC004C9ADE /* NSStringEx.h */,
+				C3A8A0C51A4EC2DC004C9ADE /* NSStringEx.m */,
+				C3A8A0C01A4EBE45004C9ADE /* NSDate+InnerBand.h */,
+				C3A8A0C11A4EBE45004C9ADE /* NSDate+InnerBand.m */,
+				C3A8A0B61A4EBDC4004C9ADE /* Functions.h */,
+				C3A8A0B71A4EBDC4004C9ADE /* Functions.m */,
+				C3A8A0B51A4EBDA6004C9ADE /* Macros.h */,
+			);
+			name = Helper;
+			sourceTree = "<group>";
+		};
+		C3A8A0C31A4EBF66004C9ADE /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C3A8A09F1A4EBB9D004C9ADE /* BaseViewController.h */,
+				C3A8A0A01A4EBB9D004C9ADE /* BaseViewController.m */,
+			);
+			name = ViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -199,7 +297,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3A8A07C1A4EB94D004C9ADE /* Main.storyboard in Resources */,
+				C3A8A0981A4EB996004C9ADE /* InfoPlist.strings in Resources */,
 				C3A8A0811A4EB94D004C9ADE /* LaunchScreen.xib in Resources */,
 				C3A8A07E1A4EB94D004C9ADE /* Images.xcassets in Resources */,
 			);
@@ -219,9 +317,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3A8A0791A4EB94D004C9ADE /* ViewController.m in Sources */,
+				C3A8A0C21A4EBE45004C9ADE /* NSDate+InnerBand.m in Sources */,
+				C3A8A0C91A4EC57D004C9ADE /* UIColor+InnerBand.m in Sources */,
+				C3A8A0C61A4EC2DC004C9ADE /* NSStringEx.m in Sources */,
 				C3A8A0761A4EB94D004C9ADE /* AppDelegate.m in Sources */,
+				C3A8A0A11A4EBB9D004C9ADE /* BaseViewController.m in Sources */,
 				C3A8A0731A4EB94D004C9ADE /* main.m in Sources */,
+				C3A8A0B81A4EBDC4004C9ADE /* Functions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,20 +346,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		C3A8A07A1A4EB94D004C9ADE /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C3A8A07B1A4EB94D004C9ADE /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		C3A8A07F1A4EB94D004C9ADE /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				C3A8A0801A4EB94D004C9ADE /* Base */,
+				C3A8A09D1A4EBA1F004C9ADE /* en */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		C3A8A09A1A4EB996004C9ADE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C3A8A0991A4EB996004C9ADE /* en */,
+				C3A8A09B1A4EB999004C9ADE /* Base */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -343,7 +447,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Imist/Imist-Prefix.pch";
 				INFOPLIST_FILE = Imist/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -353,7 +460,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Imist/Imist-Prefix.pch";
 				INFOPLIST_FILE = Imist/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
