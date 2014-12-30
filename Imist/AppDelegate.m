@@ -7,6 +7,10 @@
 //
 
 #import "AppDelegate.h"
+#import "TutoralVC.h"
+#import "SideMenuViewController.h"
+#import "MFSideMenuContainerViewController.h"
+#import "ScanDevicesVC.h"
 
 @interface AppDelegate ()
 
@@ -14,9 +18,36 @@
 
 @implementation AppDelegate
 
+@synthesize scanVC;
+
+- (UIViewController *)scanDevicesController {
+    self.scanVC = [[ScanDevicesVC alloc] init];
+    return self.scanVC;
+}
+
+- (UINavigationController *)navi {
+    return [[UINavigationController alloc]
+            initWithRootViewController:[self scanDevicesController]];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"isFirst"] == NULL && ![[[NSUserDefaults standardUserDefaults] objectForKey:@"isFirst"] boolValue]) { // First
+        TutoralVC *tutorvc=[[TutoralVC alloc] init];
+        self.window.rootViewController = tutorvc;
+    } else {
+        self.scanVC = [self scanDevicesController];
+        SideMenuViewController *leftMenuViewController = [[SideMenuViewController alloc] init];
+        MFSideMenuContainerViewController *container = [MFSideMenuContainerViewController
+                                                        containerWithCenterViewController:[self navi]
+                                                        leftMenuViewController:leftMenuViewController
+                                                        rightMenuViewController:nil];
+        self.window.rootViewController = container;
+    }
     return YES;
 }
 

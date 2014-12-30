@@ -7,6 +7,7 @@
 //
 
 #import "BaseViewController.h"
+#import "MFSideMenu.h"
 
 @interface BaseViewController ()
 
@@ -33,7 +34,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    self.navigationController.navigationBar.TintColor=[UIColor whiteColor];
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+    self.navigationController.navigationBar.barTintColor=[UIColor colorWith256Red:8 green:173 blue:203];
+    self.view.backgroundColor=[UIColor clearColor];
 }
 
 - (void)viewDidUnload
@@ -47,6 +51,15 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark -
+#pragma mark - UIBarButtonItem Callbacks
+
+- (void)leftSideMenuButtonPressed:(id)sender {
+    [self.menuContainerViewController toggleLeftSideMenuCompletion:^{
+        //        [self setupMenuBarButtonItems];
+    }];
 }
 
 @end
