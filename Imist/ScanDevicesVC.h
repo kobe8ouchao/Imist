@@ -8,6 +8,8 @@
 
 #import "BaseViewController.h"
 
-@interface ScanDevicesVC : BaseViewController
+@interface ScanDevicesVC : BaseViewController{
+    
+}
 
 @end

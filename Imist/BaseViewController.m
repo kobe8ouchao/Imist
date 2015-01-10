@@ -36,8 +36,10 @@
     [super viewDidLoad];
     self.navigationController.navigationBar.TintColor=[UIColor whiteColor];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
-    self.navigationController.navigationBar.barTintColor=[UIColor colorWith256Red:8 green:173 blue:203];
+    self.navigationController.navigationBar.barTintColor=[UIColor colorWith256Red:129 green:189 blue:82];
+    self.navigationController.navigationBar.translucent=NO;
     self.view.backgroundColor=[UIColor clearColor];
+    self.view.backgroundColor = [UIColor colorWith256Red:229 green:229 blue:229];
 }
 
 - (void)viewDidUnload
@@ -51,15 +53,6 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-#pragma mark -
-#pragma mark - UIBarButtonItem Callbacks
-
-- (void)leftSideMenuButtonPressed:(id)sender {
-    [self.menuContainerViewController toggleLeftSideMenuCompletion:^{
-        //        [self setupMenuBarButtonItems];
-    }];
 }
 
 @end

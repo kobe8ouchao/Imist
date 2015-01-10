@@ -8,42 +8,83 @@
 #import "MFSideMenu.h"
 #import "AboutVC.h"
 #import "ScanDevicesVC.h"
+#import "SideMenuCell.h"
+
+@interface SideMenuViewController () <UITableViewDelegate, UITableViewDataSource>{
+    UITableView *_table;
+}
+
+@end
 
 @implementation SideMenuViewController
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor colorWith256Red:55 green:51 blue:48];
+    //menu header
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 60)];
+    view.backgroundColor = [UIColor colorWith256Red:31 green:26 blue:23];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(26, 30, self.view.frame.size.width, 18)];
+    [label setFont:[UIFont boldSystemFontOfSize:22]];
+    NSString *sectionTitle = @"Menu";
+    [label setTextColor:[UIColor colorWith256Red:221 green:32 blue:36]];
+    [label setText:sectionTitle];
+    [view addSubview:label];
+    [self.view addSubview:view];
+    
+    _table = [[UITableView alloc] initWithFrame:CGRectMake(0, 70, self.view.frame.size.width, CGRectGetHeight(self.view.bounds)) style:UITableViewStylePlain];
+    _table.tag = 1111;
+    _table.delegate = self;
+    _table.dataSource = self;
+    _table.autoresizingMask = (UIViewAutoresizingFlexibleWidth |
+    UIViewAutoresizingFlexibleHeight);
+    _table.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _table.backgroundColor = [UIColor clearColor];
+    _table.scrollsToTop=YES;
+    _table.bounces = NO;
+    [self.view addSubview:_table];
+
+
+}
+
 #pragma mark -
 #pragma mark - UITableViewDataSource
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return [NSString stringWithFormat:@"Left Menu"];
-}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
+    return 3;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 56.0f;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"SideMenuCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    SideMenuCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell = [[SideMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    cell.backgroundColor = [UIColor clearColor];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone; 
     switch (indexPath.row) {
         case 0:
-            cell.textLabel.text = [NSString stringWithFormat:@"Devices"];
+            cell.name = [NSString stringWithFormat:@"Devices"];
             break;
         case 1:
-            cell.textLabel.text = [NSString stringWithFormat:@"Abount"];
+            cell.name = [NSString stringWithFormat:@"Abount"];
+            break;
+        case 2:
+            cell.name = [NSString stringWithFormat:@"Totural"];
             break;
         default:
             break;
-    }    
+    }
+    [cell setStyle];
     return cell;
 }
 
@@ -68,5 +109,7 @@
     }
     [self.menuContainerViewController setMenuState:MFSideMenuStateClosed];
 }
+
+
 
 @end

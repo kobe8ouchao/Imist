@@ -23,8 +23,7 @@
     NSInteger serviceState;
     NSInteger characteristicState;
     NSInteger readState;
-
-
+    
     eventBlock connectBlock;
 
 //    CBPeripheral *m_Peripheral;
@@ -100,6 +99,8 @@ static BTServer* _defaultBTServer = nil;
 }
 -(void)startScan:(NSInteger)forLastTime
 {
+    NSLog(@"ble server start scan.....");
+
     [self.discoveredPeripherals removeAllObjects];
     scanState = KING;
     
@@ -125,16 +126,16 @@ static BTServer* _defaultBTServer = nil;
 
     
     if (forLastTime > 0) {
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(forLastTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            [self stopScan];
-//        });
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(forLastTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self stopScan];
+        });
 //        [NSTimer scheduledTimerWithTimeInterval:forLastTime target:self selector:@selector(stopScan) userInfo:nil repeats:NO];
-        [NSObject cancelPreviousPerformRequestsWithTarget:self
-                                                 selector:@selector(stopScan)
-                                                   object:nil];
-        [self performSelector:@selector(stopScan)
-                   withObject:nil
-                   afterDelay:forLastTime];
+//        [NSObject cancelPreviousPerformRequestsWithTarget:self
+//                                                 selector:@selector(stopScan)
+//                                                   object:nil];
+//        [self performSelector:@selector(stopScan)
+//                   withObject:nil
+//                   afterDelay:forLastTime];
     }
 }
 -(void)stopScan:(BOOL)withOutEvent
@@ -286,7 +287,7 @@ static BTServer* _defaultBTServer = nil;
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI
 {
 //    NSLog(@"discover peripheral: %@; advertisementData: %@; RSSI: %@", peripheral, advertisementData, RSSI);
-    NSLog(@"discover peripheral: %@; RSSI: %@", peripheral.name, RSSI);
+    NSLog(@"discover peripheral: %@; RSSI: %@", peripheral, RSSI);
     
     [self addPeripheral:peripheral advertisementData:advertisementData RSSI:RSSI];
 
@@ -350,6 +351,7 @@ static BTServer* _defaultBTServer = nil;
     }
     else if ([central state] == CBCentralManagerStatePoweredOn) {
         NSLog(@"CoreBluetooth BLE hardware is powered on and ready");
+        [self startScan:10];
     }
     else if ([central state] == CBCentralManagerStateUnauthorized) {
         NSLog(@"CoreBluetooth BLE state is unauthorized");

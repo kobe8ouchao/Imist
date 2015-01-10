@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BTServer.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UIViewController *scanVC;
+@property (strong, nonatomic) BTServer *defaultBTServer;
 
 - (UIViewController *)scanDevicesController;
 - (UINavigationController *)navi;

@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C3422B3B1A56A2AB0095B6AA /* UIImage+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = C3422B3A1A56A2AB0095B6AA /* UIImage+GIF.m */; };
+		C3422B401A56A8BB0095B6AA /* arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3422B3F1A56A8BB0095B6AA /* arrow@2x.png */; };
+		C3422B461A56C4E90095B6AA /* activityView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3422B431A56C4E90095B6AA /* activityView.m */; };
+		C3422B471A56C4E90095B6AA /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3422B451A56C4E90095B6AA /* EGORefreshTableHeaderView.m */; };
+		C3422B4E1A56C6020095B6AA /* rh_pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = C3422B481A56C6020095B6AA /* rh_pattern.png */; };
+		C3422B4F1A56C6020095B6AA /* rh_pattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3422B491A56C6020095B6AA /* rh_pattern@2x.png */; };
+		C3422B501A56C6020095B6AA /* rh_up.png in Resources */ = {isa = PBXBuildFile; fileRef = C3422B4A1A56C6020095B6AA /* rh_up.png */; };
+		C3422B511A56C6020095B6AA /* rh_up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3422B4B1A56C6020095B6AA /* rh_up@2x.png */; };
+		C3422B521A56C6020095B6AA /* rh_whirl.png in Resources */ = {isa = PBXBuildFile; fileRef = C3422B4C1A56C6020095B6AA /* rh_whirl.png */; };
+		C3422B531A56C6020095B6AA /* rh_whirl@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3422B4D1A56C6020095B6AA /* rh_whirl@2x.png */; };
+		C35D16171A61017D000E57BC /* SideMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C35D16161A61017D000E57BC /* SideMenuCell.m */; };
+		C35D161A1A610DCC000E57BC /* ScanDeviceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C35D16191A610DCC000E57BC /* ScanDeviceCell.m */; };
 		C388197F1A516D3A004A98CA /* BTServer.m in Sources */ = {isa = PBXBuildFile; fileRef = C388197E1A516D3A004A98CA /* BTServer.m */; };
 		C38819821A516DC7004A98CA /* PeriperalInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C38819811A516DC7004A98CA /* PeriperalInfo.m */; };
 		C388198C1A5175A5004A98CA /* MFSideMenuContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C38819871A5175A5004A98CA /* MFSideMenuContainerViewController.m */; };
@@ -56,6 +68,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C3422B391A56A2AB0095B6AA /* UIImage+GIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+GIF.h"; sourceTree = "<group>"; };
+		C3422B3A1A56A2AB0095B6AA /* UIImage+GIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+GIF.m"; sourceTree = "<group>"; };
+		C3422B3F1A56A8BB0095B6AA /* arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow@2x.png"; sourceTree = "<group>"; };
+		C3422B421A56C4E90095B6AA /* activityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = activityView.h; sourceTree = "<group>"; };
+		C3422B431A56C4E90095B6AA /* activityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = activityView.m; sourceTree = "<group>"; };
+		C3422B441A56C4E90095B6AA /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
+		C3422B451A56C4E90095B6AA /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
+		C3422B481A56C6020095B6AA /* rh_pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rh_pattern.png; sourceTree = "<group>"; };
+		C3422B491A56C6020095B6AA /* rh_pattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rh_pattern@2x.png"; sourceTree = "<group>"; };
+		C3422B4A1A56C6020095B6AA /* rh_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rh_up.png; sourceTree = "<group>"; };
+		C3422B4B1A56C6020095B6AA /* rh_up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rh_up@2x.png"; sourceTree = "<group>"; };
+		C3422B4C1A56C6020095B6AA /* rh_whirl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rh_whirl.png; sourceTree = "<group>"; };
+		C3422B4D1A56C6020095B6AA /* rh_whirl@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rh_whirl@2x.png"; sourceTree = "<group>"; };
+		C35D16151A61017D000E57BC /* SideMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenuCell.h; sourceTree = "<group>"; };
+		C35D16161A61017D000E57BC /* SideMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenuCell.m; sourceTree = "<group>"; };
+		C35D16181A610DCC000E57BC /* ScanDeviceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanDeviceCell.h; sourceTree = "<group>"; };
+		C35D16191A610DCC000E57BC /* ScanDeviceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanDeviceCell.m; sourceTree = "<group>"; };
 		C388197D1A516D3A004A98CA /* BTServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTServer.h; sourceTree = "<group>"; };
 		C388197E1A516D3A004A98CA /* BTServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTServer.m; sourceTree = "<group>"; };
 		C38819801A516DC7004A98CA /* PeriperalInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeriperalInfo.h; sourceTree = "<group>"; };
@@ -147,9 +176,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C3422B411A56C4E90095B6AA /* RefreshTableHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				C3422B421A56C4E90095B6AA /* activityView.h */,
+				C3422B431A56C4E90095B6AA /* activityView.m */,
+				C3422B441A56C4E90095B6AA /* EGORefreshTableHeaderView.h */,
+				C3422B451A56C4E90095B6AA /* EGORefreshTableHeaderView.m */,
+			);
+			path = RefreshTableHeaderView;
+			sourceTree = "<group>";
+		};
+		C35D16141A610088000E57BC /* TableCell */ = {
+			isa = PBXGroup;
+			children = (
+				C35D16151A61017D000E57BC /* SideMenuCell.h */,
+				C35D16161A61017D000E57BC /* SideMenuCell.m */,
+				C35D16181A610DCC000E57BC /* ScanDeviceCell.h */,
+				C35D16191A610DCC000E57BC /* ScanDeviceCell.m */,
+			);
+			name = TableCell;
+			sourceTree = "<group>";
+		};
 		C38819831A51749A004A98CA /* Widget */ = {
 			isa = PBXGroup;
 			children = (
+				C3422B411A56C4E90095B6AA /* RefreshTableHeaderView */,
 				C38819841A5175A5004A98CA /* MFSideMenu */,
 			);
 			name = Widget;
@@ -172,6 +224,13 @@
 		C38819961A523F8C004A98CA /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				C3422B481A56C6020095B6AA /* rh_pattern.png */,
+				C3422B491A56C6020095B6AA /* rh_pattern@2x.png */,
+				C3422B4A1A56C6020095B6AA /* rh_up.png */,
+				C3422B4B1A56C6020095B6AA /* rh_up@2x.png */,
+				C3422B4C1A56C6020095B6AA /* rh_whirl.png */,
+				C3422B4D1A56C6020095B6AA /* rh_whirl@2x.png */,
+				C3422B3F1A56A8BB0095B6AA /* arrow@2x.png */,
 				C38819971A523FC0004A98CA /* back-arrow.png */,
 				C38819981A523FC0004A98CA /* back-arrow@2x.png */,
 				C38819991A523FC0004A98CA /* Default-568h@2x.png */,
@@ -245,10 +304,11 @@
 		C3A8A09E1A4EBB81004C9ADE /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				C38819831A51749A004A98CA /* Widget */,
 				C3A8A0CD1A4FD423004C9ADE /* BLE */,
-				C3A8A0C31A4EBF66004C9ADE /* ViewController */,
 				C3A8A0B41A4EBD7A004C9ADE /* Helper */,
+				C35D16141A610088000E57BC /* TableCell */,
+				C3A8A0C31A4EBF66004C9ADE /* ViewController */,
+				C38819831A51749A004A98CA /* Widget */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -273,6 +333,8 @@
 		C3A8A0B41A4EBD7A004C9ADE /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				C3422B391A56A2AB0095B6AA /* UIImage+GIF.h */,
+				C3422B3A1A56A2AB0095B6AA /* UIImage+GIF.m */,
 				C3A8A0C71A4EC57D004C9ADE /* UIColor+InnerBand.h */,
 				C3A8A0C81A4EC57D004C9ADE /* UIColor+InnerBand.m */,
 				C3A8A0C41A4EC2DC004C9ADE /* NSStringEx.h */,
@@ -365,6 +427,11 @@
 				TargetAttributes = {
 					C3A8A06C1A4EB94D004C9ADE = {
 						CreatedOnToolsVersion = 6.1.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					C3A8A0851A4EB94D004C9ADE = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -396,14 +463,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3422B521A56C6020095B6AA /* rh_whirl.png in Resources */,
+				C3422B4E1A56C6020095B6AA /* rh_pattern.png in Resources */,
 				C38819A01A523FC0004A98CA /* menu-icon@2x.png in Resources */,
+				C3422B511A56C6020095B6AA /* rh_up@2x.png in Resources */,
 				C3A8A0981A4EB996004C9ADE /* InfoPlist.strings in Resources */,
 				C3A8A0811A4EB94D004C9ADE /* LaunchScreen.xib in Resources */,
 				C388199C1A523FC0004A98CA /* back-arrow.png in Resources */,
+				C3422B4F1A56C6020095B6AA /* rh_pattern@2x.png in Resources */,
+				C3422B501A56C6020095B6AA /* rh_up.png in Resources */,
 				C388199D1A523FC0004A98CA /* back-arrow@2x.png in Resources */,
+				C3422B531A56C6020095B6AA /* rh_whirl@2x.png in Resources */,
 				C388199F1A523FC0004A98CA /* menu-icon.png in Resources */,
 				C3A8A07E1A4EB94D004C9ADE /* Images.xcassets in Resources */,
 				C388199E1A523FC0004A98CA /* Default-568h@2x.png in Resources */,
+				C3422B401A56A8BB0095B6AA /* arrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,17 +501,22 @@
 				C3A8A0C91A4EC57D004C9ADE /* UIColor+InnerBand.m in Sources */,
 				C388198C1A5175A5004A98CA /* MFSideMenuContainerViewController.m in Sources */,
 				C3A8A0CC1A4FD18D004C9ADE /* TutoralVC.m in Sources */,
+				C35D161A1A610DCC000E57BC /* ScanDeviceCell.m in Sources */,
 				C388198D1A5175A5004A98CA /* MFSideMenuShadow.m in Sources */,
 				C388198E1A5175A5004A98CA /* UIViewController+MFSideMenuAdditions.m in Sources */,
 				C388197F1A516D3A004A98CA /* BTServer.m in Sources */,
 				C3A8A0C61A4EC2DC004C9ADE /* NSStringEx.m in Sources */,
 				C3A8A0761A4EB94D004C9ADE /* AppDelegate.m in Sources */,
 				C38819A61A524D02004A98CA /* AboutVC.m in Sources */,
+				C3422B471A56C4E90095B6AA /* EGORefreshTableHeaderView.m in Sources */,
 				C38819821A516DC7004A98CA /* PeriperalInfo.m in Sources */,
 				C3A8A0A11A4EBB9D004C9ADE /* BaseViewController.m in Sources */,
 				C38819A31A5247D2004A98CA /* SettingVC.m in Sources */,
 				C3A8A0731A4EB94D004C9ADE /* main.m in Sources */,
+				C3422B461A56C4E90095B6AA /* activityView.m in Sources */,
+				C3422B3B1A56A2AB0095B6AA /* UIImage+GIF.m in Sources */,
 				C3A8A0B81A4EBDC4004C9ADE /* Functions.m in Sources */,
+				C35D16171A61017D000E57BC /* SideMenuCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

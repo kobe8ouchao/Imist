@@ -36,6 +36,8 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    self.defaultBTServer = [BTServer defaultBTServer];
+
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"isFirst"] == NULL && ![[[NSUserDefaults standardUserDefaults] objectForKey:@"isFirst"] boolValue]) { // First
         TutoralVC *tutorvc=[[TutoralVC alloc] init];
         self.window.rootViewController = tutorvc;
