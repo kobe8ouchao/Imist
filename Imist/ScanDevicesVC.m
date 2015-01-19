@@ -10,12 +10,15 @@
 #import "MFSideMenu.h"
 #import "BTServer.h"
 #import "SettingVC.h"
-#import "EGORefreshTableHeaderView.h"
 #import "activityView.h"
 #import "ScanDeviceCell.h"
+#import "SettingModeVC.h"
+#import "SettingUser.h"
+#import "SettingAlerm.h"
+#import "RDVTabBarController.h"
+#import "RDVTabBarItem.h"
 
-@interface ScanDevicesVC ()<UITableViewDataSource,UITableViewDelegate,BTServerDelegate,EGORefreshTableHeaderDelegate,scanDeviceCellDelegate> {
-    EGORefreshTableHeaderView *_refreshHeaderView;
+@interface ScanDevicesVC ()<UITableViewDataSource,UITableViewDelegate,BTServerDelegate,scanDeviceCellDelegate> {
     BOOL reloading;
     BOOL isTag;
     activityView *activety;
@@ -23,12 +26,13 @@
 @property (strong,nonatomic)BTServer *defaultBTServer;
 @property (strong, nonatomic) UITableView *deviceTable;
 @property (strong, nonatomic) UITextField *txtInfo;
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
 
 @end
 
 
 @implementation ScanDevicesVC
-@synthesize deviceTable, txtInfo;
+@synthesize deviceTable, txtInfo, refreshControl;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // setup navigationBar
@@ -50,15 +54,16 @@
     _table.contentInset=UIEdgeInsetsMake(80, 0 ,0, 0);
     _table.showsVerticalScrollIndicator = NO;
     _table.separatorStyle=UITableViewCellSeparatorStyleNone;
-    _table.backgroundColor=[UIColor whiteColor];
+    _table.backgroundColor=[UIColor clearColor];
     
     self.deviceTable=_table;
     [self.view addSubview:self.deviceTable];
     
-//    _refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.view.frame.size.height, self.view.frame.size.width, self.view.frame.size.height)];
-//    _refreshHeaderView.delegate = self;
-//    [self.deviceTable addSubview:_refreshHeaderView];
-//    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.deviceTable];
+    refreshControl = [[UIRefreshControl alloc]init];
+    [refreshControl setTintColor:[UIColor greenColor]];
+    [self.deviceTable addSubview:refreshControl];
+    [refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
     self.appDelegate.defaultBTServer.delegate = self;
     
 
@@ -96,7 +101,6 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.deviceTable reloadData];
         if (reloading) {
-            [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.deviceTable];
             reloading = NO;
         }
     });
@@ -120,9 +124,18 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    SettingVC *groupSet = [[SettingVC alloc] init];
-    groupSet.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
-    [self.navigationController pushViewController:groupSet animated:YES];
+    SettingUser *thirdViewController = [[SettingUser alloc] init];
+    thirdViewController.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+    SettingModeVC *firstViewController = [[SettingModeVC alloc] init];
+    firstViewController.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+    SettingAlerm *secondViewController = [[SettingAlerm alloc] init];
+    secondViewController.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+
+    RDVTabBarController *tabBarController = [[RDVTabBarController alloc] init];
+    [tabBarController setViewControllers:@[firstViewController, secondViewController,thirdViewController]];
+    [self customizeTabBarForController:tabBarController];
+    tabBarController.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+    [self.navigationController pushViewController:tabBarController animated:YES];
 //    [self.defaultBTServer stopScan:YES];
 //    
 ////    [ProgressHUD show:@"connecting ..."];
@@ -154,7 +167,7 @@
     
 //    PeriperalInfo *pi = self.defaultBTServer.discoveredPeripherals[indexPath.row];
 //    cell.name = [NSString stringWithFormat:@"%@-%d",pi.name,indexPath.row];
-    cell.name = [NSString stringWithFormat:@"Imist-%d",indexPath.row];
+    cell.name = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
     cell.icon = @"";
     cell.index = indexPath;
     cell.delegate = self;
@@ -179,61 +192,34 @@
     return cell;
 }
 
--(void)Refresh{
-    __block typeof(self) currentBlockSel_f = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-        [currentBlockSel_f.appDelegate.defaultBTServer stopScan];
-        [currentBlockSel_f.appDelegate.defaultBTServer startScan:10];
-        sleep(10);
-        dispatch_async(dispatch_get_main_queue(), ^{
-             reloading = NO;
-             [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.deviceTable];
-         });
-    });
-}
-
--(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
-}
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-    
-}
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-
-}
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-}
-
-#pragma mark -
-#pragma mark Data Source Loading / Reloading Methods
-- (void)reloadTableViewDataSource{
-    reloading = YES;
-    [self Refresh];
-}
-
-
-#pragma mark -
-#pragma mark EGORefreshTableHeaderDelegate Methods
-
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
-    [self reloadTableViewDataSource];
-}
-
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
-    return reloading; // should return if data source model is reloading
-}
-
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
-    
-    return [NSDate date]; // should return date data source was last changed
-    
-}
-
 #pragma cell delegate
 -(void)btnClick:(NSInteger)index
 {
-    NSLog(@"cell====%d",index);
+    NSLog(@"cell====%ld",(long)index);
+}
+
+- (void)refreshTable {
+    //TODO: refresh your data
+    [refreshControl endRefreshing];
+    [self.deviceTable reloadData];
+}
+
+- (void)customizeTabBarForController:(RDVTabBarController *)tabBarController {
+    UIImage *finishedImage = [UIImage imageNamed:@"tabbar_selected_background"];
+    UIImage *unfinishedImage = [UIImage imageNamed:@"tabbar_normal_background"];
+    NSArray *tabBarItemImages = @[@"first", @"second", @"third"];
+    NSInteger index = 0;
+    for (RDVTabBarItem *item in [[tabBarController tabBar] items]) {
+        [item setBadgeBackgroundColor:[UIColor clearColor]];
+        [item setBackgroundSelectedImage:finishedImage withUnselectedImage:unfinishedImage];
+        UIImage *selectedimage = [UIImage imageNamed:[NSString stringWithFormat:@"%@_selected",
+                                                      [tabBarItemImages objectAtIndex:index]]];
+        UIImage *unselectedimage = [UIImage imageNamed:[NSString stringWithFormat:@"%@_normal",
+                                                        [tabBarItemImages objectAtIndex:index]]];
+        [item setFinishedSelectedImage:selectedimage withFinishedUnselectedImage:unselectedimage];
+        
+        index++;
+    }
 }
 
 @end
