@@ -17,6 +17,6 @@
 
 - (UIViewController *)scanDevicesController;
 - (UINavigationController *)navi;
-
+- (UINavigationController*) Nav;
 @end
 

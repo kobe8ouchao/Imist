@@ -7,6 +7,7 @@
 //
 
 #import "SettingAlerm.h"
+#import "AddAlarmVC.h"
 
 @interface SettingAlerm ()
 @property (nonatomic, strong) NSString *title;
@@ -17,14 +18,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     if(!self.title) self.title = title;
-    self.navigationController.navigationBar.topItem.title = self.title;
-    UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [leftBtn setFrame:CGRectMake( 0, 0, 44, 44)];
-    [leftBtn setImage:[UIImage imageNamed:@"back-arrow.png"] forState:UIControlStateNormal];
-    [leftBtn addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
-    self.navigationItem.leftBarButtonItem = leftItem;
+    self.navigationController.navigationBar.topItem.title = title;
     self.view.backgroundColor=[UIColor whiteColor];
+    
+    
     
     UIView *bg = [[UIView alloc] initWithFrame:CGRectMake(20, 80, self.view.frame.size.width - 40 ,40)];
     bg.backgroundColor = [UIColor grayColor];
@@ -41,6 +38,13 @@
     [showBuzzerSwich addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
     [bg addSubview:showBuzzerSwich];
     [self.view addSubview:bg];
+    
+    UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [addBtn setTitle:@"Add Alarm" forState:UIControlStateNormal];
+    [addBtn setBackgroundColor:[UIColor blueColor]];
+    addBtn.frame = CGRectMake((self.view.frame.size.width - 100)/2, 300, 100, 40);
+    [addBtn addTarget:self action:@selector(addAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:addBtn];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -53,7 +57,14 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+-(void)addAction:(id)sender
+{
+    AddAlarmVC* addv = [[AddAlarmVC alloc] init];
+    [self.navigationController pushViewController:addv animated:YES];
+}
+
 - (void) switchAction:(id)sender{
+    
 }
 
 @end

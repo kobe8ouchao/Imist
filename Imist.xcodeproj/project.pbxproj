@@ -18,6 +18,8 @@
 		C3422B521A56C6020095B6AA /* rh_whirl.png in Resources */ = {isa = PBXBuildFile; fileRef = C3422B4C1A56C6020095B6AA /* rh_whirl.png */; };
 		C3422B531A56C6020095B6AA /* rh_whirl@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3422B4D1A56C6020095B6AA /* rh_whirl@2x.png */; };
 		C34A285A1A6B83E30008367C /* SettingModeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C34A28591A6B83E30008367C /* SettingModeVC.m */; };
+		C352A1181A6F696400FC285A /* AddAlarmVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C352A1171A6F696400FC285A /* AddAlarmVC.m */; };
+		C352A11B1A6F819C00FC285A /* PickDayVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C352A11A1A6F819C00FC285A /* PickDayVC.m */; };
 		C35D16171A61017D000E57BC /* SideMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C35D16161A61017D000E57BC /* SideMenuCell.m */; };
 		C35D161A1A610DCC000E57BC /* ScanDeviceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C35D16191A610DCC000E57BC /* ScanDeviceCell.m */; };
 		C388197F1A516D3A004A98CA /* BTServer.m in Sources */ = {isa = PBXBuildFile; fileRef = C388197E1A516D3A004A98CA /* BTServer.m */; };
@@ -109,6 +111,10 @@
 		C3422B4D1A56C6020095B6AA /* rh_whirl@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rh_whirl@2x.png"; sourceTree = "<group>"; };
 		C34A28581A6B83E30008367C /* SettingModeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingModeVC.h; sourceTree = "<group>"; };
 		C34A28591A6B83E30008367C /* SettingModeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingModeVC.m; sourceTree = "<group>"; };
+		C352A1161A6F696400FC285A /* AddAlarmVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAlarmVC.h; sourceTree = "<group>"; };
+		C352A1171A6F696400FC285A /* AddAlarmVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddAlarmVC.m; sourceTree = "<group>"; };
+		C352A1191A6F819C00FC285A /* PickDayVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickDayVC.h; sourceTree = "<group>"; };
+		C352A11A1A6F819C00FC285A /* PickDayVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickDayVC.m; sourceTree = "<group>"; };
 		C35D16151A61017D000E57BC /* SideMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenuCell.h; sourceTree = "<group>"; };
 		C35D16161A61017D000E57BC /* SideMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenuCell.m; sourceTree = "<group>"; };
 		C35D16181A610DCC000E57BC /* ScanDeviceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanDeviceCell.h; sourceTree = "<group>"; };
@@ -448,6 +454,10 @@
 				C3E365FB1A6B9AFC002170CA /* SettingUser.m */,
 				C3DFE8EF1A6CB36E0044F52E /* SettingAlerm.h */,
 				C3DFE8F01A6CB36E0044F52E /* SettingAlerm.m */,
+				C352A1161A6F696400FC285A /* AddAlarmVC.h */,
+				C352A1171A6F696400FC285A /* AddAlarmVC.m */,
+				C352A1191A6F819C00FC285A /* PickDayVC.h */,
+				C352A11A1A6F819C00FC285A /* PickDayVC.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -615,6 +625,7 @@
 			files = (
 				C38819941A517635004A98CA /* SideMenuViewController.m in Sources */,
 				C3A8A0C21A4EBE45004C9ADE /* NSDate+InnerBand.m in Sources */,
+				C352A11B1A6F819C00FC285A /* PickDayVC.m in Sources */,
 				C38819911A5175EF004A98CA /* ScanDevicesVC.m in Sources */,
 				C34A285A1A6B83E30008367C /* SettingModeVC.m in Sources */,
 				C3A8A0C91A4EC57D004C9ADE /* UIColor+InnerBand.m in Sources */,
@@ -635,6 +646,7 @@
 				C3A8A0A11A4EBB9D004C9ADE /* BaseViewController.m in Sources */,
 				C3E366041A6BBC20002170CA /* RDVTabBar.m in Sources */,
 				C3E366061A6BBC20002170CA /* RDVTabBarItem.m in Sources */,
+				C352A1181A6F696400FC285A /* AddAlarmVC.m in Sources */,
 				C38819A31A5247D2004A98CA /* SettingVC.m in Sources */,
 				C3A8A0731A4EB94D004C9ADE /* main.m in Sources */,
 				C3422B461A56C4E90095B6AA /* activityView.m in Sources */,
