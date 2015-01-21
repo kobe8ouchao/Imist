@@ -93,12 +93,17 @@
 -(void)didStopScan
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.title = @"No Device Found";
+        [refreshControl endRefreshing];
+        [self.deviceTable reloadData];
+        if ([self.appDelegate.defaultBTServer.discoveredPeripherals count] <= 0) {
+            self.title = @"No Device Found";
+        }
     });
 }
 -(void)didFoundPeripheral
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+        [refreshControl endRefreshing];
         [self.deviceTable reloadData];
         if (reloading) {
             reloading = NO;
@@ -118,7 +123,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger n = [self.appDelegate.defaultBTServer.discoveredPeripherals count];
-    return 4;
+    return n;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -165,9 +170,9 @@
         cell = [[ScanDeviceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
     }
     
-//    PeriperalInfo *pi = self.defaultBTServer.discoveredPeripherals[indexPath.row];
-//    cell.name = [NSString stringWithFormat:@"%@-%d",pi.name,indexPath.row];
-    cell.name = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+    PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
+    cell.name = [NSString stringWithFormat:@"%@-%ld",pi.name,(long)indexPath.row];
+//    cell.name = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
     cell.icon = @"";
     cell.index = indexPath;
     cell.delegate = self;
@@ -200,8 +205,7 @@
 
 - (void)refreshTable {
     //TODO: refresh your data
-    [refreshControl endRefreshing];
-    [self.deviceTable reloadData];
+    [self.appDelegate.defaultBTServer startScan];
 }
 
 - (void)customizeTabBarForController:(RDVTabBarController *)tabBarController {

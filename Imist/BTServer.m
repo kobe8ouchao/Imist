@@ -286,8 +286,8 @@ static BTServer* _defaultBTServer = nil;
 
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI
 {
-//    NSLog(@"discover peripheral: %@; advertisementData: %@; RSSI: %@", peripheral, advertisementData, RSSI);
-    NSLog(@"discover peripheral: %@; RSSI: %@", peripheral, RSSI);
+    NSLog(@"discover peripheral: %@; advertisementData: %@; RSSI: %@", peripheral, advertisementData, RSSI);
+//    NSLog(@"discover peripheral: %@; RSSI: %@", peripheral, RSSI);
     
     [self addPeripheral:peripheral advertisementData:advertisementData RSSI:RSSI];
 
@@ -377,7 +377,7 @@ static BTServer* _defaultBTServer = nil;
 {
     if (nil == error) {
         serviceState = KSUCCESS;
-//        NSLog(@"found services:\n%@",peripheral.services);
+        NSLog(@"found services:\n%@",peripheral.services);
     }else{
         serviceState = KFAILED;
         NSLog(@"discover service failed:%@",error);
