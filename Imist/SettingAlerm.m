@@ -19,9 +19,7 @@
     [super viewDidLoad];
     if(!self.title) self.title = title;
     self.navigationController.navigationBar.topItem.title = title;
-    self.view.backgroundColor=[UIColor whiteColor];
-    
-    
+    self.view.backgroundColor=[UIColor whiteColor];    
     
     UIView *bg = [[UIView alloc] initWithFrame:CGRectMake(20, 80, self.view.frame.size.width - 40 ,40)];
     bg.backgroundColor = [UIColor grayColor];

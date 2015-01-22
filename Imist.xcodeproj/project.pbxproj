@@ -83,6 +83,8 @@
 		C3E366041A6BBC20002170CA /* RDVTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E365FF1A6BBC20002170CA /* RDVTabBar.m */; };
 		C3E366051A6BBC20002170CA /* RDVTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E366011A6BBC20002170CA /* RDVTabBarController.m */; };
 		C3E366061A6BBC20002170CA /* RDVTabBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E366031A6BBC20002170CA /* RDVTabBarItem.m */; };
+		C3F7E0F61A708FB700984037 /* PickSoundVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C3F7E0F51A708FB700984037 /* PickSoundVC.m */; };
+		C3F7E0F81A70930800984037 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3F7E0F71A70930800984037 /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -210,6 +212,9 @@
 		C3E366011A6BBC20002170CA /* RDVTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVTabBarController.m; sourceTree = "<group>"; };
 		C3E366021A6BBC20002170CA /* RDVTabBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVTabBarItem.h; sourceTree = "<group>"; };
 		C3E366031A6BBC20002170CA /* RDVTabBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVTabBarItem.m; sourceTree = "<group>"; };
+		C3F7E0F41A708FB700984037 /* PickSoundVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickSoundVC.h; sourceTree = "<group>"; };
+		C3F7E0F51A708FB700984037 /* PickSoundVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickSoundVC.m; sourceTree = "<group>"; };
+		C3F7E0F71A70930800984037 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,6 +222,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3F7E0F81A70930800984037 /* AudioToolbox.framework in Frameworks */,
 				C3A8A0BC1A4EBDE0004C9ADE /* MessageUI.framework in Frameworks */,
 				C3A8A0BA1A4EBDD6004C9ADE /* MobileCoreServices.framework in Frameworks */,
 				C3A8A0B21A4EBCA6004C9ADE /* CoreGraphics.framework in Frameworks */,
@@ -401,6 +407,7 @@
 		C3A8A0B31A4EBCBB004C9ADE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C3F7E0F71A70930800984037 /* AudioToolbox.framework */,
 				C3A8A0BB1A4EBDE0004C9ADE /* MessageUI.framework */,
 				C3A8A0B91A4EBDD6004C9ADE /* MobileCoreServices.framework */,
 				C3A8A0B11A4EBCA6004C9ADE /* CoreGraphics.framework */,
@@ -458,6 +465,8 @@
 				C352A1171A6F696400FC285A /* AddAlarmVC.m */,
 				C352A1191A6F819C00FC285A /* PickDayVC.h */,
 				C352A11A1A6F819C00FC285A /* PickDayVC.m */,
+				C3F7E0F41A708FB700984037 /* PickSoundVC.h */,
+				C3F7E0F51A708FB700984037 /* PickSoundVC.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -645,6 +654,7 @@
 				C38819821A516DC7004A98CA /* PeriperalInfo.m in Sources */,
 				C3A8A0A11A4EBB9D004C9ADE /* BaseViewController.m in Sources */,
 				C3E366041A6BBC20002170CA /* RDVTabBar.m in Sources */,
+				C3F7E0F61A708FB700984037 /* PickSoundVC.m in Sources */,
 				C3E366061A6BBC20002170CA /* RDVTabBarItem.m in Sources */,
 				C352A1181A6F696400FC285A /* AddAlarmVC.m in Sources */,
 				C38819A31A5247D2004A98CA /* SettingVC.m in Sources */,

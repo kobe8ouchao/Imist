@@ -8,6 +8,7 @@
 
 #import "AddAlarmVC.h"
 #import "PickDayVC.h"
+#import "PickSoundVC.h"
 
 @interface AddAlarmVC ()<UIPickerViewDelegate,UIPickerViewDataSource>
 @property (nonatomic,strong) NSArray *all;
@@ -20,14 +21,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
+    self.navigationItem.rightBarButtonItem = saveItem;
+    
     self.all = [NSArray arrayWithObjects:@"AM",@"PM",nil];
     self.hours = [NSArray arrayWithObjects:@"00",@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",nil];
-    self.minis = [NSArray arrayWithObjects:@"00",@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"20",@"21",@"22",@"23",@"24",@"25",@"26",@"27",@"28",@"29",@"30",@"31",@"32",@"33",@"34",@"35",@"36",@"37",@"38",@"39",@"40",@"41",@"42",@"43",@"44",@"45",@"46",@"47",@"48",@"49",@"50",@"51",@"52",@"53",@"54",@"55",@"56",@"57",@"58",@"59",nil];
+    self.minis = [NSArray arrayWithObjects:@"00",@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23",@"24",@"25",@"26",@"27",@"28",@"29",@"30",@"31",@"32",@"33",@"34",@"35",@"36",@"37",@"38",@"39",@"40",@"41",@"42",@"43",@"44",@"45",@"46",@"47",@"48",@"49",@"50",@"51",@"52",@"53",@"54",@"55",@"56",@"57",@"58",@"59",nil];
     UIPickerView * pickerview = [[UIPickerView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 200)/2, 40, 200, 200)];
     pickerview.delegate=self;
     pickerview.dataSource=self;
-    [pickerview selectRow:(1000/(2*12))*12 inComponent:1 animated:NO];
-    [pickerview selectRow:(1000/(2*60))*60 inComponent:2 animated:NO];
+    [pickerview selectRow:(1000/(2*[self.hours count]))*[self.hours count] inComponent:1 animated:NO];
+    [pickerview selectRow:(1000/(2*[self.minis count]))*[self.minis count] inComponent:2 animated:NO];
     self.pickerview = pickerview;
     
     [self.view addSubview:pickerview];
@@ -60,7 +64,8 @@
 
 -(void)soundClick:(id)sender
 {
-
+    PickSoundVC *pickSound = [[PickSoundVC alloc] init];
+    [self.navigationController pushViewController:pickSound animated:YES];
 }
 
 #pragma mark pickerview function
@@ -89,10 +94,10 @@
     if (component == 0) {
         return [self.all objectAtIndex:row];
     }else if(1 == component) {
-        row = row % 12;
+        row = row % [self.hours count];
         return [self.hours objectAtIndex:row];
     }else {
-        row = row % 60;
+        row = row % [self.minis count];
         return [self.minis objectAtIndex:row];
     }
 }
@@ -105,14 +110,19 @@
 
 -(void)pickerViewLoaded: (NSInteger)blah {
     if (blah == 1) {
-        NSUInteger max = 12;
-        NSUInteger base10 = (max/2)-(max/2)%12;
+        NSUInteger max = [self.hours count];
+        NSUInteger base10 = (max/2)-(max/2)%[self.hours count];
         [self.pickerview selectRow:[self.pickerview selectedRowInComponent:blah]%12+base10 inComponent:0 animated:false];
     }else if(blah == 2) {
-        NSUInteger max = 60;
-        NSUInteger base10 = (max/2)-(max/2)%60;
+        NSUInteger max = [self.minis count];
+        NSUInteger base10 = (max/2)-(max/2)%[self.minis count];
         [self.pickerview selectRow:[self.pickerview selectedRowInComponent:blah]%60+base10 inComponent:0 animated:false];
     }
+}
+
+-(void) save
+{
+    
 }
 
 @end
