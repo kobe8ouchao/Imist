@@ -20,7 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWith256Red:55 green:51 blue:48];
+    self.view.backgroundColor = [UIColor grayColor];//[UIColor colorWith256Red:55 green:51 blue:48];
     //menu header
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 60)];
     view.backgroundColor = [UIColor colorWith256Red:31 green:26 blue:23];
@@ -73,13 +73,16 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone; 
     switch (indexPath.row) {
         case 0:
-            cell.name = [NSString stringWithFormat:@"Devices"];
+            cell.name = [NSString stringWithFormat:@"Diffusers"];
+            cell.icon = @"ico_scancell.png";
             break;
         case 1:
             cell.name = [NSString stringWithFormat:@"Abount"];
+            cell.icon = @"ico_sidemenu_share.png";
             break;
         case 2:
             cell.name = [NSString stringWithFormat:@"Totural"];
+            cell.icon = @"ico_sidemenu_tutorial.png";
             break;
         default:
             break;

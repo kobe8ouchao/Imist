@@ -20,11 +20,13 @@
         self.backgroundColor = [UIColor clearColor];
         
         UIImageView *bg = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, self.frame.size.width - 20, 50.0f)];
-        bg.backgroundColor = [UIColor darkGrayColor];
+        bg.image = [UIImage imageNamed:@"bg_scancell_gray.png"];
+        bg.backgroundColor = [UIColor clearColor];
         [self addSubview:bg];
         
         UIImageView *vicon = [[UIImageView alloc] initWithFrame:CGRectMake(23, 10, 30, 30)];
-        vicon.backgroundColor = [UIColor redColor];
+        vicon.backgroundColor = [UIColor clearColor];
+        vicon.image = [UIImage imageNamed:@"ico_imist.png"];
         vicon.tag = 1;
         [self addSubview:vicon];
         
@@ -35,11 +37,13 @@
         [self addSubview:vname];
         
         UIButton *connectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [connectBtn setBackgroundImage:[[UIImage imageNamed:@"bg_btn_line_normal.png"] stretchableImageWithLeftCapWidth:12 topCapHeight:12] forState:UIControlStateNormal];
+        [connectBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_blue.png"] forState:UIControlStateNormal];
         [connectBtn setTitle:@"Connect" forState:UIControlStateNormal];
+        connectBtn.tag = 3;
         [connectBtn setBackgroundColor:[UIColor blueColor]];
         connectBtn.frame = CGRectMake(self.frame.size.width - 120, 5, 100, 40);
         [connectBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+        connectBtn.hidden = YES;
         [self addSubview:connectBtn];
     }
     return self;
@@ -51,6 +55,17 @@
     UILabel *vname = (UILabel *)[self viewWithTag:2];
     vicon.image = [UIImage imageNamed:self.icon];
     vname.text = self.name;
+}
+
+- (void) setState:(NSInteger)state
+{
+    UIButton *connectBtn = (UIButton *)[self viewWithTag:3];
+    if (1 == state) {
+        connectBtn.hidden = NO;
+    }else {
+        connectBtn.hidden = YES;
+    }
+    
 }
 
 -(void)btnClick:(UIButton*)btn{

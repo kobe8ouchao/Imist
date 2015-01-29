@@ -17,7 +17,7 @@
 @synthesize deviceTable, days;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.navigationBar.topItem.title = @"Select Days";
+    self.title = @"Select Days";
     self.days = [NSArray arrayWithObjects:@"Mon",@"Thr",@"Wed",@"Thu",@"Fri",@"Sat",@"Sun",nil];
     //init device tableview
     UITableView *_table=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,  self.view.frame.size.height) style:UITableViewStylePlain];

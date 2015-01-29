@@ -9,16 +9,19 @@
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "PeriperalInfo.h"
+#define UUIDPrimaryService        @"0000FFF0-0000-1000-8000-00805F9B34FB"
+#define WRITE_CHARACTERISTIC      @"0000FFF6-0000-1000-8000-00805F9B34FB"
+#define NOTIFY_CHARACTERISTIC     @"0000FFF7-0000-1000-8000-00805F9B34FB"
 
-#define UUIDPrimaryService  @"0xFF00"//tmp 0XFFA0 should be 0xFF00
-#define UUIDPrimaryService2  @"0xFFA0"//tmp 0XFFA0 should be 0xFF00
-#define UUIDDeviceInfo      @"0xFF01"
-#define UUIDRealTimeDate    @"0xFF02"
-#define UUIDControlPoint    @"0xFF03"
-#define UUIDData            @"0xFF04"
-#define UUIDFirmwareData    @"0xFF05"
-#define UUIDDebugData       @"0xFF06"
-#define UUIDBLEUserInfo     @"0xFF07"
+//#define UUIDPrimaryService  @"0xFF00"//tmp 0XFFA0 should be 0xFF00
+//#define UUIDPrimaryService2  @"0xFFA0"//tmp 0XFFA0 should be 0xFF00
+//#define UUIDDeviceInfo      @"0xFF01"
+//#define UUIDRealTimeDate    @"0xFF02"
+//#define UUIDControlPoint    @"0xFF03"
+//#define UUIDData            @"0xFF04"
+//#define UUIDFirmwareData    @"0xFF05"
+//#define UUIDDebugData       @"0xFF06"
+//#define UUIDBLEUserInfo     @"0xFF07"
 
 #define AUTO_CANCEL_CONNECT_TIMEOUT 10
 typedef void (^eventBlock)(CBPeripheral *peripheral, BOOL status, NSError *error);
@@ -63,7 +66,8 @@ typedef enum{
 -(void)disConnect;
 -(void)discoverService:(CBService*)service;
 -(void)readValue:(CBCharacteristic*)characteristic;
-
+-(void)writeValue:(NSData*) data withCharacter:(CBCharacteristic*)characteristic;
+-(NSData*)converCMD:(NSData*)cmd;
 //state
 -(NSInteger)getConnectState;
 -(NSInteger)getServiceState;

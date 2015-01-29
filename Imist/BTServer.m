@@ -107,7 +107,7 @@ static BTServer* _defaultBTServer = nil;
     //0:retrive
 #if 1
     //method 1:
-    NSArray *atmp = [NSArray arrayWithObjects:[CBUUID UUIDWithString:UUIDPrimaryService],[CBUUID UUIDWithString:UUIDPrimaryService2], nil];
+    NSArray *atmp = [NSArray arrayWithObjects:[CBUUID UUIDWithString:UUIDPrimaryService], nil];
     NSArray *retrivedArray = [myCenter retrieveConnectedPeripheralsWithServices:atmp];
     NSLog(@"retrivedArray:\n%@",retrivedArray);
 
@@ -229,6 +229,11 @@ static BTServer* _defaultBTServer = nil;
     [self.selectPeripheral readValueForCharacteristic:self.selectCharacteristic];
 }
 
+-(void)writeValue:(NSData*) data withCharacter:(CBCharacteristic*)characteristic
+{
+    [self.selectPeripheral writeValue:data forCharacteristic:characteristic type:CBCharacteristicWriteWithResponse];
+}
+
 #pragma mark CBCentralManagerDelegate
 -(void)addPeripheralInfo:(PeriperalInfo *)peripheralInfo
 {
@@ -287,10 +292,9 @@ static BTServer* _defaultBTServer = nil;
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI
 {
     NSLog(@"discover peripheral: %@; advertisementData: %@; RSSI: %@", peripheral, advertisementData, RSSI);
-//    NSLog(@"discover peripheral: %@; RSSI: %@", peripheral, RSSI);
-    
-    [self addPeripheral:peripheral advertisementData:advertisementData RSSI:RSSI];
-
+    if ([peripheral.name containsString:@"Imist"]) {
+        [self addPeripheral:peripheral advertisementData:advertisementData RSSI:RSSI];
+    }
     
 }
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral
@@ -378,6 +382,14 @@ static BTServer* _defaultBTServer = nil;
     if (nil == error) {
         serviceState = KSUCCESS;
         NSLog(@"found services:\n%@",peripheral.services);
+        for (CBService *service in peripheral.services) {
+            NSLog(@"Service found with UUID: %@", service.UUID);
+            if ([service.UUID isEqual:[CBUUID UUIDWithString:UUIDPrimaryService]]) {
+                NSLog(@"Imist SERVICE FOUND");
+                [peripheral discoverCharacteristics:nil forService:service];
+                break;
+            }
+        }
     }else{
         serviceState = KFAILED;
         NSLog(@"discover service failed:%@",error);
@@ -393,6 +405,18 @@ static BTServer* _defaultBTServer = nil;
     if (nil == error) {
         characteristicState = KSUCCESS;
         self.discoveredSevice = service;
+        if([service.UUID isEqual:[CBUUID UUIDWithString:UUIDPrimaryService]]) {
+            for (CBCharacteristic *characteristic in service.characteristics) {
+                NSLog(@"discovered characteristic %@", characteristic.UUID);
+                if([characteristic.UUID isEqual:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]) {
+                    NSLog(@"Found Write Characteristic %@", characteristic);
+                }
+                if([characteristic.UUID isEqual:[CBUUID UUIDWithString:NOTIFY_CHARACTERISTIC]]) {
+                    [self.selectPeripheral setNotifyValue:YES forCharacteristic:characteristic];
+                    NSLog(@"Found Notify Characteristic %@", characteristic);
+                }
+            }
+        }
     }else{
         characteristicState = KFAILED;
         self.discoveredSevice = nil;
@@ -444,12 +468,26 @@ static BTServer* _defaultBTServer = nil;
 
 - (void)peripheralDidUpdateName:(CBPeripheral *)peripheral
 {
+    
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didModifyServices:(NSArray *)invalidatedServices
 {
 }
 
-
+-(NSData*)converCMD:(NSData*)cmd
+{
+    NSMutableData* data = [NSMutableData data];
+    NSUInteger head1 = 0xAA;
+    NSUInteger head2 = 0xBB;
+    NSUInteger tail1 = 0xCC;
+    NSUInteger tail2 = 0xDD;
+    [data appendBytes:&head1 length:1];
+    [data appendBytes:&head2 length:1];
+    [data appendData:cmd];
+    [data appendBytes:&tail1 length:1];
+    [data appendBytes:&tail2 length:1];
+    return data;
+}
 
 @end

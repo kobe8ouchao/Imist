@@ -16,6 +16,7 @@
 @property (nonatomic, strong)NSIndexPath *index;
 @property (nonatomic ,weak) id delegate;
 -(void)setStyle;
+-(void)setState:(NSInteger)state;
 @end
 @protocol scanDeviceCellDelegate <NSObject>
 -(void)btnClick:(NSInteger)index;

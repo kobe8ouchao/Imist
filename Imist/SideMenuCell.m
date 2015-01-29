@@ -20,11 +20,11 @@
         self.backgroundColor = [UIColor clearColor];
         
         UIImageView *bg = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, self.frame.size.width, self.frame.size.height )];
-        bg.backgroundColor = [UIColor darkGrayColor];
+        bg.image = [UIImage imageNamed:@"bg_sidemenu_cell.png"];
         [self addSubview:bg];
         
         UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(23, 8, 30, 30)];
-        icon.backgroundColor = [UIColor redColor];
+        icon.backgroundColor = [UIColor clearColor];
         icon.tag = 1;
         [self addSubview:icon];
         

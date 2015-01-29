@@ -17,6 +17,7 @@
 #import "SettingAlerm.h"
 #import "RDVTabBarController.h"
 #import "RDVTabBarItem.h"
+#import "ProgressHUD.h"
 
 @interface ScanDevicesVC ()<UITableViewDataSource,UITableViewDelegate,BTServerDelegate,scanDeviceCellDelegate> {
     BOOL reloading;
@@ -36,11 +37,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // setup navigationBar
-    if(!self.title) self.title = @"Devices List";
+    if(!self.title) self.title = @"CONNECT";
     
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [leftBtn setFrame:CGRectMake( 0, 0, 44, 44)];
-    [leftBtn setImage:[UIImage imageNamed:@"menu-icon.png"] forState:UIControlStateNormal];
+    [leftBtn setImage:[UIImage imageNamed:@"ico_navibtn_sidemenu.png"] forState:UIControlStateNormal];
     [leftBtn addTarget:self action:@selector(leftSideMenuButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
     self.navigationItem.leftBarButtonItem = leftItem;
@@ -128,38 +129,40 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    SettingUser *thirdViewController = [[SettingUser alloc] init];
-    thirdViewController.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
-    SettingModeVC *firstViewController = [[SettingModeVC alloc] init];
-    firstViewController.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
-    SettingAlerm *secondViewController = [[SettingAlerm alloc] init];
-    secondViewController.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
-
-    RDVTabBarController *tabBarController = [[RDVTabBarController alloc] init];
-    [tabBarController setViewControllers:@[firstViewController, secondViewController,thirdViewController]];
-    [self customizeTabBarForController:tabBarController];
-    tabBarController.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
-    [self.navigationController pushViewController:tabBarController animated:YES];
-//    [self.defaultBTServer stopScan:YES];
-//    
-////    [ProgressHUD show:@"connecting ..."];
-//    
-//    [self.defaultBTServer connect:self.defaultBTServer.discoveredPeripherals[indexPath.row] withFinishCB:^(CBPeripheral *peripheral, BOOL status, NSError *error) {
-//        
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            //            [ProgressHUD dismiss];
-//            
-//            if (status) {
-//                [ProgressHUD showSuccess:@"connected success!"];
-//                [self performSegueWithIdentifier:@"getService" sender:self];
-//            }else{
-//                [ProgressHUD showError:@"connected failed!"];
-//            }
-//        });
-//        
-//        
-//    }];
+    
+    ScanDeviceCell *cell = (ScanDeviceCell*)[tableView cellForRowAtIndexPath:indexPath];
+    PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
+    if ([pi.state isEqualToString:@"connected"]) {
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+        SettingUser *thirdViewController = [[SettingUser alloc] init];
+        thirdViewController.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+        SettingModeVC *firstViewController = [[SettingModeVC alloc] init];
+        firstViewController.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+        SettingAlerm *secondViewController = [[SettingAlerm alloc] init];
+        secondViewController.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+        
+        RDVTabBarController *tabBarController = [[RDVTabBarController alloc] init];
+        [tabBarController setViewControllers:@[firstViewController, secondViewController,thirdViewController]];
+        [self customizeTabBarForController:tabBarController];
+        tabBarController.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+        [self.navigationController pushViewController:tabBarController animated:YES];
+    }else if([pi.state isEqualToString:@"disConnected"]) {
+        [ProgressHUD show:@"connecting ..."];
+        [self.defaultBTServer connect:self.defaultBTServer.discoveredPeripherals[indexPath.row] withFinishCB:^(CBPeripheral *peripheral, BOOL status, NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [ProgressHUD dismiss];
+                if (status) {
+                    [cell setState:1];
+                    [ProgressHUD showSuccess:@"connected success!"];
+                    [self performSegueWithIdentifier:@"getService" sender:self];
+                }else{
+                    [cell setState:0];
+                    [ProgressHUD showError:@"connected failed!"];
+                }
+            });
+        }];
+    }
+   
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -176,6 +179,7 @@
     cell.icon = @"";
     cell.index = indexPath;
     cell.delegate = self;
+    cell.icon = @"ico_imist.png";
     [cell setStyle];
 //    cell.topName.text = pi.name;
 //    cell.uuid.text = pi.uuid;
@@ -201,6 +205,7 @@
 -(void)btnClick:(NSInteger)index
 {
     NSLog(@"cell====%ld",(long)index);
+    [self.appDelegate.defaultBTServer disConnect];
 }
 
 - (void)refreshTable {
