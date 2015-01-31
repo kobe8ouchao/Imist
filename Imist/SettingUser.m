@@ -47,7 +47,11 @@
 -(void)setUpBar:(CGRect)frame withTitle:(NSString*)label withMin:(CGFloat)mini withMax:(CGFloat)maxi withTag:(NSInteger)tag
 {
     UIView *bg = [[UIView alloc] initWithFrame:frame];
-    bg.backgroundColor = [UIColor grayColor];
+    bg.backgroundColor = [UIColor clearColor];
+    UIImageView *imgbg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width ,frame.size.height)];
+    imgbg.image = [UIImage imageNamed:@"bg_scancell_green.png"];
+    imgbg.backgroundColor = [UIColor clearColor];
+    [bg addSubview:imgbg];
     UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(10, 11, 200 ,18)];
     [lable setFont:[UIFont boldSystemFontOfSize:18]];
     lable.textAlignment = NSTextAlignmentLeft;

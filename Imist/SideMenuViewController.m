@@ -9,6 +9,7 @@
 #import "AboutVC.h"
 #import "ScanDevicesVC.h"
 #import "SideMenuCell.h"
+#import "TutoralVC.h"
 
 @interface SideMenuViewController () <UITableViewDelegate, UITableViewDataSource>{
     UITableView *_table;
@@ -96,19 +97,33 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     AboutVC *aboutVC;
+    TutoralVC *tutoralVC;
     UINavigationController *navigationController = self.menuContainerViewController.centerViewController;
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSArray *controllers;
     switch (indexPath.row) {
-        case 0:
+        case 0: {
             controllers = [NSArray arrayWithObject:app.scanVC];
             navigationController.viewControllers = controllers;
             break;
-        case 1:
+        }
+            
+        case 1: {
             aboutVC = [[AboutVC alloc] init];
             NSArray *controllers = [NSArray arrayWithObject:aboutVC];
             navigationController.viewControllers = controllers;
             break;
+        }
+        case 2: {
+            tutoralVC = [[TutoralVC alloc] init];
+            NSArray *controllers = [NSArray arrayWithObject:tutoralVC];
+            navigationController.viewControllers = controllers;
+            break;
+        }
+        default: {
+            break;
+        }
+            
     }
     [self.menuContainerViewController setMenuState:MFSideMenuStateClosed];
 }

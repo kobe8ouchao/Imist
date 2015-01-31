@@ -38,15 +38,17 @@
     
     UIButton *repeatBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [repeatBtn setTitle:@"Repeat" forState:UIControlStateNormal];
-    [repeatBtn setBackgroundColor:[UIColor blueColor]];
-    repeatBtn.frame = CGRectMake((self.view.frame.size.width - 100)/2, 250, 100, 40);
+    [repeatBtn setBackgroundColor:[UIColor clearColor]];
+    [repeatBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    repeatBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, 250, 140, 44);
     [repeatBtn addTarget:self action:@selector(repeatClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:repeatBtn];
     
     UIButton *soundBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [soundBtn setTitle:@"Sound" forState:UIControlStateNormal];
-    [soundBtn setBackgroundColor:[UIColor blueColor]];
-    soundBtn.frame = CGRectMake((self.view.frame.size.width - 100)/2, 300, 100, 40);
+    [soundBtn setBackgroundColor:[UIColor clearColor]];
+    [soundBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    soundBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, 300, 140, 44);
     [soundBtn addTarget:self action:@selector(soundClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:soundBtn];
 }

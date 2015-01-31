@@ -39,8 +39,9 @@
     
     UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [addBtn setTitle:@"Add Alarm" forState:UIControlStateNormal];
-    [addBtn setBackgroundColor:[UIColor blueColor]];
-    addBtn.frame = CGRectMake((self.view.frame.size.width - 100)/2, 300, 100, 40);
+    [addBtn setBackgroundColor:[UIColor clearColor]];
+    [addBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    addBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, 300, 140, 44);
     [addBtn addTarget:self action:@selector(addAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:addBtn];
 }

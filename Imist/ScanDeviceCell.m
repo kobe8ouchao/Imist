@@ -22,6 +22,7 @@
         UIImageView *bg = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, self.frame.size.width - 20, 50.0f)];
         bg.image = [UIImage imageNamed:@"bg_scancell_gray.png"];
         bg.backgroundColor = [UIColor clearColor];
+        bg.tag = 4;
         [self addSubview:bg];
         
         UIImageView *vicon = [[UIImageView alloc] initWithFrame:CGRectMake(23, 10, 30, 30)];
@@ -40,7 +41,7 @@
         [connectBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_blue.png"] forState:UIControlStateNormal];
         [connectBtn setTitle:@"Connect" forState:UIControlStateNormal];
         connectBtn.tag = 3;
-        [connectBtn setBackgroundColor:[UIColor blueColor]];
+        [connectBtn setBackgroundColor:[UIColor clearColor]];
         connectBtn.frame = CGRectMake(self.frame.size.width - 120, 5, 100, 40);
         [connectBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
         connectBtn.hidden = YES;
@@ -65,6 +66,13 @@
     }else {
         connectBtn.hidden = YES;
     }
+    UIImageView *bg = (UIImageView *)[self viewWithTag:4];
+    if (1 == state) {
+        bg.image = [UIImage imageNamed:@"bg_scancell_green.png"];
+    }else {
+        bg.image = [UIImage imageNamed:@"bg_scancell_gray.png"];
+    }
+    
     
 }
 

@@ -135,26 +135,25 @@
     if ([pi.state isEqualToString:@"connected"]) {
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
         SettingUser *thirdViewController = [[SettingUser alloc] init];
-        thirdViewController.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+        thirdViewController.title = [NSString stringWithFormat:@"IMIST-%ld",(long)indexPath.row];
         SettingModeVC *firstViewController = [[SettingModeVC alloc] init];
-        firstViewController.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+        firstViewController.title = [NSString stringWithFormat:@"IMIST-%ld",(long)indexPath.row];
         SettingAlerm *secondViewController = [[SettingAlerm alloc] init];
-        secondViewController.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+        secondViewController.title = [NSString stringWithFormat:@"IMIST-%ld",(long)indexPath.row];
         
         RDVTabBarController *tabBarController = [[RDVTabBarController alloc] init];
         [tabBarController setViewControllers:@[firstViewController, secondViewController,thirdViewController]];
         [self customizeTabBarForController:tabBarController];
-        tabBarController.title = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+        tabBarController.title = [NSString stringWithFormat:@"IMIST-%ld",(long)indexPath.row];
         [self.navigationController pushViewController:tabBarController animated:YES];
     }else if([pi.state isEqualToString:@"disConnected"]) {
         [ProgressHUD show:@"connecting ..."];
-        [self.defaultBTServer connect:self.defaultBTServer.discoveredPeripherals[indexPath.row] withFinishCB:^(CBPeripheral *peripheral, BOOL status, NSError *error) {
+        [self.appDelegate.defaultBTServer connect:self.appDelegate.defaultBTServer.discoveredPeripherals[indexPath.row] withFinishCB:^(CBPeripheral *peripheral, BOOL status, NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [ProgressHUD dismiss];
                 if (status) {
                     [cell setState:1];
                     [ProgressHUD showSuccess:@"connected success!"];
-                    [self performSegueWithIdentifier:@"getService" sender:self];
                 }else{
                     [cell setState:0];
                     [ProgressHUD showError:@"connected failed!"];
@@ -162,7 +161,7 @@
             });
         }];
     }
-   
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -172,10 +171,10 @@
     if (cell == nil) {
         cell = [[ScanDeviceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
     }
-    
-    PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
-    cell.name = [NSString stringWithFormat:@"%@-%ld",pi.name,(long)indexPath.row];
-//    cell.name = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone; 
+//    PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
+//    cell.name = [NSString stringWithFormat:@"%@-%ld",pi.name,(long)indexPath.row];
+    cell.name = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
     cell.icon = @"";
     cell.index = indexPath;
     cell.delegate = self;
@@ -214,13 +213,13 @@
 }
 
 - (void)customizeTabBarForController:(RDVTabBarController *)tabBarController {
-    UIImage *finishedImage = [UIImage imageNamed:@"tabbar_selected_background"];
-    UIImage *unfinishedImage = [UIImage imageNamed:@"tabbar_normal_background"];
+//    UIImage *finishedImage = [UIImage imageNamed:@"tabbar_selected_background"];
+//    UIImage *unfinishedImage = [UIImage imageNamed:@"tabbar_normal_background"];
     NSArray *tabBarItemImages = @[@"first", @"second", @"third"];
     NSInteger index = 0;
     for (RDVTabBarItem *item in [[tabBarController tabBar] items]) {
         [item setBadgeBackgroundColor:[UIColor clearColor]];
-        [item setBackgroundSelectedImage:finishedImage withUnselectedImage:unfinishedImage];
+//        [item setBackgroundSelectedImage:finishedImage withUnselectedImage:unfinishedImage];
         UIImage *selectedimage = [UIImage imageNamed:[NSString stringWithFormat:@"%@_selected",
                                                       [tabBarItemImages objectAtIndex:index]]];
         UIImage *unselectedimage = [UIImage imageNamed:[NSString stringWithFormat:@"%@_normal",
