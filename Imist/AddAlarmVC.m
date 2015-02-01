@@ -10,15 +10,20 @@
 #import "PickDayVC.h"
 #import "PickSoundVC.h"
 
-@interface AddAlarmVC ()<UIPickerViewDelegate,UIPickerViewDataSource>
+@interface AddAlarmVC ()<UIPickerViewDelegate,UIPickerViewDataSource,pickDayDelegate,pickSoundDelegate>
 @property (nonatomic,strong) NSArray *all;
 @property (nonatomic,strong) NSArray *hours;
 @property (nonatomic,strong) NSArray *minis;
 @property (nonatomic,strong) UIPickerView *pickerview;
+@property (nonatomic,strong) NSString *selectedHour;
+@property (nonatomic,strong) NSString *selectedMinis;
+@property (nonatomic,strong) NSString *ampm;
+@property (nonatomic,strong) NSString *sound;
+@property (nonatomic,strong) NSString *days;
 @end
 
 @implementation AddAlarmVC
-
+@synthesize all,hours,minis,pickerview,selectedHour,selectedMinis,ampm;
 - (void)viewDidLoad {
     [super viewDidLoad];
     UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
@@ -27,14 +32,14 @@
     self.all = [NSArray arrayWithObjects:@"AM",@"PM",nil];
     self.hours = [NSArray arrayWithObjects:@"00",@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",nil];
     self.minis = [NSArray arrayWithObjects:@"00",@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23",@"24",@"25",@"26",@"27",@"28",@"29",@"30",@"31",@"32",@"33",@"34",@"35",@"36",@"37",@"38",@"39",@"40",@"41",@"42",@"43",@"44",@"45",@"46",@"47",@"48",@"49",@"50",@"51",@"52",@"53",@"54",@"55",@"56",@"57",@"58",@"59",nil];
-    UIPickerView * pickerview = [[UIPickerView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 200)/2, 40, 200, 200)];
-    pickerview.delegate=self;
-    pickerview.dataSource=self;
-    [pickerview selectRow:(1000/(2*[self.hours count]))*[self.hours count] inComponent:1 animated:NO];
-    [pickerview selectRow:(1000/(2*[self.minis count]))*[self.minis count] inComponent:2 animated:NO];
-    self.pickerview = pickerview;
+    UIPickerView * _pickerview = [[UIPickerView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 200)/2, 40, 200, 200)];
+    _pickerview.delegate=self;
+    _pickerview.dataSource=self;
+//    [_pickerview selectRow:(1000/(2*[self.hours count]))*[self.hours count] inComponent:1 animated:NO];
+//    [_pickerview selectRow:(1000/(2*[self.minis count]))*[self.minis count] inComponent:2 animated:NO];
+    self.pickerview = _pickerview;
     
-    [self.view addSubview:pickerview];
+    [self.view addSubview:self.pickerview];
     
     UIButton *repeatBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [repeatBtn setTitle:@"Repeat" forState:UIControlStateNormal];
@@ -83,9 +88,9 @@
     if (component == 0) {
         return [self.all count];
     }else if(1 == component) {
-        return 1000;//[self.hours count];
+        return [self.hours count];
     }else {
-        return 1000;//[self.minis count];
+        return [self.minis count];
     }
     
 }
@@ -107,7 +112,7 @@
 /*choose com is component,row's function*/
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-//    [self pickerViewLoaded:component];
+    //    [self pickerViewLoaded:component];
 }
 
 -(void)pickerViewLoaded: (NSInteger)blah {
@@ -124,7 +129,41 @@
 
 -(void) save
 {
-    
+    NSInteger row = [self.pickerview selectedRowInComponent:0];
+    NSInteger hrow = [self.pickerview selectedRowInComponent:1];
+    NSInteger mrow = [self.pickerview selectedRowInComponent:2];
+    self.ampm = [all objectAtIndex:row];
+    self.selectedHour = [self.hours objectAtIndex:hrow];
+    self.selectedMinis = [self.minis objectAtIndex:mrow];
+    if ([self.ampm isEqualToString:@"AM"]) {
+        NSInteger hourss = [self.selectedHour integerValue] + 12;
+        self.selectedHour = [NSString stringWithFormat:@"%d",hourss];
+    }
+    NSString *times = [NSString stringWithFormat:@"%@:%@",self.selectedHour,self.selectedMinis];
+    NSDictionary * dictionary;
+    if (!self.sound) {
+        self.sound = @"nil";
+    }
+    if (!self.days) {
+        self.days = @"1|2|3|4|5|6|7";
+    }
+    dictionary = [NSDictionary dictionaryWithObjectsAndKeys:@"time",times,@"sound",self.sound,@"repeat",self.days,nil];
+    [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert addObject:dictionary];
+    [self.navigationController popViewControllerAnimated:YES];
 }
+
+-(void)saveSound:(NSString *)sound
+{
+    NSLog(@"sound====%@",sound);
+    self.sound = sound;
+}
+
+-(void)saveDay:(NSArray *)days
+{
+    NSString * daysStr = [days componentsJoinedByString:@"|"];
+    NSLog(@"days====%@",daysStr);
+    self.days = daysStr;
+}
+
 
 @end

@@ -7,7 +7,12 @@
 //
 
 #import "BaseViewController.h"
+@protocol pickSoundDelegate;
+@interface PickSoundVC : BaseViewController {
+    __weak id <pickSoundDelegate> delegate;
+}
 
-@interface PickSoundVC : BaseViewController
-
+@end
+@protocol pickSoundDelegate <NSObject>
+-(void)saveSound:(NSString*)sound;
 @end

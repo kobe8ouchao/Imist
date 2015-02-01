@@ -11,6 +11,7 @@
 #import "MFSideMenuContainerViewController.h"
 #import "ScanDevicesVC.h"
 #define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+#define iPhone4 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
 @interface TutoralVC ()
 
 @end
@@ -35,76 +36,93 @@
     sv.bounces = NO;
     [self.view addSubview:sv];
     sv.contentSize=CGSizeMake(sv.frame.size.width*7, sv.frame.size.height);
-    UIImageView *help1=[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, sv.frame.size.width, sv.frame.size.height)];
+    UIImageView *help1=[[UIImageView alloc] initWithFrame:CGRectMake(0, 20, sv.frame.size.width, sv.frame.size.height)];
     [help1 setBackgroundColor:[UIColor clearColor]];
-    help1.image=[UIImage imageNamed:@"tutorial_eng.png"];
+    if (iPhone4) {
+        help1.image=[UIImage imageNamed:@"tutorial_eng1_4.png"];
+    }else {
+        help1.image=[UIImage imageNamed:@"tutorial_eng.png"];
+    }
+    
     [sv addSubview:help1];
-    UIButton *skipBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    if (iPhone5)
-    {
-        skipBtn.frame = CGRectMake((self.view.frame.size.width - 110)/2, self.view.frame.size.height-60, 110, 44 );
-    }
-    else
-    {
-        skipBtn.frame = CGRectMake((self.view.frame.size.width - 110)/2, self.view.frame.size.height-60, 110, 44 );
-    }
-    [skipBtn setBackgroundColor:[UIColor clearColor]];
-    [skipBtn addTarget:self action:@selector(Skip:) forControlEvents:UIControlEventTouchUpInside];
-    [sv addSubview:skipBtn];
-
     
-    
-    
-    UIImageView *help2=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width, 0, sv.frame.size.width, sv.frame.size.height)];
+    UIImageView *help2=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width, 20, sv.frame.size.width, sv.frame.size.height)];
     [help2 setBackgroundColor:[UIColor clearColor]];
-    help2.image = [UIImage imageNamed:@"tutorial_eng_0.png"];
+    if (iPhone4) {
+       help2.image = [UIImage imageNamed:@"tutorial_eng2_4.png"];
+    }else {
+       help2.image = [UIImage imageNamed:@"tutorial_eng_0.png"];
+    }
+    
     [sv addSubview:help2];
     
-    UIImageView *help3=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*2, 0, sv.frame.size.width, sv.frame.size.height)];
+    UIImageView *help3=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*2, 20, sv.frame.size.width, sv.frame.size.height )];
     [help3 setBackgroundColor:[UIColor clearColor]];
-    help3.image=[UIImage imageNamed:@"tutorial_eng_1.png"];
+    if (iPhone4) {
+        help3.image = [UIImage imageNamed:@"tutorial_eng3_4.png"];
+    }else {
+        help3.image = [UIImage imageNamed:@"tutorial_eng_1.png"];
+    }
     [sv addSubview:help3];
     
-    UIImageView *help4=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*3, 0, sv.frame.size.width, sv.frame.size.height)];
+    UIImageView *help4=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*3, 20, sv.frame.size.width, sv.frame.size.height)];
     [help4 setBackgroundColor:[UIColor clearColor]];
-    help4.image = [UIImage imageNamed:@"tutorial_eng_2.png"];
+    if (iPhone4) {
+        help4.image = [UIImage imageNamed:@"tutorial_eng4_4.png"];
+    }else {
+        help4.image = [UIImage imageNamed:@"tutorial_eng_2.png"];
+    }
     [sv addSubview:help4];
     
-    UIImageView *help5=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*4, 0, sv.frame.size.width, sv.frame.size.height)];
+    UIImageView *help5=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*4, 20, sv.frame.size.width, sv.frame.size.height)];
     [help5 setBackgroundColor:[UIColor clearColor]];
-    help5.image=[UIImage imageNamed:@"tutorial_eng_3.png"];
+    if (iPhone4) {
+        help5.image = [UIImage imageNamed:@"tutorial_eng5_4.png"];
+    }else {
+        help5.image = [UIImage imageNamed:@"tutorial_eng_3.png"];
+    }
     [sv addSubview:help5];
     
-    UIImageView *help6=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*5, 0, sv.frame.size.width, sv.frame.size.height)];
+    UIImageView *help6=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*5, 20, sv.frame.size.width, sv.frame.size.height)];
     [help6 setBackgroundColor:[UIColor clearColor]];
-    help6.image=[UIImage imageNamed:@"tutorial_eng_4.png"];
+    if (iPhone4) {
+        help6.image = [UIImage imageNamed:@"tutorial_eng6_4.png"];
+    }else {
+        help6.image = [UIImage imageNamed:@"tutorial_eng_4.png"];
+    }
     [sv addSubview:help6];
     
-    UIImageView *help7=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*6, 0, sv.frame.size.width, sv.frame.size.height)];
+    UIImageView *help7=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*6, 20, sv.frame.size.width, sv.frame.size.height)];
     [help7 setBackgroundColor:[UIColor clearColor]];
-    help7.image=[UIImage imageNamed:@"tutorial_eng_5.png"];
+    if (iPhone4) {
+        help7.image = [UIImage imageNamed:@"tutorial_eng7_4.png"];
+    }else {
+        help7.image = [UIImage imageNamed:@"tutorial_eng_5.png"];
+    }
     [sv addSubview:help7];
-    UIButton *doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    if (iPhone5)
-    {
-        doneBtn.frame = CGRectMake((self.view.frame.size.width - 110)/2, self.view.frame.size.height-60, 110, 44 );
-    }
-    else
-    {
-        doneBtn.frame = CGRectMake(sv.frame.size.width*6 + (self.view.frame.size.width - 110)/2, self.view.frame.size.height-60, 110, 44 );
-    }
-    [doneBtn setBackgroundColor:[UIColor clearColor]];
-    [doneBtn addTarget:self action:@selector(Skip:) forControlEvents:UIControlEventTouchUpInside];
-    [sv addSubview:doneBtn];
     
+//    pageControl=[[UIPageControl alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-20, self.view.frame.size.width, 20)];
+//    pageControl.numberOfPages=7;
+//    pageControl.currentPage=0;
+//    [self.view addSubview:pageControl];
+//    [pageControl addTarget:self action:@selector(goPage:) forControlEvents:UIControlEventValueChanged];
+    
+    UIButton *skipBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [skipBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    [skipBtn setTitle:@"Skip" forState:UIControlStateNormal];
+    [skipBtn setBackgroundColor:[UIColor clearColor]];
+    skipBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, self.view.frame.size.height - 64, 140, 44);
+    [skipBtn addTarget:self action:@selector(Skip:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:skipBtn];
+   
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-//    pageControl.currentPage=scrollView.contentOffset.x/sv.frame.size.width;
+    pageControl.currentPage=scrollView.contentOffset.x/sv.frame.size.width;
 }
 
 -(void)goPage:(UIPageControl*)pg{
-//    [sv setContentOffset:CGPointMake(pageControl.currentPage*sv.frame.size.width, 0) animated:YES];
+    [sv setContentOffset:CGPointMake(pageControl.currentPage*sv.frame.size.width, 0) animated:YES];
 }
 
 -(void)Skip:(id) sender

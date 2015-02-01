@@ -32,6 +32,17 @@
 		C33F4E151A7BE46F009A497A /* tutorial_eng_4.png in Resources */ = {isa = PBXBuildFile; fileRef = C33F4E0E1A7BE46F009A497A /* tutorial_eng_4.png */; };
 		C33F4E161A7BE46F009A497A /* tutorial_eng_5.png in Resources */ = {isa = PBXBuildFile; fileRef = C33F4E0F1A7BE46F009A497A /* tutorial_eng_5.png */; };
 		C33F4E171A7BE46F009A497A /* tutorial_eng.png in Resources */ = {isa = PBXBuildFile; fileRef = C33F4E101A7BE46F009A497A /* tutorial_eng.png */; };
+		C33F4E1F1A7DFC10009A497A /* tutorial_eng1_4.png in Resources */ = {isa = PBXBuildFile; fileRef = C33F4E181A7DFC10009A497A /* tutorial_eng1_4.png */; };
+		C33F4E201A7DFC10009A497A /* tutorial_eng2_4.png in Resources */ = {isa = PBXBuildFile; fileRef = C33F4E191A7DFC10009A497A /* tutorial_eng2_4.png */; };
+		C33F4E211A7DFC10009A497A /* tutorial_eng3_4.png in Resources */ = {isa = PBXBuildFile; fileRef = C33F4E1A1A7DFC10009A497A /* tutorial_eng3_4.png */; };
+		C33F4E221A7DFC10009A497A /* tutorial_eng4_4.png in Resources */ = {isa = PBXBuildFile; fileRef = C33F4E1B1A7DFC10009A497A /* tutorial_eng4_4.png */; };
+		C33F4E231A7DFC10009A497A /* tutorial_eng5_4.png in Resources */ = {isa = PBXBuildFile; fileRef = C33F4E1C1A7DFC10009A497A /* tutorial_eng5_4.png */; };
+		C33F4E241A7DFC10009A497A /* tutorial_eng6_4.png in Resources */ = {isa = PBXBuildFile; fileRef = C33F4E1D1A7DFC10009A497A /* tutorial_eng6_4.png */; };
+		C33F4E251A7DFC10009A497A /* tutorial_eng7_4.png in Resources */ = {isa = PBXBuildFile; fileRef = C33F4E1E1A7DFC10009A497A /* tutorial_eng7_4.png */; };
+		C33F4E291A7E07ED009A497A /* app41@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C33F4E261A7E07ED009A497A /* app41@2x.png */; };
+		C33F4E2A1A7E07ED009A497A /* app42@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C33F4E271A7E07ED009A497A /* app42@2x.png */; };
+		C33F4E2B1A7E07ED009A497A /* app43@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C33F4E281A7E07ED009A497A /* app43@2x.png */; };
+		C33F4E2E1A7E09BD009A497A /* AlertSettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C33F4E2D1A7E09BD009A497A /* AlertSettingCell.m */; };
 		C3422B3B1A56A2AB0095B6AA /* UIImage+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = C3422B3A1A56A2AB0095B6AA /* UIImage+GIF.m */; };
 		C3422B401A56A8BB0095B6AA /* arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3422B3F1A56A8BB0095B6AA /* arrow@2x.png */; };
 		C3422B461A56C4E90095B6AA /* activityView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3422B431A56C4E90095B6AA /* activityView.m */; };
@@ -143,6 +154,18 @@
 		C33F4E0E1A7BE46F009A497A /* tutorial_eng_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial_eng_4.png; sourceTree = "<group>"; };
 		C33F4E0F1A7BE46F009A497A /* tutorial_eng_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial_eng_5.png; sourceTree = "<group>"; };
 		C33F4E101A7BE46F009A497A /* tutorial_eng.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial_eng.png; sourceTree = "<group>"; };
+		C33F4E181A7DFC10009A497A /* tutorial_eng1_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial_eng1_4.png; sourceTree = "<group>"; };
+		C33F4E191A7DFC10009A497A /* tutorial_eng2_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial_eng2_4.png; sourceTree = "<group>"; };
+		C33F4E1A1A7DFC10009A497A /* tutorial_eng3_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial_eng3_4.png; sourceTree = "<group>"; };
+		C33F4E1B1A7DFC10009A497A /* tutorial_eng4_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial_eng4_4.png; sourceTree = "<group>"; };
+		C33F4E1C1A7DFC10009A497A /* tutorial_eng5_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial_eng5_4.png; sourceTree = "<group>"; };
+		C33F4E1D1A7DFC10009A497A /* tutorial_eng6_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial_eng6_4.png; sourceTree = "<group>"; };
+		C33F4E1E1A7DFC10009A497A /* tutorial_eng7_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial_eng7_4.png; sourceTree = "<group>"; };
+		C33F4E261A7E07ED009A497A /* app41@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app41@2x.png"; sourceTree = "<group>"; };
+		C33F4E271A7E07ED009A497A /* app42@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app42@2x.png"; sourceTree = "<group>"; };
+		C33F4E281A7E07ED009A497A /* app43@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app43@2x.png"; sourceTree = "<group>"; };
+		C33F4E2C1A7E09BD009A497A /* AlertSettingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertSettingCell.h; sourceTree = "<group>"; };
+		C33F4E2D1A7E09BD009A497A /* AlertSettingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertSettingCell.m; sourceTree = "<group>"; };
 		C3422B391A56A2AB0095B6AA /* UIImage+GIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+GIF.h"; sourceTree = "<group>"; };
 		C3422B3A1A56A2AB0095B6AA /* UIImage+GIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+GIF.m"; sourceTree = "<group>"; };
 		C3422B3F1A56A8BB0095B6AA /* arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow@2x.png"; sourceTree = "<group>"; };
@@ -313,6 +336,8 @@
 				C35D16161A61017D000E57BC /* SideMenuCell.m */,
 				C35D16181A610DCC000E57BC /* ScanDeviceCell.h */,
 				C35D16191A610DCC000E57BC /* ScanDeviceCell.m */,
+				C33F4E2C1A7E09BD009A497A /* AlertSettingCell.h */,
+				C33F4E2D1A7E09BD009A497A /* AlertSettingCell.m */,
 			);
 			name = TBCell;
 			sourceTree = "<group>";
@@ -345,6 +370,16 @@
 		C38819961A523F8C004A98CA /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				C33F4E261A7E07ED009A497A /* app41@2x.png */,
+				C33F4E271A7E07ED009A497A /* app42@2x.png */,
+				C33F4E281A7E07ED009A497A /* app43@2x.png */,
+				C33F4E181A7DFC10009A497A /* tutorial_eng1_4.png */,
+				C33F4E191A7DFC10009A497A /* tutorial_eng2_4.png */,
+				C33F4E1A1A7DFC10009A497A /* tutorial_eng3_4.png */,
+				C33F4E1B1A7DFC10009A497A /* tutorial_eng4_4.png */,
+				C33F4E1C1A7DFC10009A497A /* tutorial_eng5_4.png */,
+				C33F4E1D1A7DFC10009A497A /* tutorial_eng6_4.png */,
+				C33F4E1E1A7DFC10009A497A /* tutorial_eng7_4.png */,
 				C33F4E0A1A7BE46F009A497A /* tutorial_eng_0.png */,
 				C33F4E0B1A7BE46F009A497A /* tutorial_eng_1.png */,
 				C33F4E0C1A7BE46F009A497A /* tutorial_eng_2.png */,
@@ -662,6 +697,8 @@
 				C33644011A78A20E0047AAE5 /* ico_scancell@2x.png in Resources */,
 				C3422B511A56C6020095B6AA /* rh_up@2x.png in Resources */,
 				C33F4E161A7BE46F009A497A /* tutorial_eng_5.png in Resources */,
+				C33F4E241A7DFC10009A497A /* tutorial_eng6_4.png in Resources */,
+				C33F4E221A7DFC10009A497A /* tutorial_eng4_4.png in Resources */,
 				C33644151A78ABAE0047AAE5 /* ico_navibtn_setting@2x.png in Resources */,
 				C33F4E071A7BCD41009A497A /* bg_btn_gray@2x.png in Resources */,
 				C33644081A78AA1F0047AAE5 /* bg_scancell_blue@2x.png in Resources */,
@@ -674,6 +711,9 @@
 				C336440A1A78AA1F0047AAE5 /* bg_scancell_green@2x.png in Resources */,
 				C33643FD1A789C410047AAE5 /* bg_sidemenu_cell@2x.png in Resources */,
 				C388199C1A523FC0004A98CA /* back-arrow.png in Resources */,
+				C33F4E291A7E07ED009A497A /* app41@2x.png in Resources */,
+				C33F4E251A7DFC10009A497A /* tutorial_eng7_4.png in Resources */,
+				C33F4E1F1A7DFC10009A497A /* tutorial_eng1_4.png in Resources */,
 				C3422B4F1A56C6020095B6AA /* rh_pattern@2x.png in Resources */,
 				C3DFE90D1A6CB6F20044F52E /* navigationbar_background_tall@2x.png in Resources */,
 				C33F4E141A7BE46F009A497A /* tutorial_eng_3.png in Resources */,
@@ -681,11 +721,13 @@
 				C3422B501A56C6020095B6AA /* rh_up.png in Resources */,
 				C3DFE9071A6CB6F20044F52E /* first_normal@2x.png in Resources */,
 				C388199D1A523FC0004A98CA /* back-arrow@2x.png in Resources */,
+				C33F4E201A7DFC10009A497A /* tutorial_eng2_4.png in Resources */,
 				C336440F1A78AB5C0047AAE5 /* bg_btn_blue@2x.png in Resources */,
 				C3422B531A56C6020095B6AA /* rh_whirl@2x.png in Resources */,
 				C33F4E121A7BE46F009A497A /* tutorial_eng_1.png in Resources */,
 				C388199F1A523FC0004A98CA /* menu-icon.png in Resources */,
 				C33F4E151A7BE46F009A497A /* tutorial_eng_4.png in Resources */,
+				C33F4E2B1A7E07ED009A497A /* app43@2x.png in Resources */,
 				C3DFE9111A6CB6F20044F52E /* second_selected@2x.png in Resources */,
 				C3A8A07E1A4EB94D004C9ADE /* Images.xcassets in Resources */,
 				C33644021A78A20E0047AAE5 /* ico_sidemenu_share@2x.png in Resources */,
@@ -694,6 +736,9 @@
 				C33644091A78AA1F0047AAE5 /* bg_scancell_gray@2x.png in Resources */,
 				C33F4E131A7BE46F009A497A /* tutorial_eng_2.png in Resources */,
 				C33F4E111A7BE46F009A497A /* tutorial_eng_0.png in Resources */,
+				C33F4E211A7DFC10009A497A /* tutorial_eng3_4.png in Resources */,
+				C33F4E2A1A7E07ED009A497A /* app42@2x.png in Resources */,
+				C33F4E231A7DFC10009A497A /* tutorial_eng5_4.png in Resources */,
 				C388199E1A523FC0004A98CA /* Default-568h@2x.png in Resources */,
 				C3DFE9141A6CB6F20044F52E /* tabbar_selected_background.png in Resources */,
 				C33643FA1A7888810047AAE5 /* ProgressHUD.bundle in Resources */,
@@ -730,6 +775,7 @@
 				C35D161A1A610DCC000E57BC /* ScanDeviceCell.m in Sources */,
 				C388198D1A5175A5004A98CA /* MFSideMenuShadow.m in Sources */,
 				C388198E1A5175A5004A98CA /* UIViewController+MFSideMenuAdditions.m in Sources */,
+				C33F4E2E1A7E09BD009A497A /* AlertSettingCell.m in Sources */,
 				C388197F1A516D3A004A98CA /* BTServer.m in Sources */,
 				C3E366051A6BBC20002170CA /* RDVTabBarController.m in Sources */,
 				C3A8A0C61A4EC2DC004C9ADE /* NSStringEx.m in Sources */,

@@ -63,8 +63,10 @@
     UIButton *connectBtn = (UIButton *)[self viewWithTag:3];
     if (1 == state) {
         connectBtn.hidden = NO;
+        [connectBtn setTitle:@"Disconnect" forState:UIControlStateNormal];
     }else {
         connectBtn.hidden = YES;
+        [connectBtn setTitle:@"Connect" forState:UIControlStateNormal];
     }
     UIImageView *bg = (UIImageView *)[self viewWithTag:4];
     if (1 == state) {

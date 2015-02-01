@@ -20,6 +20,8 @@
 @synthesize soundTable, soundlist, musiclist;
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
+//    self.navigationItem.rightBarButtonItem = saveItem;
     self.navigationController.navigationBar.topItem.title = @"Select Days";
     //init device tableview
     UITableView *_table=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,  self.view.frame.size.height) style:UITableViewStylePlain];
@@ -79,6 +81,10 @@
         AudioServicesCreateSystemSoundID((__bridge_retained CFURLRef)[self.soundlist objectAtIndex:indexPath.row],&soundID);
         AudioServicesPlaySystemSound(soundID);
         NSLog(@"File url: %@", [[self.soundlist objectAtIndex:indexPath.row] description]);
+        if ([delegate respondsToSelector:@selector(saveSound:)]) {
+            [delegate saveSound:[self.soundlist objectAtIndex:indexPath.row]];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     }else {
         
     }
@@ -143,6 +149,11 @@
     
     });
     
+    
+}
+
+-(void)save
+{
     
 }
 

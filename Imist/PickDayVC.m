@@ -11,6 +11,8 @@
 @interface PickDayVC ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) UITableView *deviceTable;
 @property (nonatomic,strong) NSArray *days;
+@property (nonatomic,strong) NSArray *daysvalue;
+@property (nonatomic,strong) NSMutableArray *selecteddays;
 @end
 
 @implementation PickDayVC
@@ -18,7 +20,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Select Days";
+    UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
+    self.navigationItem.rightBarButtonItem = saveItem;
+
+    
     self.days = [NSArray arrayWithObjects:@"Mon",@"Thr",@"Wed",@"Thu",@"Fri",@"Sat",@"Sun",nil];
+    self.daysvalue = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",nil];
     //init device tableview
     UITableView *_table=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,  self.view.frame.size.height) style:UITableViewStylePlain];
     _table.autoresizingMask = (UIViewAutoresizingFlexibleWidth |
@@ -31,6 +38,7 @@
     
     self.deviceTable=_table;
     [self.view addSubview:self.deviceTable];
+    _selecteddays = [[NSMutableArray alloc] init];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -50,7 +58,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    NSString *dayvalue = [self.daysvalue objectAtIndex:indexPath.row];
+    if ([self.selecteddays containsObject:dayvalue]) {
+        [self.selecteddays removeObject:dayvalue];
+    }else {
+        [self.selecteddays addObject:dayvalue];
+    }
+    [self.deviceTable reloadData];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -61,9 +75,26 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    NSString *dayvalue = [self.daysvalue objectAtIndex:indexPath.row];
+    if ( [self.selecteddays containsObject:dayvalue])
+    {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
+    else
+    {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
     cell.backgroundColor = [UIColor clearColor];
     cell.textLabel.text = [self.days objectAtIndex:indexPath.row];
     return cell;
+}
+
+-(void)save
+{
+    if ([delegate respondsToSelector:@selector(saveDay:)]) {
+        [delegate saveDay:self.days];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 

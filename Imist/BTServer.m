@@ -85,7 +85,7 @@ static BTServer* _defaultBTServer = nil;
                            options:options]; // TODO: options
     
     NSLog(@"init bt server ........");
-
+    _responeData = [[NSMutableData alloc] init];
 }
 -(void)finishBLE
 {
@@ -181,6 +181,7 @@ static BTServer* _defaultBTServer = nil;
     [myCenter connectPeripheral:peripheralInfo.peripheral options:@{CBConnectPeripheralOptionNotifyOnConnectionKey: @YES, CBConnectPeripheralOptionNotifyOnDisconnectionKey: @YES, CBConnectPeripheralOptionNotifyOnNotificationKey: @YES}];
 
     self.selectPeripheral = peripheralInfo.peripheral;
+    self.selectPeripheralInfo = peripheralInfo;
     connectState = KING;
     
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(AUTO_CANCEL_CONNECT_TIMEOUT * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -323,7 +324,6 @@ static BTServer* _defaultBTServer = nil;
         connectBlock(peripheral,false,nil);
         connectBlock = nil;
     }
-
     if (self.delegate) {
         if([(id)self.delegate respondsToSelector:@selector(didDisconnect)]){
             [self.delegate didDisconnect];
@@ -440,9 +440,16 @@ static BTServer* _defaultBTServer = nil;
     }
     
     readState = KSUCCESS;
-    self.selectCharacteristic = characteristic;
-    if (self.delegate && [(id)self.delegate respondsToSelector:@selector(didReadvalue)])
-        [self.delegate didReadvalue];
+    BOOL isEnd = [self isTail:characteristic.value];
+    [self.responeData appendData:characteristic.value];
+    if (isEnd) {
+        self.selectCharacteristic = characteristic;
+        if (self.delegate && [(id)self.delegate respondsToSelector:@selector(didReadvalue:)]) {
+           [self.delegate didReadvalue:characteristic.value];
+        }
+        [self.responeData setLength:0];
+    }
+    
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForDescriptor:(CBDescriptor *)descriptor error:(NSError *)error
@@ -486,9 +493,38 @@ static BTServer* _defaultBTServer = nil;
     [data appendBytes:&head1 length:1];
     [data appendBytes:&head2 length:1];
     [data appendData:cmd];
+    UInt8 bcc = 0;
+    const char * arrData = [data bytes];
+    for(UInt8 i = 0; i<=[data length]; i++) {
+       bcc =  arrData[i]^ bcc;
+    }
+    [data appendBytes:&bcc length:1];
     [data appendBytes:&tail1 length:1];
     [data appendBytes:&tail2 length:1];
     return data;
 }
+
+-(CBCharacteristic *) findCharacteristicFromUUID:(CBUUID *)UUID {
+    for(int i=0; i < self.discoveredSevice.characteristics.count; i++) {
+        CBCharacteristic *c = [self.discoveredSevice.characteristics objectAtIndex:i];
+        if ([c.UUID isEqual:UUID]) {
+            return c;
+        }
+    }
+    return nil;
+}
+
+-(BOOL) isTail:(NSData *)data
+{
+    Byte *chunkByte = (Byte *)[data bytes];
+    long length = [data length];
+    for(long i = 0;i < length;i++) {
+        if (chunkByte[i] == 0xdd) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 
 @end

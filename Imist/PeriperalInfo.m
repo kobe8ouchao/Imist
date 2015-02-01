@@ -9,8 +9,6 @@
 #import "PeriperalInfo.h"
 
 @implementation PeriperalInfo
-
-
-
+@synthesize water,mode,alert,ledauto,ledcolor,ledlight,imist;
 
 @end

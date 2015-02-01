@@ -7,7 +7,12 @@
 //
 
 #import "BaseViewController.h"
+@protocol pickDayDelegate;
+@interface PickDayVC : BaseViewController {
+    __weak id <pickDayDelegate> delegate;
+}
 
-@interface PickDayVC : BaseViewController
-
+@end
+@protocol pickDayDelegate <NSObject>
+-(void)saveDay:(NSArray*)days;
 @end

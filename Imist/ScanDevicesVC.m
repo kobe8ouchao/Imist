@@ -111,6 +111,10 @@
         }
     });
 }
+-(void)didReadvalue:(NSData*)data
+{
+    NSLog(@"data====%@",data);
+}
 -(void)didDisconnect
 {
 //    [ProgressHUD show:@"disconnect from peripheral"];
@@ -152,12 +156,20 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [ProgressHUD dismiss];
                 if (status) {
+                    pi.state = @"connected";
+                    self.appDelegate.defaultBTServer.selectPeripheralInfo = pi;
                     [cell setState:1];
                     [ProgressHUD showSuccess:@"connected success!"];
+                    sleep(1);
+                    NSMutableData* data = [NSMutableData data];
+                    NSUInteger query = 0x01;
+                    [data appendBytes:&query length:1];
+                    [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
                 }else{
                     [cell setState:0];
                     [ProgressHUD showError:@"connected failed!"];
                 }
+                [self.deviceTable reloadData];
             });
         }];
     }
@@ -172,10 +184,9 @@
         cell = [[ScanDeviceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone; 
-//    PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
-//    cell.name = [NSString stringWithFormat:@"%@-%ld",pi.name,(long)indexPath.row];
-    cell.name = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
-    cell.icon = @"";
+    PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
+    cell.name = [NSString stringWithFormat:@"%@-%ld",pi.name,(long)indexPath.row];
+//    cell.name = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
     cell.index = indexPath;
     cell.delegate = self;
     cell.icon = @"ico_imist.png";

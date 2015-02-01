@@ -36,7 +36,7 @@ typedef enum{
 @optional
 -(void)didStopScan;
 -(void)didFoundPeripheral;
--(void)didReadvalue;
+-(void)didReadvalue:(NSData*)data;
 
 @required
 -(void)didDisconnect;
@@ -49,12 +49,13 @@ typedef enum{
 
 //
 @property (strong,nonatomic)NSMutableArray *discoveredPeripherals;
+@property (strong,nonatomic)PeriperalInfo* selectPeripheralInfo;
 @property (strong,nonatomic)CBPeripheral* selectPeripheral;
 @property (strong,nonatomic)CBService* discoveredSevice;
 @property (strong,nonatomic)CBCharacteristic *selectCharacteristic;
 
 //@property (strong,nonatomic)NSMutableArray *services;
-
+@property (nonatomic, retain) NSMutableData  *responeData;
 
 //
 -(void)startScan;
@@ -68,6 +69,7 @@ typedef enum{
 -(void)readValue:(CBCharacteristic*)characteristic;
 -(void)writeValue:(NSData*) data withCharacter:(CBCharacteristic*)characteristic;
 -(NSData*)converCMD:(NSData*)cmd;
+-(CBCharacteristic *) findCharacteristicFromUUID:(CBUUID *)UUID;
 //state
 -(NSInteger)getConnectState;
 -(NSInteger)getServiceState;

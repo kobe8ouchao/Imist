@@ -25,6 +25,12 @@
 @property (strong,nonatomic)NSString* serviceUUIDS;
 //rssi
 @property (strong,nonatomic)NSNumber *RSSI;
-
-
+//property
+@property (strong,nonatomic)NSNumber *water;
+@property (strong,nonatomic)NSString *mode;
+@property (strong,nonatomic)NSNumber *ledcolor;
+@property (strong,nonatomic)NSNumber *ledlight;
+@property (strong,nonatomic)NSNumber *ledauto;
+@property (strong,nonatomic)NSNumber *imist;
+@property (strong,nonatomic)NSMutableArray *alert;
 @end
