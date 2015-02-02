@@ -61,7 +61,7 @@
 - (void) setState:(NSInteger)state
 {
     UIButton *connectBtn = (UIButton *)[self viewWithTag:3];
-    if (1 == state) {
+    if (1 <= state) {
         connectBtn.hidden = NO;
         [connectBtn setTitle:@"Disconnect" forState:UIControlStateNormal];
     }else {
@@ -71,8 +71,12 @@
     UIImageView *bg = (UIImageView *)[self viewWithTag:4];
     if (1 == state) {
         bg.image = [UIImage imageNamed:@"bg_scancell_green.png"];
-    }else {
+    }else if(0 == state){
         bg.image = [UIImage imageNamed:@"bg_scancell_gray.png"];
+    }else if(2 == state){
+        bg.image = [UIImage imageNamed:@"bg_scancell_red.png"];
+    }else if(3 == state) {
+        bg.image = [UIImage imageNamed:@"bg_scancell_blue.png"];
     }
     
     

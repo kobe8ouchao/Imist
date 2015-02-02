@@ -114,6 +114,18 @@
 -(void)didReadvalue:(NSData*)data
 {
     NSLog(@"data====%@",data);
+    Byte *dataByte = (Byte *) [data bytes];
+    if ([data length] > 0) {
+        NSUInteger state = dataByte[2];
+        if (state == 0x00) {
+            self.appDelegate.defaultBTServer.selectPeripheralInfo.water = 0;
+        }else if (state == 0x01){
+            self.appDelegate.defaultBTServer.selectPeripheralInfo.water = 0;
+        }else {
+            self.appDelegate.defaultBTServer.selectPeripheralInfo.water = [NSNumber numberWithInt:1];
+        }
+        [self.deviceTable reloadData];
+    }
 }
 -(void)didDisconnect
 {
@@ -202,6 +214,14 @@
     cell.delegate = self;
     cell.icon = @"ico_imist.png";
     [cell setStyle];
+    if (pi == self.appDelegate.defaultBTServer.selectPeripheralInfo) {
+        if (pi.water == [NSNumber numberWithInt:1]) {
+            [cell setState:3];
+        }else {
+            [cell setState:2];
+        }
+    }
+    
 //    cell.topName.text = pi.name;
 //    cell.uuid.text = pi.uuid;
 //    cell.name.text = pi.localName;
