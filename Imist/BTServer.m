@@ -303,10 +303,10 @@ static BTServer* _defaultBTServer = nil;
     NSLog(@"didconnect to peripheral: %@",peripheral.name);
 
     connectState = KSUCCESS;
-    if (connectBlock) {
-        connectBlock(peripheral,true,nil);
-        connectBlock = nil;
-    }
+//    if (connectBlock) {
+//        connectBlock(peripheral,true,nil);
+//        connectBlock = nil;
+//    }
     
     
     self.selectPeripheral = peripheral;
@@ -414,6 +414,11 @@ static BTServer* _defaultBTServer = nil;
                 if([characteristic.UUID isEqual:[CBUUID UUIDWithString:NOTIFY_CHARACTERISTIC]]) {
                     [self.selectPeripheral setNotifyValue:YES forCharacteristic:characteristic];
                     NSLog(@"Found Notify Characteristic %@", characteristic);
+                    if (connectBlock) {
+                        connectBlock(peripheral,true,nil);
+                        connectBlock = nil;
+                    }
+
                 }
             }
         }

@@ -160,10 +160,21 @@
                     self.appDelegate.defaultBTServer.selectPeripheralInfo = pi;
                     [cell setState:1];
                     [ProgressHUD showSuccess:@"connected success!"];
-                    sleep(1);
                     NSMutableData* data = [NSMutableData data];
                     NSUInteger query = 0x01;
                     [data appendBytes:&query length:1];
+                    NSUInteger imist = 0x00;
+                    [data appendBytes:&imist length:1];
+                    NSUInteger time = 0x00;
+                    [data appendBytes:&time length:1];
+                    NSUInteger led = 0x00;
+                    [data appendBytes:&led length:1];
+                    NSUInteger color1 = 0x00;
+                    [data appendBytes:&color1 length:1];
+                    NSUInteger color2 = 0x00;
+                    [data appendBytes:&color2 length:1];
+                    NSUInteger color3 = 0x00;
+                    [data appendBytes:&color3 length:1];
                     [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
                 }else{
                     [cell setState:0];
