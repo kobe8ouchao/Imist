@@ -23,6 +23,7 @@
     BOOL reloading;
     BOOL isTag;
     activityView *activety;
+    NSInteger selectRow;
 }
 @property (strong,nonatomic)BTServer *defaultBTServer;
 @property (strong, nonatomic) UITableView *deviceTable;
@@ -124,11 +125,18 @@
         }else {
             self.appDelegate.defaultBTServer.selectPeripheralInfo.water = [NSNumber numberWithInt:1];
         }
-        [self.deviceTable reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.deviceTable reloadData];
+        });
     }
 }
 -(void)didDisconnect
 {
+    PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:selectRow];
+    pi.state = @"disConnected";
+    NSIndexPath * selectIndexPath = [NSIndexPath indexPathForRow:selectRow inSection:0];
+    ScanDeviceCell *cell = (ScanDeviceCell*)[self.deviceTable cellForRowAtIndexPath:selectIndexPath];
+    [cell setState:0];
 //    [ProgressHUD show:@"disconnect from peripheral"];
 }
 
@@ -148,6 +156,8 @@
     
     ScanDeviceCell *cell = (ScanDeviceCell*)[tableView cellForRowAtIndexPath:indexPath];
     PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
+    selectRow = indexPath.row;
+    NSLog(@"%li",(long)indexPath.row);
     if ([pi.state isEqualToString:@"connected"]) {
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
         SettingUser *thirdViewController = [[SettingUser alloc] init];
