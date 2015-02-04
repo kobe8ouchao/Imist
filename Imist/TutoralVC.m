@@ -101,17 +101,20 @@
     }
     [sv addSubview:help7];
     
-//    pageControl=[[UIPageControl alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-20, self.view.frame.size.width, 20)];
-//    pageControl.numberOfPages=7;
-//    pageControl.currentPage=0;
-//    [self.view addSubview:pageControl];
-//    [pageControl addTarget:self action:@selector(goPage:) forControlEvents:UIControlEventValueChanged];
+    pageControl=[[UIPageControl alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-20, self.view.frame.size.width, 20)];
+    pageControl.numberOfPages=7;
+    pageControl.currentPage=0;
+    pageControl.pageIndicatorTintColor = [UIColor grayColor];
+    pageControl.currentPageIndicatorTintColor = [UIColor greenColor];
+    [self.view addSubview:pageControl];
+    [pageControl addTarget:self action:@selector(goPage:) forControlEvents:UIControlEventValueChanged];
     
     UIButton *skipBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [skipBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
     [skipBtn setTitle:@"Skip" forState:UIControlStateNormal];
     [skipBtn setBackgroundColor:[UIColor clearColor]];
     skipBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, self.view.frame.size.height - 64, 140, 44);
+    skipBtn.tag = 110;
     [skipBtn addTarget:self action:@selector(Skip:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:skipBtn];
    
@@ -119,6 +122,10 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     pageControl.currentPage=scrollView.contentOffset.x/sv.frame.size.width;
+    if(pageControl.currentPage == (pageControl.numberOfPages -1)){
+        UIButton * tutorialBtn = (UIButton *)[self.view viewWithTag:110];
+        [tutorialBtn setTitle:@"Done" forState:UIControlStateNormal];
+    }
 }
 
 -(void)goPage:(UIPageControl*)pg{
