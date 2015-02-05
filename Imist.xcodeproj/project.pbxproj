@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A5577A191A8357BB001DAA67 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5577A181A8357BB001DAA67 /* AVFoundation.framework */; };
+		A5C64D111A825986006732BD /* Bicker.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A5C64D0B1A825986006732BD /* Bicker.mp3 */; };
+		A5C64D121A825986006732BD /* Chirp.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A5C64D0C1A825986006732BD /* Chirp.mp3 */; };
+		A5C64D131A825986006732BD /* Hill stream.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A5C64D0D1A825986006732BD /* Hill stream.mp3 */; };
+		A5C64D141A825986006732BD /* Rain.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A5C64D0E1A825986006732BD /* Rain.mp3 */; };
+		A5C64D151A825986006732BD /* Wave.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A5C64D0F1A825986006732BD /* Wave.mp3 */; };
+		A5C64D161A825986006732BD /* Zen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A5C64D101A825986006732BD /* Zen.mp3 */; };
 		C33643FA1A7888810047AAE5 /* ProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C33643F71A7888810047AAE5 /* ProgressHUD.bundle */; };
 		C33643FB1A7888820047AAE5 /* ProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C33643F91A7888810047AAE5 /* ProgressHUD.m */; };
 		C33643FD1A789C410047AAE5 /* bg_sidemenu_cell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C33643FC1A789C410047AAE5 /* bg_sidemenu_cell@2x.png */; };
@@ -128,6 +135,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A5577A181A8357BB001DAA67 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		A5C64D0B1A825986006732BD /* Bicker.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Bicker.mp3; path = "../../../Downloads/Nature Ringtone(1)/Bicker.mp3"; sourceTree = "<group>"; };
+		A5C64D0C1A825986006732BD /* Chirp.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Chirp.mp3; path = "../../../Downloads/Nature Ringtone(1)/Chirp.mp3"; sourceTree = "<group>"; };
+		A5C64D0D1A825986006732BD /* Hill stream.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Hill stream.mp3"; path = "../../../Downloads/Nature Ringtone(1)/Hill stream.mp3"; sourceTree = "<group>"; };
+		A5C64D0E1A825986006732BD /* Rain.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Rain.mp3; path = "../../../Downloads/Nature Ringtone(1)/Rain.mp3"; sourceTree = "<group>"; };
+		A5C64D0F1A825986006732BD /* Wave.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Wave.mp3; path = "../../../Downloads/Nature Ringtone(1)/Wave.mp3"; sourceTree = "<group>"; };
+		A5C64D101A825986006732BD /* Zen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Zen.mp3; path = "../../../Downloads/Nature Ringtone(1)/Zen.mp3"; sourceTree = "<group>"; };
 		C33643F71A7888810047AAE5 /* ProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ProgressHUD.bundle; sourceTree = "<group>"; };
 		C33643F81A7888810047AAE5 /* ProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressHUD.h; sourceTree = "<group>"; };
 		C33643F91A7888810047AAE5 /* ProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressHUD.m; sourceTree = "<group>"; };
@@ -284,6 +298,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5577A191A8357BB001DAA67 /* AVFoundation.framework in Frameworks */,
 				C3F7E0F81A70930800984037 /* AudioToolbox.framework in Frameworks */,
 				C3A8A0BC1A4EBDE0004C9ADE /* MessageUI.framework in Frameworks */,
 				C3A8A0BA1A4EBDD6004C9ADE /* MobileCoreServices.framework in Frameworks */,
@@ -370,6 +385,12 @@
 		C38819961A523F8C004A98CA /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				A5C64D0B1A825986006732BD /* Bicker.mp3 */,
+				A5C64D0C1A825986006732BD /* Chirp.mp3 */,
+				A5C64D0D1A825986006732BD /* Hill stream.mp3 */,
+				A5C64D0E1A825986006732BD /* Rain.mp3 */,
+				A5C64D0F1A825986006732BD /* Wave.mp3 */,
+				A5C64D101A825986006732BD /* Zen.mp3 */,
 				C33F4E261A7E07ED009A497A /* app41@2x.png */,
 				C33F4E271A7E07ED009A497A /* app42@2x.png */,
 				C33F4E281A7E07ED009A497A /* app43@2x.png */,
@@ -509,6 +530,7 @@
 		C3A8A0B31A4EBCBB004C9ADE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A5577A181A8357BB001DAA67 /* AVFoundation.framework */,
 				C3F7E0F71A70930800984037 /* AudioToolbox.framework */,
 				C3A8A0BB1A4EBDE0004C9ADE /* MessageUI.framework */,
 				C3A8A0B91A4EBDD6004C9ADE /* MobileCoreServices.framework */,
@@ -687,6 +709,7 @@
 				C3DFE90C1A6CB6F20044F52E /* navigationbar_background_tall.png in Resources */,
 				C3DFE9151A6CB6F20044F52E /* tabbar_selected_background@2x.png in Resources */,
 				C3422B4E1A56C6020095B6AA /* rh_pattern.png in Resources */,
+				A5C64D151A825986006732BD /* Wave.mp3 in Resources */,
 				C33644161A78ABAE0047AAE5 /* ico_navibtn_sidemenu@2x.png in Resources */,
 				C3DFE9161A6CB6F20044F52E /* third_normal@2x.png in Resources */,
 				C33644141A78ABAE0047AAE5 /* ico_minus@2x.png in Resources */,
@@ -695,8 +718,10 @@
 				C336440D1A78AB1A0047AAE5 /* ico_imist@2x.png in Resources */,
 				C33644171A78ABAE0047AAE5 /* ico_plus@2x.png in Resources */,
 				C33644011A78A20E0047AAE5 /* ico_scancell@2x.png in Resources */,
+				A5C64D121A825986006732BD /* Chirp.mp3 in Resources */,
 				C3422B511A56C6020095B6AA /* rh_up@2x.png in Resources */,
 				C33F4E161A7BE46F009A497A /* tutorial_eng_5.png in Resources */,
+				A5C64D131A825986006732BD /* Hill stream.mp3 in Resources */,
 				C33F4E241A7DFC10009A497A /* tutorial_eng6_4.png in Resources */,
 				C33F4E221A7DFC10009A497A /* tutorial_eng4_4.png in Resources */,
 				C33644151A78ABAE0047AAE5 /* ico_navibtn_setting@2x.png in Resources */,
@@ -706,6 +731,7 @@
 				C33F4E091A7BD8AB009A497A /* bg_btn_green@2x.png in Resources */,
 				C3DFE9121A6CB6F20044F52E /* tabbar_normal_background.png in Resources */,
 				C336440B1A78AA1F0047AAE5 /* bg_scancell_red@2x.png in Resources */,
+				A5C64D111A825986006732BD /* Bicker.mp3 in Resources */,
 				C3DFE90A1A6CB6F20044F52E /* navigationbar_background.png in Resources */,
 				C3A8A0811A4EB94D004C9ADE /* LaunchScreen.xib in Resources */,
 				C336440A1A78AA1F0047AAE5 /* bg_scancell_green@2x.png in Resources */,
@@ -729,6 +755,7 @@
 				C33F4E151A7BE46F009A497A /* tutorial_eng_4.png in Resources */,
 				C33F4E2B1A7E07ED009A497A /* app43@2x.png in Resources */,
 				C3DFE9111A6CB6F20044F52E /* second_selected@2x.png in Resources */,
+				A5C64D161A825986006732BD /* Zen.mp3 in Resources */,
 				C3A8A07E1A4EB94D004C9ADE /* Images.xcassets in Resources */,
 				C33644021A78A20E0047AAE5 /* ico_sidemenu_share@2x.png in Resources */,
 				C33F4E171A7BE46F009A497A /* tutorial_eng.png in Resources */,
@@ -741,6 +768,7 @@
 				C33F4E231A7DFC10009A497A /* tutorial_eng5_4.png in Resources */,
 				C388199E1A523FC0004A98CA /* Default-568h@2x.png in Resources */,
 				C3DFE9141A6CB6F20044F52E /* tabbar_selected_background.png in Resources */,
+				A5C64D141A825986006732BD /* Rain.mp3 in Resources */,
 				C33643FA1A7888810047AAE5 /* ProgressHUD.bundle in Resources */,
 				C3DFE9131A6CB6F20044F52E /* tabbar_normal_background@2x.png in Resources */,
 				C3DFE90F1A6CB6F20044F52E /* second_normal@2x.png in Resources */,

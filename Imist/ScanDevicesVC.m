@@ -183,20 +183,35 @@
                     [cell setState:1];
                     [ProgressHUD showSuccess:@"connected success!"];
                     NSMutableData* data = [NSMutableData data];
-                    NSUInteger query = 0x01;
+//                    NSUInteger query = 0xa0;
+//                    [data appendBytes:&query length:1];
+//                    NSUInteger imist = 0x00;
+//                    [data appendBytes:&imist length:1];
+//                    NSUInteger led = 0x00;
+//                    [data appendBytes:&led length:1];
+//                    NSUInteger color1 = 0x00;
+//                    [data appendBytes:&color1 length:1];
+//                    NSUInteger color2 = 0x00;
+//                    [data appendBytes:&color2 length:1];
+//                    NSUInteger color3 = 0x00;
+//                    [data appendBytes:&color3 length:1];
+                    
+                    NSUInteger query = 0x03;
                     [data appendBytes:&query length:1];
-                    NSUInteger imist = 0x00;
+                    NSUInteger imist = 0x32;
                     [data appendBytes:&imist length:1];
-                    NSUInteger time = 0x00;
-                    [data appendBytes:&time length:1];
-                    NSUInteger led = 0x00;
+                    NSUInteger led = 0x64;
                     [data appendBytes:&led length:1];
-                    NSUInteger color1 = 0x00;
+                    NSUInteger color1 = 0x32;
                     [data appendBytes:&color1 length:1];
-                    NSUInteger color2 = 0x00;
+                    NSUInteger color2 = 0x32;
                     [data appendBytes:&color2 length:1];
                     NSUInteger color3 = 0x00;
                     [data appendBytes:&color3 length:1];
+
+                    
+                    //AA BB 02 32 64 32 32 00 45 CC DD
+                    
                     [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
                 }else{
                     [cell setState:0];

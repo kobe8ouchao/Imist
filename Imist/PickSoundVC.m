@@ -9,14 +9,17 @@
 #import "PickSoundVC.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <AudioToolbox/AudioToolbox.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface PickSoundVC ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) UITableView *soundTable;
 @property (nonatomic,strong) NSMutableArray *soundlist;
 @property (nonatomic,strong) NSMutableArray *musiclist;
+@property AVAudioPlayer *audioPlayer;
 @end
 
 @implementation PickSoundVC
+
 @synthesize soundTable, soundlist, musiclist;
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -35,10 +38,25 @@
     
     self.soundTable=_table;
     [self.view addSubview:self.soundTable];
-    soundlist = [[NSMutableArray alloc] init];
+    soundlist = [[NSMutableArray alloc] initWithObjects:@"Bicker",@"Chirp",@"Hill stream",@"Rain",@"Wave",@"Zen", nil];
     musiclist = [[NSMutableArray alloc] init];
     
     [self loadSound];
+}
+
+- (void)playSound:(NSString*)name{
+    
+    NSString *audioFilePath = [[NSBundle mainBundle] pathForResource:name ofType:@"mp3"];
+    NSURL *audioFileURL = [NSURL fileURLWithPath:audioFilePath];
+    NSError *error = nil;
+    self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:&error];
+    [self.audioPlayer setDelegate:self];
+    [self.audioPlayer prepareToPlay];
+    [self.audioPlayer play];
+    if (self.audioPlayer == nil)
+        NSLog(@"Error playing sound. %@", [error description]);
+    else
+        [self.audioPlayer play];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -77,9 +95,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        SystemSoundID soundID;
+        /*SystemSoundID soundID;
         AudioServicesCreateSystemSoundID((__bridge_retained CFURLRef)[self.soundlist objectAtIndex:indexPath.row],&soundID);
-        AudioServicesPlaySystemSound(soundID);
+        AudioServicesPlaySystemSound(soundID);*/
+        [self playSound:[self.soundlist objectAtIndex:indexPath.row]];
+        
         NSLog(@"File url: %@", [[self.soundlist objectAtIndex:indexPath.row] description]);
         if ([delegate respondsToSelector:@selector(saveSound:)]) {
             [delegate saveSound:[self.soundlist objectAtIndex:indexPath.row]];
@@ -118,7 +138,7 @@
             [currentBlockSel_f.musiclist addObject:songTitle];
         }
         
-        NSFileManager *fileManager = [[NSFileManager alloc] init];
+        /*NSFileManager *fileManager = [[NSFileManager alloc] init];
         NSURL *directoryURL = [NSURL URLWithString:@"/System/Library/Audio/UISounds"];
         NSArray *keys = [NSArray arrayWithObject:NSURLIsDirectoryKey];
         
@@ -141,7 +161,7 @@
             else if (! [isDirectory boolValue]) {
                 [currentBlockSel_f.soundlist addObject:url];
             }
-        }
+        }*/
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [currentBlockSel_f.soundTable reloadData];
