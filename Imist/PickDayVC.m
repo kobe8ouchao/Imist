@@ -16,7 +16,7 @@
 @end
 
 @implementation PickDayVC
-@synthesize deviceTable, days;
+@synthesize deviceTable, days, delegate;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Select Days";

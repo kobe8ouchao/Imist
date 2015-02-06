@@ -66,12 +66,14 @@
 -(void)repeatClick:(id)sender
 {
     PickDayVC *pick = [[PickDayVC alloc] init];
+    pick.delegate = self;
     [self.navigationController pushViewController:pick animated:YES];
 }
 
 -(void)soundClick:(id)sender
 {
     PickSoundVC *pickSound = [[PickSoundVC alloc] init];
+    pickSound.delegate = self;
     [self.navigationController pushViewController:pickSound animated:YES];
 }
 

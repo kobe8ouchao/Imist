@@ -10,19 +10,22 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
+#import "ProgressHUD.h"
 
 @interface PickSoundVC ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) UITableView *soundTable;
 @property (nonatomic,strong) NSMutableArray *soundlist;
 @property (nonatomic,strong) NSMutableArray *musiclist;
+@property (nonatomic,strong) NSString *selectedSound;
+@property (nonatomic,strong) AVAudioPlayer *player;
 @end
 
 @implementation PickSoundVC
-@synthesize soundTable, soundlist, musiclist;
+@synthesize soundTable, soundlist, musiclist, player, selectedSound;
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
-//    self.navigationItem.rightBarButtonItem = saveItem;
+    UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
+    self.navigationItem.rightBarButtonItem = saveItem;
     self.navigationController.navigationBar.topItem.title = @"Select Days";
     //init device tableview
     UITableView *_table=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,  self.view.frame.size.height) style:UITableViewStylePlain];
@@ -38,7 +41,6 @@
     [self.view addSubview:self.soundTable];
     soundlist = [[NSMutableArray alloc] init];
     musiclist = [[NSMutableArray alloc] init];
-    
     [self loadSound];
 }
 
@@ -77,46 +79,31 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [player stop];
     if (indexPath.section == 0) {
         SystemSoundID soundID;
         AudioServicesCreateSystemSoundID((__bridge_retained CFURLRef)[self.soundlist objectAtIndex:indexPath.row],&soundID);
         AudioServicesPlaySystemSound(soundID);
         NSLog(@"File url: %@", [[self.soundlist objectAtIndex:indexPath.row] description]);
-        if ([delegate respondsToSelector:@selector(saveSound:)]) {
-            [delegate saveSound:[self.soundlist objectAtIndex:indexPath.row]];
-            [self.navigationController popViewControllerAnimated:YES];
+        if ( self.selectedSound && [self.selectedSound isEqualToString:[[self.soundlist objectAtIndex:indexPath.row] absoluteString]])
+        {
+            self.selectedSound = @"";
+        } else {
+            self.selectedSound = [[self.soundlist objectAtIndex:indexPath.row] absoluteString];
         }
+        
     }else {
         NSMutableDictionary *musicDict = [self.musiclist objectAtIndex:indexPath.row];
-        
-        NSURL *url = [musicDict objectForKey:@"url"];
-        
-        AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL: url options:nil];
-        
-        AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset: songAsset
-                                                                          presetName: AVAssetExportPresetPassthrough];
-        
-        exporter.outputFileType = @"public.mpeg-4";
-        
-        NSString *exportFile = [NSTemporaryDirectory() stringByAppendingPathComponent:
-                                @"exported.mp4"];
-        
-        NSURL *exportURL = [NSURL fileURLWithPath:exportFile];
-        
-        [exporter exportAsynchronouslyWithCompletionHandler:
-         ^{
-//             NSData *data = [NSData dataWithContentsOfFile: [[self myDocumentsDirectory]
-//                                                             stringByAppendingPathComponent: @"exported.mp4"]];
-             
-             // Do with data something
-             AVAudioPlayer *backgroundMusicPlayer = [[AVAudioPlayer alloc]
-                                                     initWithContentsOfURL:exportURL error:nil];
-             [backgroundMusicPlayer prepareToPlay];
-             [backgroundMusicPlayer play];
-             
-         }];
-       
+        player = [[AVAudioPlayer alloc] initWithContentsOfURL:[musicDict objectForKey:@"url"] error:nil];
+        [player play];
+        if (  self.selectedSound && [self.selectedSound isEqualToString:[[musicDict objectForKey:@"url"] absoluteString]])
+        {
+            self.selectedSound = @"";
+        } else {
+            self.selectedSound = [[musicDict objectForKey:@"url"] absoluteString];
+        }
     }
+    [self.soundTable reloadData];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -128,8 +115,24 @@
     }
     if (indexPath.section == 0) {
         cell.textLabel.text = [[self.soundlist objectAtIndex:indexPath.row] lastPathComponent];
+        if ( [self.selectedSound isEqualToString:[[self.soundlist objectAtIndex:indexPath.row] absoluteString]])
+        {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+        else
+        {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
     }else {
         NSMutableDictionary *musicDict = [self.musiclist objectAtIndex:indexPath.row];
+        if ( [self.selectedSound isEqualToString:[[musicDict objectForKey:@"url"]  absoluteString]])
+        {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+        else
+        {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
         cell.textLabel.text = [musicDict valueForKey:@"title"];
     }
     
@@ -188,7 +191,14 @@
 
 -(void)save
 {
-    
+    if (!self.selectedSound || [selectedSound isEqualToString:@""]) {
+        [ProgressHUD showError:@"Please pick a sound for alarm!"];
+        return;
+    }
+    if ([self.delegate respondsToSelector:@selector(saveSound:)]) {
+        [self.delegate saveSound:self.selectedSound];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 @end
