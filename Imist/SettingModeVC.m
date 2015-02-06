@@ -177,14 +177,18 @@ typedef enum{
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if(alertView.tag == 20 && buttonIndex == 0){ //"don't show this again" touched
-        if(self.appDelegate.defaultBTServer.selectPeripheralInfo.water){
-            self.doNotShowHint = YES;
-        }
-        else{
-            NSString * hintString = [[NSString alloc]init];
-            hintString = [self composeHint:[self.essenceName valueForKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode]];
-            [self showHint:hintString];
-        }
+        [self getWaterStatus];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(200 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
+            if(self.appDelegate.defaultBTServer.selectPeripheralInfo.water){
+                self.doNotShowHint = YES;
+                [self setMode:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode waterStatus:HAS_WATER_AND_WORK];
+            }
+            else{
+                NSString * hintString = [[NSString alloc]init];
+                hintString = [self composeHint:[self.essenceName valueForKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode]];
+                [self showHint:hintString];
+            }
+        });
     }
     else{ //"done" touched
         [self getWaterStatus];
@@ -266,6 +270,7 @@ typedef enum{
         btnTag = 6;
     }
     
+    if(status == HAS_WATER_AND_WORK)
     [self sendAutoModeCmd:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode];
 
     

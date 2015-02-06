@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		A5577A191A8357BB001DAA67 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5577A181A8357BB001DAA67 /* AVFoundation.framework */; };
+		A5577A1D1A84EBC5001DAA67 /* app40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5577A1C1A84EBC5001DAA67 /* app40@2x.png */; };
+		A5577A201A84F665001DAA67 /* ico_minus2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5577A1E1A84F665001DAA67 /* ico_minus2@2x.png */; };
+		A5577A211A84F665001DAA67 /* ico_plus2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5577A1F1A84F665001DAA67 /* ico_plus2@2x.png */; };
 		A5C64D111A825986006732BD /* Bicker.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A5C64D0B1A825986006732BD /* Bicker.mp3 */; };
 		A5C64D121A825986006732BD /* Chirp.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A5C64D0C1A825986006732BD /* Chirp.mp3 */; };
 		A5C64D131A825986006732BD /* Hill stream.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A5C64D0D1A825986006732BD /* Hill stream.mp3 */; };
@@ -136,6 +139,9 @@
 
 /* Begin PBXFileReference section */
 		A5577A181A8357BB001DAA67 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		A5577A1C1A84EBC5001DAA67 /* app40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app40@2x.png"; path = "../../../Downloads/000/app40@2x.png"; sourceTree = "<group>"; };
+		A5577A1E1A84F665001DAA67 /* ico_minus2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ico_minus2@2x.png"; path = "../../../Downloads/000/ico_minus2@2x.png"; sourceTree = "<group>"; };
+		A5577A1F1A84F665001DAA67 /* ico_plus2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ico_plus2@2x.png"; path = "../../../Downloads/000/ico_plus2@2x.png"; sourceTree = "<group>"; };
 		A5C64D0B1A825986006732BD /* Bicker.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Bicker.mp3; path = "../../../Downloads/Nature Ringtone(1)/Bicker.mp3"; sourceTree = "<group>"; };
 		A5C64D0C1A825986006732BD /* Chirp.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Chirp.mp3; path = "../../../Downloads/Nature Ringtone(1)/Chirp.mp3"; sourceTree = "<group>"; };
 		A5C64D0D1A825986006732BD /* Hill stream.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Hill stream.mp3"; path = "../../../Downloads/Nature Ringtone(1)/Hill stream.mp3"; sourceTree = "<group>"; };
@@ -385,6 +391,9 @@
 		C38819961A523F8C004A98CA /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				A5577A1E1A84F665001DAA67 /* ico_minus2@2x.png */,
+				A5577A1F1A84F665001DAA67 /* ico_plus2@2x.png */,
+				A5577A1C1A84EBC5001DAA67 /* app40@2x.png */,
 				A5C64D0B1A825986006732BD /* Bicker.mp3 */,
 				A5C64D0C1A825986006732BD /* Chirp.mp3 */,
 				A5C64D0D1A825986006732BD /* Hill stream.mp3 */,
@@ -717,8 +726,10 @@
 				C38819A01A523FC0004A98CA /* menu-icon@2x.png in Resources */,
 				C336440D1A78AB1A0047AAE5 /* ico_imist@2x.png in Resources */,
 				C33644171A78ABAE0047AAE5 /* ico_plus@2x.png in Resources */,
+				A5577A211A84F665001DAA67 /* ico_plus2@2x.png in Resources */,
 				C33644011A78A20E0047AAE5 /* ico_scancell@2x.png in Resources */,
 				A5C64D121A825986006732BD /* Chirp.mp3 in Resources */,
+				A5577A1D1A84EBC5001DAA67 /* app40@2x.png in Resources */,
 				C3422B511A56C6020095B6AA /* rh_up@2x.png in Resources */,
 				C33F4E161A7BE46F009A497A /* tutorial_eng_5.png in Resources */,
 				A5C64D131A825986006732BD /* Hill stream.mp3 in Resources */,
@@ -772,6 +783,7 @@
 				C33643FA1A7888810047AAE5 /* ProgressHUD.bundle in Resources */,
 				C3DFE9131A6CB6F20044F52E /* tabbar_normal_background@2x.png in Resources */,
 				C3DFE90F1A6CB6F20044F52E /* second_normal@2x.png in Resources */,
+				A5577A201A84F665001DAA67 /* ico_minus2@2x.png in Resources */,
 				C3422B401A56A8BB0095B6AA /* arrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
