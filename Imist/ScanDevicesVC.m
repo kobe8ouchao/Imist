@@ -118,12 +118,15 @@
     Byte *dataByte = (Byte *) [data bytes];
     if ([data length] > 0) {
         NSUInteger state = dataByte[2];
-        if (state == 0x00) {
-            self.appDelegate.defaultBTServer.selectPeripheralInfo.water = 0;
-        }else if (state == 0x01){
-            self.appDelegate.defaultBTServer.selectPeripheralInfo.water = 0;
-        }else {
-            self.appDelegate.defaultBTServer.selectPeripheralInfo.water = [NSNumber numberWithInt:1];
+        if(self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd == GET_WATER_STATUS)
+        {
+            if (state == 0x00) {
+                self.appDelegate.defaultBTServer.selectPeripheralInfo.water = [NSNumber numberWithInt:1];
+            }else if (state == 0xAA){
+                self.appDelegate.defaultBTServer.selectPeripheralInfo.water = 0;
+            }else {
+                self.appDelegate.defaultBTServer.selectPeripheralInfo.water = [NSNumber numberWithInt:1];
+            }
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.deviceTable reloadData];
