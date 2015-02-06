@@ -450,7 +450,7 @@ static BTServer* _defaultBTServer = nil;
     if (isEnd) {
         self.selectCharacteristic = characteristic;
         if (self.delegate && [(id)self.delegate respondsToSelector:@selector(didReadvalue:)]) {
-           [self.delegate didReadvalue:characteristic.value];
+           [self.delegate didReadvalue:self.responeData];
         }
         [self.responeData setLength:0];
     }

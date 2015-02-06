@@ -56,7 +56,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    return 4;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -74,16 +74,20 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone; 
     switch (indexPath.row) {
         case 0:
-            cell.name = [NSString stringWithFormat:@"Diffusers"];
+            cell.name = [NSString stringWithFormat:@"Diffuser"];
             cell.icon = @"ico_scancell.png";
             break;
-        case 1:
-            cell.name = [NSString stringWithFormat:@"Abount"];
-            cell.icon = @"ico_sidemenu_share.png";
-            break;
         case 2:
-            cell.name = [NSString stringWithFormat:@"Totural"];
+            cell.name = [NSString stringWithFormat:@"About"];
+            cell.icon = @"ico_sidemenu_about.png";
+            break;
+        case 1:
+            cell.name = [NSString stringWithFormat:@"Tutorial"];
             cell.icon = @"ico_sidemenu_tutorial.png";
+            break;
+        case 3:
+            cell.name = [NSString stringWithFormat:@"Share"];
+            cell.icon = @"ico_sidemenu_share.png";
             break;
         default:
             break;
@@ -108,13 +112,13 @@
             break;
         }
             
-        case 1: {
+        case 2: {
             aboutVC = [[AboutVC alloc] init];
             NSArray *controllers = [NSArray arrayWithObject:aboutVC];
             navigationController.viewControllers = controllers;
             break;
         }
-        case 2: {
+        case 1: {
             tutoralVC = [[TutoralVC alloc] init];
             NSArray *controllers = [NSArray arrayWithObject:tutoralVC];
             navigationController.viewControllers = controllers;
