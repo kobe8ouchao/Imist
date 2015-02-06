@@ -9,6 +9,7 @@
 #import "PickSoundVC.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import <AudioToolbox/AudioToolbox.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface PickSoundVC ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) UITableView *soundTable;
@@ -86,7 +87,35 @@
             [self.navigationController popViewControllerAnimated:YES];
         }
     }else {
+        NSMutableDictionary *musicDict = [self.musiclist objectAtIndex:indexPath.row];
         
+        NSURL *url = [musicDict objectForKey:@"url"];
+        
+        AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL: url options:nil];
+        
+        AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset: songAsset
+                                                                          presetName: AVAssetExportPresetPassthrough];
+        
+        exporter.outputFileType = @"public.mpeg-4";
+        
+        NSString *exportFile = [NSTemporaryDirectory() stringByAppendingPathComponent:
+                                @"exported.mp4"];
+        
+        NSURL *exportURL = [NSURL fileURLWithPath:exportFile];
+        
+        [exporter exportAsynchronouslyWithCompletionHandler:
+         ^{
+//             NSData *data = [NSData dataWithContentsOfFile: [[self myDocumentsDirectory]
+//                                                             stringByAppendingPathComponent: @"exported.mp4"]];
+             
+             // Do with data something
+             AVAudioPlayer *backgroundMusicPlayer = [[AVAudioPlayer alloc]
+                                                     initWithContentsOfURL:exportURL error:nil];
+             [backgroundMusicPlayer prepareToPlay];
+             [backgroundMusicPlayer play];
+             
+         }];
+       
     }
 }
 
@@ -100,7 +129,8 @@
     if (indexPath.section == 0) {
         cell.textLabel.text = [[self.soundlist objectAtIndex:indexPath.row] lastPathComponent];
     }else {
-        cell.textLabel.text = [self.musiclist objectAtIndex:indexPath.row];
+        NSMutableDictionary *musicDict = [self.musiclist objectAtIndex:indexPath.row];
+        cell.textLabel.text = [musicDict valueForKey:@"title"];
     }
     
     return cell;
@@ -114,8 +144,12 @@
         NSLog(@"Logging items from a generic query...");
         NSArray *itemsFromGenericQuery = [everything items];
         for (MPMediaItem *song in itemsFromGenericQuery) {
-            NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
-            [currentBlockSel_f.musiclist addObject:songTitle];
+            if ([song valueForProperty:  MPMediaItemPropertyAssetURL]) {
+                 NSMutableDictionary *musicDict = [[NSMutableDictionary alloc] init];
+                [musicDict setValue:[song valueForProperty:MPMediaItemPropertyTitle] forKey:@"title"];
+                [musicDict setValue: [song valueForProperty:MPMediaItemPropertyAssetURL]forKey:@"url"];
+                [currentBlockSel_f.musiclist addObject:musicDict];
+            }
         }
         
         NSFileManager *fileManager = [[NSFileManager alloc] init];

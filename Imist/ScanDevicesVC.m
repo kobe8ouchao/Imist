@@ -207,20 +207,20 @@
         cell = [[ScanDeviceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone; 
-    PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
-    cell.name = [NSString stringWithFormat:@"%@-%ld",pi.name,(long)indexPath.row];
-//    cell.name = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+//    PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
+//    cell.name = [NSString stringWithFormat:@"%@-%ld",pi.name,(long)indexPath.row];
+    cell.name = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
     cell.index = indexPath;
     cell.delegate = self;
     cell.icon = @"ico_imist.png";
     [cell setStyle];
-    if (pi == self.appDelegate.defaultBTServer.selectPeripheralInfo) {
-        if (pi.water == [NSNumber numberWithInt:1]) {
-            [cell setState:3];
-        }else {
-            [cell setState:2];
-        }
-    }
+//    if (pi == self.appDelegate.defaultBTServer.selectPeripheralInfo) {
+//        if (pi.water == [NSNumber numberWithInt:1]) {
+//            [cell setState:3];
+//        }else {
+//            [cell setState:2];
+//        }
+//    }
     
 //    cell.topName.text = pi.name;
 //    cell.uuid.text = pi.uuid;

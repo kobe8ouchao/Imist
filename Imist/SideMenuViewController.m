@@ -78,11 +78,11 @@
             cell.icon = @"ico_scancell.png";
             break;
         case 1:
-            cell.name = [NSString stringWithFormat:@"Abount"];
+            cell.name = [NSString stringWithFormat:@"About"];
             cell.icon = @"ico_sidemenu_share.png";
             break;
         case 2:
-            cell.name = [NSString stringWithFormat:@"Totural"];
+            cell.name = [NSString stringWithFormat:@"Tutorial"];
             cell.icon = @"ico_sidemenu_tutorial.png";
             break;
         default:

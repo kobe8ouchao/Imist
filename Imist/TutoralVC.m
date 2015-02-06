@@ -99,26 +99,36 @@
     }else {
         help7.image = [UIImage imageNamed:@"tutorial_eng_5.png"];
     }
+    
     [sv addSubview:help7];
     
-//    pageControl=[[UIPageControl alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-20, self.view.frame.size.width, 20)];
-//    pageControl.numberOfPages=7;
-//    pageControl.currentPage=0;
-//    [self.view addSubview:pageControl];
-//    [pageControl addTarget:self action:@selector(goPage:) forControlEvents:UIControlEventValueChanged];
+    pageControl=[[UIPageControl alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-50, self.view.frame.size.width, 50)];
+    pageControl.numberOfPages=7;
+    pageControl.currentPage=0;
+    pageControl.pageIndicatorTintColor = [UIColor whiteColor];
+    pageControl.currentPageIndicatorTintColor = [UIColor colorWith256Red:129 green:189 blue:82];
+    [self.view addSubview:pageControl];
+    [pageControl addTarget:self action:@selector(goPage:) forControlEvents:UIControlEventValueChanged];
     
     UIButton *skipBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [skipBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    skipBtn.tag = 200;
     [skipBtn setTitle:@"Skip" forState:UIControlStateNormal];
     [skipBtn setBackgroundColor:[UIColor clearColor]];
-    skipBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, self.view.frame.size.height - 64, 140, 44);
+    skipBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, self.view.frame.size.height - 80, 140, 44);
     [skipBtn addTarget:self action:@selector(Skip:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:skipBtn];
-   
+    
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     pageControl.currentPage=scrollView.contentOffset.x/sv.frame.size.width;
+    UIButton *skipBtn = (UIButton*)[self.view viewWithTag:200];
+    if (6 == scrollView.contentOffset.x/sv.frame.size.width) {
+        [skipBtn setTitle:@"Done" forState:UIControlStateNormal];
+    }else {
+        [skipBtn setTitle:@"Skip" forState:UIControlStateNormal];
+    }
 }
 
 -(void)goPage:(UIPageControl*)pg{
