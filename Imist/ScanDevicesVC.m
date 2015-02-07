@@ -23,6 +23,7 @@
     BOOL reloading;
     BOOL isTag;
     activityView *activety;
+    NSInteger selectRow;
 }
 @property (strong,nonatomic)BTServer *defaultBTServer;
 @property (strong, nonatomic) UITableView *deviceTable;
@@ -67,7 +68,7 @@
     self.refreshControl = refreshControl;
     self.appDelegate.defaultBTServer.delegate = self;
     
-
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -86,7 +87,7 @@
 
 - (void)leftSideMenuButtonPressed:(id)sender {
     [self.menuContainerViewController toggleLeftSideMenuCompletion:^{
-//        [self setupMenuBarButtonItems];
+        //        [self setupMenuBarButtonItems];
     }];
 }
 
@@ -117,19 +118,29 @@
     Byte *dataByte = (Byte *) [data bytes];
     if ([data length] > 0) {
         NSUInteger state = dataByte[2];
-        if (state == 0x00) {
-            self.appDelegate.defaultBTServer.selectPeripheralInfo.water = 0;
-        }else if (state == 0x01){
-            self.appDelegate.defaultBTServer.selectPeripheralInfo.water = 0;
-        }else {
-            self.appDelegate.defaultBTServer.selectPeripheralInfo.water = [NSNumber numberWithInt:1];
+        if(self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd == GET_WATER_STATUS)
+        {
+            if (state == 0x00) {
+                self.appDelegate.defaultBTServer.selectPeripheralInfo.water = [NSNumber numberWithInt:1];
+            }else if (state == 0xAA){
+                self.appDelegate.defaultBTServer.selectPeripheralInfo.water = 0;
+            }else {
+                self.appDelegate.defaultBTServer.selectPeripheralInfo.water = [NSNumber numberWithInt:1];
+            }
         }
-        [self.deviceTable reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.deviceTable reloadData];
+        });
     }
 }
 -(void)didDisconnect
 {
-//    [ProgressHUD show:@"disconnect from peripheral"];
+    PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:selectRow];
+    pi.state = @"disConnected";
+    NSIndexPath * selectIndexPath = [NSIndexPath indexPathForRow:selectRow inSection:0];
+    ScanDeviceCell *cell = (ScanDeviceCell*)[self.deviceTable cellForRowAtIndexPath:selectIndexPath];
+    [cell setState:0];
+    //    [ProgressHUD show:@"disconnect from peripheral"];
 }
 
 #pragma mark -- table delegate
@@ -148,6 +159,8 @@
     
     ScanDeviceCell *cell = (ScanDeviceCell*)[tableView cellForRowAtIndexPath:indexPath];
     PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
+    selectRow = indexPath.row;
+    NSLog(@"%li",(long)indexPath.row);
     if ([pi.state isEqualToString:@"connected"]) {
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
         SettingUser *thirdViewController = [[SettingUser alloc] init];
@@ -173,12 +186,10 @@
                     [cell setState:1];
                     [ProgressHUD showSuccess:@"connected success!"];
                     NSMutableData* data = [NSMutableData data];
-                    NSUInteger query = 0x01;
+                    NSUInteger query = 0xa1;
                     [data appendBytes:&query length:1];
                     NSUInteger imist = 0x00;
                     [data appendBytes:&imist length:1];
-                    NSUInteger time = 0x00;
-                    [data appendBytes:&time length:1];
                     NSUInteger led = 0x00;
                     [data appendBytes:&led length:1];
                     NSUInteger color1 = 0x00;
@@ -187,6 +198,8 @@
                     [data appendBytes:&color2 length:1];
                     NSUInteger color3 = 0x00;
                     [data appendBytes:&color3 length:1];
+                    
+                    self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = GET_WATER_STATUS;
                     [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
                 }else{
                     [cell setState:0];
@@ -196,7 +209,7 @@
             });
         }];
     }
-
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -206,38 +219,38 @@
     if (cell == nil) {
         cell = [[ScanDeviceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
     }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone; 
-//    PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
-//    cell.name = [NSString stringWithFormat:@"%@-%ld",pi.name,(long)indexPath.row];
-    cell.name = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
+    cell.name = [NSString stringWithFormat:@"%@-%ld",pi.name,(long)indexPath.row];
+    //    cell.name = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
     cell.index = indexPath;
     cell.delegate = self;
     cell.icon = @"ico_imist.png";
     [cell setStyle];
-//    if (pi == self.appDelegate.defaultBTServer.selectPeripheralInfo) {
-//        if (pi.water == [NSNumber numberWithInt:1]) {
-//            [cell setState:3];
-//        }else {
-//            [cell setState:2];
-//        }
-//    }
+    if (pi == self.appDelegate.defaultBTServer.selectPeripheralInfo) {
+        if (pi.water == [NSNumber numberWithInt:1]) {
+            [cell setState:3];
+        }else {
+            [cell setState:2];
+        }
+    }
     
-//    cell.topName.text = pi.name;
-//    cell.uuid.text = pi.uuid;
-//    cell.name.text = pi.localName;
-//    cell.service.text = pi.serviceUUIDS;
-//    cell.RSSI.text = [pi.RSSI stringValue];
-//    cell.RSSI.textColor = [UIColor blackColor];
-//    int rssi = [pi.RSSI intValue];
-//    if(rssi>-60){
-//        cell.RSSI.textColor = [UIColor redColor];
-//    }else if(rssi > -70){
-//        cell.RSSI.textColor = [UIColor orangeColor];
-//    }else if(rssi > -80){
-//        cell.RSSI.textColor = [UIColor blueColor];
-//    }else if(rssi > -90){
-//        cell.RSSI.textColor = [UIColor blackColor];
-//    }
+    //    cell.topName.text = pi.name;
+    //    cell.uuid.text = pi.uuid;
+    //    cell.name.text = pi.localName;
+    //    cell.service.text = pi.serviceUUIDS;
+    //    cell.RSSI.text = [pi.RSSI stringValue];
+    //    cell.RSSI.textColor = [UIColor blackColor];
+    //    int rssi = [pi.RSSI intValue];
+    //    if(rssi>-60){
+    //        cell.RSSI.textColor = [UIColor redColor];
+    //    }else if(rssi > -70){
+    //        cell.RSSI.textColor = [UIColor orangeColor];
+    //    }else if(rssi > -80){
+    //        cell.RSSI.textColor = [UIColor blueColor];
+    //    }else if(rssi > -90){
+    //        cell.RSSI.textColor = [UIColor blackColor];
+    //    }
     
     return cell;
 }
@@ -255,13 +268,13 @@
 }
 
 - (void)customizeTabBarForController:(RDVTabBarController *)tabBarController {
-//    UIImage *finishedImage = [UIImage imageNamed:@"tabbar_selected_background"];
-//    UIImage *unfinishedImage = [UIImage imageNamed:@"tabbar_normal_background"];
+    //    UIImage *finishedImage = [UIImage imageNamed:@"tabbar_selected_background"];
+    //    UIImage *unfinishedImage = [UIImage imageNamed:@"tabbar_normal_background"];
     NSArray *tabBarItemImages = @[@"first", @"second", @"third"];
     NSInteger index = 0;
     for (RDVTabBarItem *item in [[tabBarController tabBar] items]) {
         [item setBadgeBackgroundColor:[UIColor clearColor]];
-//        [item setBackgroundSelectedImage:finishedImage withUnselectedImage:unfinishedImage];
+        //        [item setBackgroundSelectedImage:finishedImage withUnselectedImage:unfinishedImage];
         UIImage *selectedimage = [UIImage imageNamed:[NSString stringWithFormat:@"%@_selected",
                                                       [tabBarItemImages objectAtIndex:index]]];
         UIImage *unselectedimage = [UIImage imageNamed:[NSString stringWithFormat:@"%@_normal",

@@ -39,7 +39,7 @@
     
     self.soundTable=_table;
     [self.view addSubview:self.soundTable];
-    soundlist = [[NSMutableArray alloc] init];
+    soundlist = [[NSMutableArray alloc] initWithObjects:@"Bicker",@"Chirp",@"Hill stream",@"Rain",@"Wave",@"Zen", nil];
     musiclist = [[NSMutableArray alloc] init];
     [self loadSound];
 }
@@ -47,6 +47,21 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)playSound:(NSString*)name{
+    
+    NSString *audioFilePath = [[NSBundle mainBundle] pathForResource:name ofType:@"mp3"];
+    NSURL *audioFileURL = [NSURL fileURLWithPath:audioFilePath];
+    NSError *error = nil;
+    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:&error];
+    [self.player setDelegate:self];
+    [self.player prepareToPlay];
+    [self.player play];
+    if (self.player == nil)
+        NSLog(@"Error playing sound. %@", [error description]);
+    else
+        [self.player play];
 }
 #pragma mark -- table delegate
 
@@ -81,10 +96,11 @@
 {
     [player stop];
     if (indexPath.section == 0) {
-        SystemSoundID soundID;
-        AudioServicesCreateSystemSoundID((__bridge_retained CFURLRef)[self.soundlist objectAtIndex:indexPath.row],&soundID);
-        AudioServicesPlaySystemSound(soundID);
-        NSLog(@"File url: %@", [[self.soundlist objectAtIndex:indexPath.row] description]);
+        /*SystemSoundID soundID;
+         AudioServicesCreateSystemSoundID((__bridge_retained CFURLRef)[self.soundlist objectAtIndex:indexPath.row],&soundID);
+         AudioServicesPlaySystemSound(soundID);*/
+        [self playSound:[self.soundlist objectAtIndex:indexPath.row]];
+
         if ( self.selectedSound && [self.selectedSound isEqualToString:[[self.soundlist objectAtIndex:indexPath.row] absoluteString]])
         {
             self.selectedSound = @"";
@@ -115,7 +131,8 @@
     }
     if (indexPath.section == 0) {
         cell.textLabel.text = [[self.soundlist objectAtIndex:indexPath.row] lastPathComponent];
-        if ( [self.selectedSound isEqualToString:[[self.soundlist objectAtIndex:indexPath.row] absoluteString]])
+//        if ( [self.selectedSound isEqualToString:[[self.soundlist objectAtIndex:indexPath.row] absoluteString]])
+        if ([self.selectedSound isEqualToString:[self.soundlist objectAtIndex:indexPath.row]])
         {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }

@@ -115,6 +115,12 @@
 		C3E366041A6BBC20002170CA /* RDVTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E365FF1A6BBC20002170CA /* RDVTabBar.m */; };
 		C3E366051A6BBC20002170CA /* RDVTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E366011A6BBC20002170CA /* RDVTabBarController.m */; };
 		C3E366061A6BBC20002170CA /* RDVTabBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E366031A6BBC20002170CA /* RDVTabBarItem.m */; };
+		C3E7C1851A85DB4100C58294 /* Bicker.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C17F1A85DB4100C58294 /* Bicker.mp3 */; };
+		C3E7C1861A85DB4100C58294 /* Chirp.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C1801A85DB4100C58294 /* Chirp.mp3 */; };
+		C3E7C1871A85DB4100C58294 /* Hill stream.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C1811A85DB4100C58294 /* Hill stream.mp3 */; };
+		C3E7C1881A85DB4100C58294 /* Rain.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C1821A85DB4100C58294 /* Rain.mp3 */; };
+		C3E7C1891A85DB4100C58294 /* Wave.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C1831A85DB4100C58294 /* Wave.mp3 */; };
+		C3E7C18A1A85DB4100C58294 /* Zen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C1841A85DB4100C58294 /* Zen.mp3 */; };
 		C3F7E0F61A708FB700984037 /* PickSoundVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C3F7E0F51A708FB700984037 /* PickSoundVC.m */; };
 		C3F7E0F81A70930800984037 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3F7E0F71A70930800984037 /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
@@ -278,6 +284,12 @@
 		C3E366011A6BBC20002170CA /* RDVTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVTabBarController.m; sourceTree = "<group>"; };
 		C3E366021A6BBC20002170CA /* RDVTabBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVTabBarItem.h; sourceTree = "<group>"; };
 		C3E366031A6BBC20002170CA /* RDVTabBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVTabBarItem.m; sourceTree = "<group>"; };
+		C3E7C17F1A85DB4100C58294 /* Bicker.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Bicker.mp3; sourceTree = "<group>"; };
+		C3E7C1801A85DB4100C58294 /* Chirp.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Chirp.mp3; sourceTree = "<group>"; };
+		C3E7C1811A85DB4100C58294 /* Hill stream.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Hill stream.mp3"; sourceTree = "<group>"; };
+		C3E7C1821A85DB4100C58294 /* Rain.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Rain.mp3; sourceTree = "<group>"; };
+		C3E7C1831A85DB4100C58294 /* Wave.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Wave.mp3; sourceTree = "<group>"; };
+		C3E7C1841A85DB4100C58294 /* Zen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Zen.mp3; sourceTree = "<group>"; };
 		C3F7E0F41A708FB700984037 /* PickSoundVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickSoundVC.h; sourceTree = "<group>"; };
 		C3F7E0F51A708FB700984037 /* PickSoundVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickSoundVC.m; sourceTree = "<group>"; };
 		C3F7E0F71A70930800984037 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -375,6 +387,12 @@
 		C38819961A523F8C004A98CA /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				C3E7C17F1A85DB4100C58294 /* Bicker.mp3 */,
+				C3E7C1801A85DB4100C58294 /* Chirp.mp3 */,
+				C3E7C1811A85DB4100C58294 /* Hill stream.mp3 */,
+				C3E7C1821A85DB4100C58294 /* Rain.mp3 */,
+				C3E7C1831A85DB4100C58294 /* Wave.mp3 */,
+				C3E7C1841A85DB4100C58294 /* Zen.mp3 */,
 				C3D7CA401A847FCA00FBE9CB /* app40@2x.png */,
 				C3D7CA3C1A84760B00FBE9CB /* ico_minus2@2x.png */,
 				C3D7CA3D1A84760B00FBE9CB /* ico_plus2@2x.png */,
@@ -696,10 +714,12 @@
 				C3DFE9151A6CB6F20044F52E /* tabbar_selected_background@2x.png in Resources */,
 				C3422B4E1A56C6020095B6AA /* rh_pattern.png in Resources */,
 				C33644161A78ABAE0047AAE5 /* ico_navibtn_sidemenu@2x.png in Resources */,
+				C3E7C1861A85DB4100C58294 /* Chirp.mp3 in Resources */,
 				C3DFE9161A6CB6F20044F52E /* third_normal@2x.png in Resources */,
 				C33644031A78A20E0047AAE5 /* ico_sidemenu_tutorial@2x.png in Resources */,
 				C38819A01A523FC0004A98CA /* menu-icon@2x.png in Resources */,
 				C336440D1A78AB1A0047AAE5 /* ico_imist@2x.png in Resources */,
+				C3E7C1881A85DB4100C58294 /* Rain.mp3 in Resources */,
 				C33644011A78A20E0047AAE5 /* ico_scancell@2x.png in Resources */,
 				C3422B511A56C6020095B6AA /* rh_up@2x.png in Resources */,
 				C33F4E161A7BE46F009A497A /* tutorial_eng_5.png in Resources */,
@@ -717,6 +737,7 @@
 				C3A8A0811A4EB94D004C9ADE /* LaunchScreen.xib in Resources */,
 				C336440A1A78AA1F0047AAE5 /* bg_scancell_green@2x.png in Resources */,
 				C33643FD1A789C410047AAE5 /* bg_sidemenu_cell@2x.png in Resources */,
+				C3E7C1891A85DB4100C58294 /* Wave.mp3 in Resources */,
 				C388199C1A523FC0004A98CA /* back-arrow.png in Resources */,
 				C33F4E291A7E07ED009A497A /* app41@2x.png in Resources */,
 				C33F4E251A7DFC10009A497A /* tutorial_eng7_4.png in Resources */,
@@ -736,8 +757,11 @@
 				C388199F1A523FC0004A98CA /* menu-icon.png in Resources */,
 				C33F4E151A7BE46F009A497A /* tutorial_eng_4.png in Resources */,
 				C33F4E2B1A7E07ED009A497A /* app43@2x.png in Resources */,
+				C3E7C1871A85DB4100C58294 /* Hill stream.mp3 in Resources */,
+				C3E7C1851A85DB4100C58294 /* Bicker.mp3 in Resources */,
 				C3DFE9111A6CB6F20044F52E /* second_selected@2x.png in Resources */,
 				C3A8A07E1A4EB94D004C9ADE /* Images.xcassets in Resources */,
+				C3E7C18A1A85DB4100C58294 /* Zen.mp3 in Resources */,
 				C33644021A78A20E0047AAE5 /* ico_sidemenu_share@2x.png in Resources */,
 				C33F4E171A7BE46F009A497A /* tutorial_eng.png in Resources */,
 				C3DFE9191A6CB6F20044F52E /* third_selected@2x.png in Resources */,

@@ -33,4 +33,10 @@
 @property (strong,nonatomic)NSNumber *ledauto;
 @property (strong,nonatomic)NSNumber *imist;
 @property (strong,nonatomic)NSMutableArray *alert;
+@property (assign,nonatomic)NSInteger curCmd;
+typedef enum{
+    GET_WATER_STATUS,
+    GET_WORK_MODE,
+    SET_WORK_MODE,
+}currentCmd;
 @end
