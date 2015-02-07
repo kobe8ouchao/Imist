@@ -9,9 +9,9 @@
 #import "BaseViewController.h"
 @protocol pickDayDelegate;
 @interface PickDayVC : BaseViewController {
-    __weak id <pickDayDelegate> delegate;
-}
 
+}
+@property (nonatomic, assign) id<pickDayDelegate> delegate;
 @end
 @protocol pickDayDelegate <NSObject>
 -(void)saveDay:(NSArray*)days;

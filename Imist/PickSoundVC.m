@@ -10,21 +10,23 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
+#import "ProgressHUD.h"
 
 @interface PickSoundVC ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) UITableView *soundTable;
 @property (nonatomic,strong) NSMutableArray *soundlist;
 @property (nonatomic,strong) NSMutableArray *musiclist;
-@property AVAudioPlayer *audioPlayer;
+@property (nonatomic,strong) NSString *selectedSound;
+@property (nonatomic,strong) AVAudioPlayer *player;
 @end
 
 @implementation PickSoundVC
 
-@synthesize soundTable, soundlist, musiclist;
+@synthesize soundTable, soundlist, musiclist, player, selectedSound;
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
-//    self.navigationItem.rightBarButtonItem = saveItem;
+    UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
+    self.navigationItem.rightBarButtonItem = saveItem;
     self.navigationController.navigationBar.topItem.title = @"Select Days";
     //init device tableview
     UITableView *_table=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,  self.view.frame.size.height) style:UITableViewStylePlain];
@@ -49,14 +51,14 @@
     NSString *audioFilePath = [[NSBundle mainBundle] pathForResource:name ofType:@"mp3"];
     NSURL *audioFileURL = [NSURL fileURLWithPath:audioFilePath];
     NSError *error = nil;
-    self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:&error];
-    [self.audioPlayer setDelegate:self];
-    [self.audioPlayer prepareToPlay];
-    [self.audioPlayer play];
-    if (self.audioPlayer == nil)
+    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:&error];
+    [self.player setDelegate:self];
+    [self.player prepareToPlay];
+    [self.player play];
+    if (self.player == nil)
         NSLog(@"Error playing sound. %@", [error description]);
     else
-        [self.audioPlayer play];
+        [self.player play];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -94,6 +96,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [player stop];
     if (indexPath.section == 0) {
         /*SystemSoundID soundID;
         AudioServicesCreateSystemSoundID((__bridge_retained CFURLRef)[self.soundlist objectAtIndex:indexPath.row],&soundID);
@@ -101,12 +104,24 @@
         [self playSound:[self.soundlist objectAtIndex:indexPath.row]];
         
         NSLog(@"File url: %@", [[self.soundlist objectAtIndex:indexPath.row] description]);
-        if ([delegate respondsToSelector:@selector(saveSound:)]) {
-            [delegate saveSound:[self.soundlist objectAtIndex:indexPath.row]];
-            [self.navigationController popViewControllerAnimated:YES];
+        if ( self.selectedSound && [self.selectedSound isEqualToString:[[self.soundlist objectAtIndex:indexPath.row] absoluteString]])
+        {
+            self.selectedSound = @"";
+        } else {
+            self.selectedSound = [[self.soundlist objectAtIndex:indexPath.row] absoluteString];
         }
+
     }else {
-        
+        NSMutableDictionary *musicDict = [self.musiclist objectAtIndex:indexPath.row];
+        player = [[AVAudioPlayer alloc] initWithContentsOfURL:[musicDict objectForKey:@"url"] error:nil];
+        [player play];
+        if (  self.selectedSound && [self.selectedSound isEqualToString:[[musicDict objectForKey:@"url"] absoluteString]])
+        {
+            self.selectedSound = @"";
+        } else {
+            self.selectedSound = [[musicDict objectForKey:@"url"] absoluteString];
+        }
+
     }
 }
 
@@ -119,10 +134,27 @@
     }
     if (indexPath.section == 0) {
         cell.textLabel.text = [[self.soundlist objectAtIndex:indexPath.row] lastPathComponent];
+        //if ( [self.selectedSound isEqualToString:[[self.soundlist objectAtIndex:indexPath.row] absoluteString]])
+        if ([self.selectedSound isEqualToString:[self.soundlist objectAtIndex:indexPath.row]])
+        {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+        else
+        {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
     }else {
-        cell.textLabel.text = [self.musiclist objectAtIndex:indexPath.row];
+        NSMutableDictionary *musicDict = [self.musiclist objectAtIndex:indexPath.row];
+        if ( [self.selectedSound isEqualToString:[[musicDict objectForKey:@"url"]  absoluteString]])
+        {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+        else
+        {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        cell.textLabel.text = [musicDict valueForKey:@"title"];
     }
-    
     return cell;
 }
 
@@ -134,8 +166,10 @@
         NSLog(@"Logging items from a generic query...");
         NSArray *itemsFromGenericQuery = [everything items];
         for (MPMediaItem *song in itemsFromGenericQuery) {
-            NSString *songTitle = [song valueForProperty: MPMediaItemPropertyTitle];
-            [currentBlockSel_f.musiclist addObject:songTitle];
+            NSMutableDictionary *musicDict = [[NSMutableDictionary alloc] init];
+            [musicDict setValue:[song valueForProperty:MPMediaItemPropertyTitle] forKey:@"title"];
+            [musicDict setValue: [song valueForProperty:MPMediaItemPropertyAssetURL]forKey:@"url"];
+            [currentBlockSel_f.musiclist addObject:musicDict];
         }
         
         /*NSFileManager *fileManager = [[NSFileManager alloc] init];
@@ -174,7 +208,14 @@
 
 -(void)save
 {
-    
+    if (!self.selectedSound || [selectedSound isEqualToString:@""]) {
+        [ProgressHUD showError:@"Please pick a sound for alarm!"];
+        return;
+    }
+    if ([self.delegate respondsToSelector:@selector(saveSound:)]) {
+        [self.delegate saveSound:self.selectedSound];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 @end
