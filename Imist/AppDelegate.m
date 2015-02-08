@@ -11,14 +11,16 @@
 #import "SideMenuViewController.h"
 #import "MFSideMenuContainerViewController.h"
 #import "ScanDevicesVC.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface AppDelegate ()
-
+@property(nonatomic, strong)NSTimer *playerTM;
+@property (nonatomic,strong) AVAudioPlayer *player;
 @end
 
 @implementation AppDelegate
 
-@synthesize scanVC;
+@synthesize scanVC,playerTM,player;
 
 - (UIViewController *)scanDevicesController {
     self.scanVC = [[ScanDevicesVC alloc] init];
@@ -72,11 +74,14 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    playerTM=[NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(playAlarm) userInfo:nil repeats:false];
+    [[NSRunLoop currentRunLoop] addTimer:playerTM forMode:NSDefaultRunLoopMode];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -99,6 +104,16 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 -(UINavigationController*)Nav{
     UINavigationController *nav=(UINavigationController*)self.window.rootViewController;
     return nav.topViewController.navigationController;
+}
+
+-(void) playAlarm
+{
+    if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] > 0) {
+        NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+        player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
+        [player play];
+    }
+    
 }
 
 @end

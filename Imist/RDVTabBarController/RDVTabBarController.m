@@ -49,7 +49,7 @@
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [leftBtn setFrame:CGRectMake( 0, 0, 22, 22)];
     [leftBtn setImage:[UIImage imageNamed:@"setting.png"] forState:UIControlStateNormal];
-    [leftBtn addTarget:self action:@selector(changeAction:) forControlEvents:UIControlEventTouchUpInside];
+    [leftBtn addTarget:self action:@selector(changeName:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
     self.navigationItem.rightBarButtonItem = leftItem;
 
@@ -323,7 +323,7 @@
     [tabBar setItems:tabBarItems];
 }
 
--(void)changeAction:(id)sender
+-(void)changeName:(id)sender
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Change Imist Name" message:nil delegate:nil cancelButtonTitle:InterNation(@"cancel") otherButtonTitles:InterNation(@"confirm") ,nil];
     alert.tag = 222;

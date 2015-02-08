@@ -222,7 +222,7 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
-    cell.name = [NSString stringWithFormat:@"%@-%ld",pi.name,(long)indexPath.row];
+    cell.name = pi.name;
     //    cell.name = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
     cell.index = indexPath;
     cell.delegate = self;
