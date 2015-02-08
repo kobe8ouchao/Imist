@@ -68,20 +68,57 @@
 //    localNotif.alertAction = @"...";
 //    
 //    [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
+    // Set AVAudioSession
+    NSError *sessionError = nil;
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    
+    BOOL success = [audioSession setCategory:AVAudioSessionCategoryPlayback error:&sessionError];
+    //NSLog(@"%@",success?@"YES":@"NO");
+    
+    NSError *activationError = nil;
+    [audioSession setActive:YES error:&activationError];
+    
+    // Change the default output audio route
+    UInt32 doChangeDefaultRoute = 1;
+    AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(doChangeDefaultRoute), &doChangeDefaultRoute);
+    
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    NSString *urlString = [[NSBundle mainBundle]pathForResource:
+                           @"Bicker" ofType:@"mp3"];
+    NSURL *url = [NSURL fileURLWithPath:urlString];
+    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:@"ipod-library://item/item.m4a?id=3931664747562493245"] error:nil];
+    self.player.delegate = self;
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    playerTM=[NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(playAlarm) userInfo:nil repeats:false];
-    [[NSRunLoop currentRunLoop] addTimer:playerTM forMode:NSDefaultRunLoopMode];
+//    playerTM=[NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(playAlarm) userInfo:nil repeats:false];
+//    [[NSRunLoop currentRunLoop] addTimer:playerTM forMode:NSDefaultRunLoopMode];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+//    if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] > 0) {
+//        NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+//
+//        self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
+//    }
     
+    NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:2.0];
+    NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
+                                              interval:10
+                                                target:self
+                                              selector:@selector(playAlarm)
+                                              userInfo:nil
+                                               repeats:NO];
+    
+    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+    [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
+    [runLoop run];
+
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -108,11 +145,16 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 
 -(void) playAlarm
 {
-    if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] > 0) {
-        NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
-        player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
-        [player play];
+    static UIBackgroundTaskIdentifier bgTaskId;
+    UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
+    [self.player prepareToPlay];
+    if([self.player play]){
+        newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
     }
+    if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
+        [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
+    bgTaskId = newTaskId;
+
     
 }
 
