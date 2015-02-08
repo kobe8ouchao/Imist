@@ -14,6 +14,7 @@
 
 @interface PickSoundVC ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) UITableView *soundTable;
+@property (nonatomic,strong) NSMutableArray *defautlist;
 @property (nonatomic,strong) NSMutableArray *soundlist;
 @property (nonatomic,strong) NSMutableArray *musiclist;
 @property (nonatomic,strong) NSString *selectedSound;
@@ -21,7 +22,7 @@
 @end
 
 @implementation PickSoundVC
-@synthesize soundTable, soundlist, musiclist, player, selectedSound;
+@synthesize soundTable, soundlist, defautlist, musiclist, player, selectedSound;
 - (void)viewDidLoad {
     [super viewDidLoad];
     UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
@@ -39,7 +40,8 @@
     
     self.soundTable=_table;
     [self.view addSubview:self.soundTable];
-    soundlist = [[NSMutableArray alloc] initWithObjects:@"Bicker",@"Chirp",@"Hill stream",@"Rain",@"Wave",@"Zen", nil];
+    defautlist = [[NSMutableArray alloc] initWithObjects:@"Bicker",@"Chirp",@"Hill stream",@"Rain",@"Wave",@"Zen", nil];
+    soundlist = [[NSMutableArray alloc] init];
     musiclist = [[NSMutableArray alloc] init];
     [self loadSound];
 }
@@ -55,7 +57,7 @@
     NSURL *audioFileURL = [NSURL fileURLWithPath:audioFilePath];
     NSError *error = nil;
     self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:&error];
-    [self.player setDelegate:self];
+//    [self.player setDelegate:self];
     [self.player prepareToPlay];
     [self.player play];
     if (self.player == nil)
@@ -67,16 +69,18 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
+    if (section == 1) {
         return @"System sound";
-    }else {
+    }else if(3 == section){
         return @"Music sound";
+    }else {
+        return @"Imist sound";
     }
     
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
 {
-    return 2;
+    return 3;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 44.0f;
@@ -85,6 +89,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
+        return [self.defautlist count];
+    }else if(1 == section){
         return [self.soundlist count];
     }else {
         return [self.musiclist count];
@@ -96,19 +102,16 @@
 {
     [player stop];
     if (indexPath.section == 0) {
-        /*SystemSoundID soundID;
-         AudioServicesCreateSystemSoundID((__bridge_retained CFURLRef)[self.soundlist objectAtIndex:indexPath.row],&soundID);
-         AudioServicesPlaySystemSound(soundID);*/
-        [self playSound:[self.soundlist objectAtIndex:indexPath.row]];
+        [self playSound:[self.defautlist objectAtIndex:indexPath.row]];
 
-        if ( self.selectedSound && [self.selectedSound isEqualToString:[[self.soundlist objectAtIndex:indexPath.row] absoluteString]])
+        if ( self.selectedSound && [self.selectedSound isEqualToString:[self.defautlist objectAtIndex:indexPath.row] ])
         {
             self.selectedSound = @"";
         } else {
-            self.selectedSound = [[self.soundlist objectAtIndex:indexPath.row] absoluteString];
+            self.selectedSound = [self.defautlist objectAtIndex:indexPath.row];
         }
         
-    }else {
+    }else if(2 == indexPath.section){
         NSMutableDictionary *musicDict = [self.musiclist objectAtIndex:indexPath.row];
         player = [[AVAudioPlayer alloc] initWithContentsOfURL:[musicDict objectForKey:@"url"] error:nil];
         [player play];
@@ -118,6 +121,17 @@
         } else {
             self.selectedSound = [[musicDict objectForKey:@"url"] absoluteString];
         }
+    }else{
+        SystemSoundID soundID;
+        AudioServicesCreateSystemSoundID((__bridge_retained CFURLRef)[self.soundlist objectAtIndex:indexPath.row],&soundID);
+        AudioServicesPlaySystemSound(soundID);
+        if ( self.selectedSound && [self.selectedSound isEqualToString:[[self.soundlist objectAtIndex:indexPath.row] lastPathComponent]])
+        {
+            self.selectedSound = @"";
+        } else {
+            self.selectedSound = [[self.soundlist objectAtIndex:indexPath.row] lastPathComponent];
+        }
+
     }
     [self.soundTable reloadData];
 }
@@ -130,9 +144,8 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     if (indexPath.section == 0) {
-        cell.textLabel.text = [[self.soundlist objectAtIndex:indexPath.row] lastPathComponent];
-//        if ( [self.selectedSound isEqualToString:[[self.soundlist objectAtIndex:indexPath.row] absoluteString]])
-        if ([self.selectedSound isEqualToString:[self.soundlist objectAtIndex:indexPath.row]])
+        cell.textLabel.text = [self.defautlist objectAtIndex:indexPath.row];
+        if ([self.selectedSound isEqualToString:[self.defautlist objectAtIndex:indexPath.row]])
         {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
@@ -140,7 +153,7 @@
         {
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
-    }else {
+    }else if(2 == indexPath.section){
         NSMutableDictionary *musicDict = [self.musiclist objectAtIndex:indexPath.row];
         if ( [self.selectedSound isEqualToString:[[musicDict objectForKey:@"url"]  absoluteString]])
         {
@@ -151,6 +164,16 @@
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
         cell.textLabel.text = [musicDict valueForKey:@"title"];
+    }else {
+        cell.textLabel.text = [[self.soundlist objectAtIndex:indexPath.row] lastPathComponent];
+        if ([self.selectedSound isEqualToString:[[self.soundlist objectAtIndex:indexPath.row] lastPathComponent]])
+        {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+        else
+        {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
     }
     
     return cell;

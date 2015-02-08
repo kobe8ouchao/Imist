@@ -10,5 +10,7 @@
 
 @interface AlertSettingCell : UITableViewCell
 @property (nonatomic, strong)NSString *time;
+@property (nonatomic, strong)NSString *days;
 @property (nonatomic, assign)BOOL isOpen;
+-(void) setStyle;
 @end

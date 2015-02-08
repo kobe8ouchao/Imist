@@ -42,7 +42,7 @@
     
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [leftBtn setFrame:CGRectMake( 0, 0, 44, 44)];
-    [leftBtn setImage:[UIImage imageNamed:@"ico_navibtn_sidemenu.png"] forState:UIControlStateNormal];
+    [leftBtn setImage:[UIImage imageNamed:@"menu-icon.png"] forState:UIControlStateNormal];
     [leftBtn addTarget:self action:@selector(leftSideMenuButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
     self.navigationItem.leftBarButtonItem = leftItem;
@@ -78,6 +78,7 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:YES];
+    [self.deviceTable reloadData];
     [self.navigationController setToolbarHidden:YES animated:NO];
     
 }
@@ -164,16 +165,16 @@
     if ([pi.state isEqualToString:@"connected"]) {
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
         SettingUser *thirdViewController = [[SettingUser alloc] init];
-        thirdViewController.title = [NSString stringWithFormat:@"IMIST-%ld",(long)indexPath.row];
+        thirdViewController.title = pi.name;
         SettingModeVC *firstViewController = [[SettingModeVC alloc] init];
-        firstViewController.title = [NSString stringWithFormat:@"IMIST-%ld",(long)indexPath.row];
+        firstViewController.title = pi.name;
         SettingAlerm *secondViewController = [[SettingAlerm alloc] init];
-        secondViewController.title = [NSString stringWithFormat:@"IMIST-%ld",(long)indexPath.row];
+        secondViewController.title = pi.name;
         
         RDVTabBarController *tabBarController = [[RDVTabBarController alloc] init];
         [tabBarController setViewControllers:@[firstViewController, secondViewController,thirdViewController]];
         [self customizeTabBarForController:tabBarController];
-        tabBarController.title = [NSString stringWithFormat:@"IMIST-%ld",(long)indexPath.row];
+        tabBarController.title = pi.name;
         [self.navigationController pushViewController:tabBarController animated:YES];
     }else if([pi.state isEqualToString:@"disConnected"]) {
         [ProgressHUD show:@"connecting ..."];

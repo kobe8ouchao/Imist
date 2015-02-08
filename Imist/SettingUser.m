@@ -26,12 +26,19 @@
     self.navigationItem.leftBarButtonItem = leftItem;
     self.view.backgroundColor=[UIColor whiteColor];
     
-    [self setUpBar:CGRectMake(20, 30, self.view.frame.size.width - 40 ,80) withTitle:@"Imist" withMin:0 withMax:50 withTag:1];
-    [self setUpBar:CGRectMake(20, 100, self.view.frame.size.width - 40 ,80) withTitle:@"Led brightness" withMin:0 withMax:50 withTag:2];
-    [self setUpBar:CGRectMake(20, 180, self.view.frame.size.width - 40 ,80) withTitle:@"led color" withMin:0 withMax:50 withTag:3];
+    UIButton *modeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [modeBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    [modeBtn setTitle:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode forState:UIControlStateNormal];
+    [modeBtn setBackgroundColor:[UIColor clearColor]];
+    modeBtn.frame = CGRectMake((self.view.frame.size.width - 130)/2, 10, 130, 40);
+    [self.view addSubview:modeBtn];
+    
+    [self setUpBar:CGRectMake(20, 60, self.view.frame.size.width - 40 ,80) withTitle:@"Imist" withMin:0 withMax:50 withTag:1];
+    [self setUpBar:CGRectMake(20, 130, self.view.frame.size.width - 40 ,80) withTitle:@"Led brightness" withMin:0 withMax:100 withTag:2];
+    [self setUpBar:CGRectMake(20, 210, self.view.frame.size.width - 40 ,80) withTitle:@"led color" withMin:0 withMax:50 withTag:3];
 //    [self setUpBar:CGRectMake(20, 230, self.view.frame.size.width - 40 ,40) withTitle:@"led auto" withMin:0 withMax:50 withTag:4];
     
-    UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(0, 260, self.view.frame.size.width ,18)];
+    UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(0, 280, self.view.frame.size.width ,18)];
     [lable setFont:[UIFont boldSystemFontOfSize:18]];
     lable.textAlignment = NSTextAlignmentCenter;
     lable.text = @"led auto";
@@ -39,7 +46,7 @@
     [self.view addSubview:lable];
     
     UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    sureBtn.frame = CGRectMake(80, 290, 30, 30);
+    sureBtn.frame = CGRectMake(80, 310, 30, 30);
     [sureBtn setBackgroundImage:[UIImage imageNamed:@"app40.png"] forState:UIControlStateNormal];
     [sureBtn setTitle:@"" forState:UIControlStateNormal];
     sureBtn.tag = 1;
@@ -53,7 +60,7 @@
     [noBtn setTitle:@"" forState:UIControlStateNormal];
     noBtn.tag = 2;
     [noBtn setBackgroundColor:[UIColor clearColor]];
-    noBtn.frame = CGRectMake(self.view.frame.size.width - 800, 290, 30, 30);
+    noBtn.frame = CGRectMake(self.view.frame.size.width - 800, 310, 30, 30);
     [noBtn addTarget:self action:@selector(btnNo:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:noBtn];
     
@@ -104,7 +111,7 @@
     //continuous属性，是指滑块值在拖地触发滑块值变动
     slider.continuous = YES;
     slider.tag = tag;
-    [slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventTouchUpInside];
     [bg addSubview:slider];
     
     UIImageView *plus = [[UIImageView alloc] initWithFrame:CGRectMake(bg.frame.size.width - 35, 24, 30 ,30)];
@@ -121,6 +128,100 @@
     float value = control.value;
     control.value =value;
     NSLog(@"%f",value);
+    if (control.tag == 1) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(200 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
+            NSMutableData* data = [NSMutableData data];
+            NSUInteger query = 0x01;
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]){
+                query = 0x01;
+            }
+            else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"4 Hours"]){
+                query = 0x02;
+            }
+            else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"8 Hours"]){
+                query = 0x03;
+            }
+            else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"16 Hours"]){
+                query = 0x04;
+            }
+            
+            [data appendBytes:&query length:1];
+            NSUInteger imist = value;
+            [data appendBytes:&imist length:1];
+            NSUInteger led = 0x0;
+            [data appendBytes:&led length:1];
+            NSUInteger color1 = 0x0;
+            [data appendBytes:&color1 length:1];
+            NSUInteger color2 = 0x0;
+            [data appendBytes:&color2 length:1];
+            NSUInteger color3 = 0x0;
+            [data appendBytes:&color3 length:1];
+            
+            self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
+            [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+        });
+    }else if(control.tag == 2) {
+        NSMutableData* data = [NSMutableData data];
+        NSUInteger query = 0x01;
+        if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]){
+            query = 0x01;
+        }
+        else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"4 Hours"]){
+            query = 0x02;
+        }
+        else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"8 Hours"]){
+            query = 0x03;
+        }
+        else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"16 Hours"]){
+            query = 0x04;
+        }
+        [data appendBytes:&query length:1];
+        NSUInteger imist = 0x0;
+        [data appendBytes:&imist length:1];
+        NSUInteger led = value;
+        [data appendBytes:&led length:1];
+        NSUInteger color1 = 0x0;
+        [data appendBytes:&color1 length:1];
+        NSUInteger color2 = 0x0;
+        [data appendBytes:&color2 length:1];
+        NSUInteger color3 = 0x0;
+        [data appendBytes:&color3 length:1];
+        
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
+        [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+    }else if(control.tag == 3) {
+        NSMutableData* data = [NSMutableData data];
+        NSUInteger query = 0x01;
+        if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]){
+            query = 0x01;
+        }
+        else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"4 Hours"]){
+            query = 0x02;
+        }
+        else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"8 Hours"]){
+            query = 0x03;
+        }
+        else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"16 Hours"]){
+            query = 0x04;
+        }
+        [data appendBytes:&query length:1];
+        NSUInteger imist = 0x0;
+        [data appendBytes:&imist length:1];
+        NSUInteger led = 0x0;
+        [data appendBytes:&led length:1];
+        NSUInteger color1 = 0x0;
+        [data appendBytes:&color1 length:1];
+        NSUInteger color2 = 0x0;
+        [data appendBytes:&color2 length:1];
+        NSUInteger color3 = 0x0;
+        [data appendBytes:&color3 length:1];
+        
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
+        [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+    }
+
+    
+    
 }
 
 - (void) btnSure:(id)sender

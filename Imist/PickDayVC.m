@@ -39,6 +39,9 @@
     self.deviceTable=_table;
     [self.view addSubview:self.deviceTable];
     _selecteddays = [[NSMutableArray alloc] init];
+    for (NSString *day in self.daysvalue) {
+        [_selecteddays addObject:day];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

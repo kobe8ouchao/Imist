@@ -24,6 +24,7 @@
 #import "RDVTabBarController.h"
 #import "RDVTabBarItem.h"
 #import <objc/runtime.h>
+#import "AppDelegate.h"
 
 @interface UIViewController (RDVTabBarControllerItemInternal)
 
@@ -45,7 +46,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [leftBtn setFrame:CGRectMake( 0, 0, 22, 22)];
+    [leftBtn setImage:[UIImage imageNamed:@"setting.png"] forState:UIControlStateNormal];
+    [leftBtn addTarget:self action:@selector(changeAction:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
+    self.navigationItem.rightBarButtonItem = leftItem;
+
     [self.view addSubview:[self contentView]];
     [self.view addSubview:[self tabBar]];
 }
@@ -233,6 +240,11 @@
 #pragma mark - RDVTabBarDelegate
 
 - (BOOL)tabBar:(RDVTabBar *)tabBar shouldSelectItemAtIndex:(NSInteger)index {
+    AppDelegate *application = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    if (index == 2 && application.defaultBTServer.selectPeripheralInfo && (![application.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"] && ![application.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"4 Hours"] && ![application.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"8 Hours"] && ![application.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"16 Hours"])) {
+        return NO;
+    }
+    
     if ([[self delegate] respondsToSelector:@selector(tabBarController:shouldSelectViewController:)]) {
         if (![[self delegate] tabBarController:self shouldSelectViewController:[self viewControllers][index]]) {
             return NO;
@@ -310,5 +322,28 @@
     [tabBarItems replaceObjectAtIndex:index withObject:tabBarItem];
     [tabBar setItems:tabBarItems];
 }
+
+-(void)changeAction:(id)sender
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Change Imist Name" message:nil delegate:nil cancelButtonTitle:InterNation(@"cancel") otherButtonTitles:InterNation(@"confirm") ,nil];
+    alert.tag = 222;
+    alert.delegate = self;
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeDefault];
+    [alert show];
+}
+
+-(void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    UITextField *tf=[alertView textFieldAtIndex:0];
+    if (alertView.tag==222) {
+        if (alertView.cancelButtonIndex != buttonIndex) {
+            self.title = tf.text;
+            AppDelegate *application = (AppDelegate*)[UIApplication sharedApplication].delegate;
+            application.defaultBTServer.selectPeripheralInfo.name = tf.text;
+        }
+    }
+}
+
 
 @end

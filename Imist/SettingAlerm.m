@@ -25,7 +25,7 @@
     self.view.backgroundColor=[UIColor whiteColor];    
     
     //init device tableview
-    UITableView *_table=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,  self.view.frame.size.height) style:UITableViewStylePlain];
+    UITableView *_table=[[UITableView alloc] initWithFrame:CGRectMake(0, 20, self.view.frame.size.width,  self.view.frame.size.height) style:UITableViewStylePlain];
     _table.autoresizingMask = (UIViewAutoresizingFlexibleWidth |
                                UIViewAutoresizingFlexibleHeight);
     _table.delegate = self;
@@ -101,8 +101,11 @@
     if (cell == nil) {
         cell = [[AlertSettingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.time = [alertItem objectForKey:@"time"];
+    cell.days = [alertItem objectForKey:@"repeat"];
     cell.isOpen = [[alertItem objectForKey:@"open"] boolValue];
+    [cell setStyle];
     return cell;
 }
 

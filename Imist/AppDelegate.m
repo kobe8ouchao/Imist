@@ -50,6 +50,22 @@
                                                         rightMenuViewController:nil];
         self.window.rootViewController = container;
     }
+//    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)])
+//    {
+//        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+//    }
+//    UILocalNotification *localNotif = [[UILocalNotification alloc] init];
+//    [localNotif setFireDate:[[NSDate date] dateByAddingTimeInterval:5]];
+//    localNotif.timeZone = [NSTimeZone defaultTimeZone];
+//    NSLog(@"fireDate %@", localNotif.fireDate);
+//    NSLog(@"datepicker %@", [[NSDate date] dateByAddingTimeInterval:5]);
+//    
+//    [localNotif setRepeatInterval:0];
+//    localNotif.alertBody = @"some text";
+//    localNotif.soundName = [[NSBundle mainBundle] pathForResource:@"Bicker.mp3" ofType:@"mp3"];
+//    localNotif.alertAction = @"...";
+//    
+//    [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
     return YES;
 }
 
@@ -73,6 +89,11 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)application:(UIApplication *)application
+didReceiveLocalNotification:(UILocalNotification *)notification {
+    NSLog(@"aaaaa");
 }
 
 -(UINavigationController*)Nav{

@@ -149,7 +149,10 @@
     if (!self.days) {
         self.days = @"1|2|3|4|5|6|7";
     }
-    dictionary = [NSDictionary dictionaryWithObjectsAndKeys:@"time",times,@"sound",self.sound,@"repeat",self.days,nil];
+    dictionary = [NSDictionary dictionaryWithObjectsAndKeys:times,@"time",self.sound,@"sound",self.days,@"repeat", @"1", @"isOpen",nil];
+    if (!self.appDelegate.defaultBTServer.selectPeripheralInfo.alert ) {
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.alert = [[NSMutableArray alloc] init];
+    }
     [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert addObject:dictionary];
     [self.navigationController popViewControllerAnimated:YES];
 }

@@ -57,6 +57,10 @@ typedef enum{
     [self.essenceName setValue:@" Orange " forKey:@"Soothing"];
     [self.essenceName setValue:@" Eucalytus " forKey:@"Concentration"];
     [self.essenceName setValue:@" Rose " forKey:@"Sensuality"];
+    [self.essenceName setValue:@"Your likes oil" forKey:@"2 Hours"];
+    [self.essenceName setValue:@" Your likes oil " forKey:@"4 Hours"];
+    [self.essenceName setValue:@" Your likes oil " forKey:@"8 Hours"];
+    [self.essenceName setValue:@" Your likes oil " forKey:@"16 Hours"];
     
 
 }
@@ -247,6 +251,39 @@ typedef enum{
 
 
 -(void)hoursClick:(UIButton*)btn{
+    if([btn.titleLabel.text isEqualToString:@"2 Hours"]){
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.mode = @"2 Hours";
+    }
+    else if([btn.titleLabel.text isEqualToString:@"4 Hours"]){
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.mode = @"4 Hours";
+    }
+    else if([btn.titleLabel.text isEqualToString:@"8 Hours"]){
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.mode = @"8 Hours";
+    }
+    else if([btn.titleLabel.text isEqualToString:@"16 Hours"]){
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.mode = @"16 Hours";
+    }
+    
+    [self getWaterStatus];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(200 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
+        if(self.appDelegate.defaultBTServer.selectPeripheralInfo.water){//has water
+            if(NO == self.doNotShowHint){
+                [self setMode:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode waterStatus:HAS_WATER_NOT_WORK];
+                
+                NSString * hintString = [self composeHint:[self.essenceName valueForKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode]];
+                [self showHint:hintString];
+            }
+            else{
+                [self setMode:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode waterStatus:HAS_WATER_AND_WORK];
+            }
+        }
+        else{
+            NSString * hintString = [self composeHint:[self.essenceName valueForKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode]];
+            [self showHint:hintString];
+        }
+    });
+
+
 }
 
 - (void)setMode:(NSString*)modeString waterStatus:(NSInteger)status{
@@ -268,6 +305,17 @@ typedef enum{
     }
     else if([modeString isEqualToString:@"Sensuality"]){
         btnTag = 6;
+    }else if([modeString isEqualToString:@"2 Hours"]){
+        btnTag = 11;
+    }
+    else if([modeString isEqualToString:@"4 Hours"]){
+        btnTag = 12;
+    }
+    else if([modeString isEqualToString:@"8 Hours"]){
+        btnTag = 13;
+    }
+    else if([modeString isEqualToString:@"16 Hours"]){
+        btnTag = 14;
     }
     
     if(status == HAS_WATER_AND_WORK)
@@ -276,6 +324,10 @@ typedef enum{
     
     dispatch_async(dispatch_get_main_queue(), ^{
         for(UInt8 i = 1; i<=6; i++){
+            UIButton * btn = (UIButton*)[self.view viewWithTag:i];
+            [btn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+        }
+        for(UInt8 i = 11; i<=14; i++){
             UIButton * btn = (UIButton*)[self.view viewWithTag:i];
             [btn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
         }
@@ -314,6 +366,17 @@ typedef enum{
     }
     else if([modeString isEqualToString:@"Sensuality"]){
         cmd = 8;
+    }else if([modeString isEqualToString:@"2 Hours"]){
+        cmd = 1;
+    }
+    else if([modeString isEqualToString:@"4 Hours"]){
+        cmd = 2;
+    }
+    else if([modeString isEqualToString:@"8 Hours"]){
+        cmd = 3;
+    }
+    else if([modeString isEqualToString:@"16 Hours"]){
+        cmd = 4;
     }
     
     NSMutableData* data = [NSMutableData data];
