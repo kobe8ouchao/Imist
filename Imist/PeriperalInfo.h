@@ -34,6 +34,10 @@
 @property (strong,nonatomic)NSNumber *imist;
 @property (strong,nonatomic)NSMutableArray *alert;
 @property (assign,nonatomic)NSInteger curCmd;
+@property (strong,nonatomic)NSMutableDictionary *userset2Hour;
+@property (strong,nonatomic)NSMutableDictionary *userset4Hour;
+@property (strong,nonatomic)NSMutableDictionary *userset8Hour;
+@property (strong,nonatomic)NSMutableDictionary *userset16Hour;
 typedef enum{
     GET_WATER_STATUS,
     GET_WORK_MODE,
