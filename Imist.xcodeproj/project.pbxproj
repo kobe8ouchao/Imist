@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A5EFE1E41A88A052008775B7 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5EFE1E31A88A052008775B7 /* icon@2x.png */; };
+		A5EFE1E61A88A347008775B7 /* ico_sidemenu_about@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5EFE1E51A88A347008775B7 /* ico_sidemenu_about@2x.png */; };
 		C33643FA1A7888810047AAE5 /* ProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C33643F71A7888810047AAE5 /* ProgressHUD.bundle */; };
 		C33643FB1A7888820047AAE5 /* ProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C33643F91A7888810047AAE5 /* ProgressHUD.m */; };
 		C33643FD1A789C410047AAE5 /* bg_sidemenu_cell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C33643FC1A789C410047AAE5 /* bg_sidemenu_cell@2x.png */; };
@@ -137,6 +139,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A5EFE1E31A88A052008775B7 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
+		A5EFE1E51A88A347008775B7 /* ico_sidemenu_about@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ico_sidemenu_about@2x.png"; sourceTree = "<group>"; };
 		C33643F71A7888810047AAE5 /* ProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ProgressHUD.bundle; sourceTree = "<group>"; };
 		C33643F81A7888810047AAE5 /* ProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressHUD.h; sourceTree = "<group>"; };
 		C33643F91A7888810047AAE5 /* ProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressHUD.m; sourceTree = "<group>"; };
@@ -389,6 +393,8 @@
 		C38819961A523F8C004A98CA /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				A5EFE1E51A88A347008775B7 /* ico_sidemenu_about@2x.png */,
+				A5EFE1E31A88A052008775B7 /* icon@2x.png */,
 				C3C4466C1A875BCB006D3D76 /* setting@2x.png */,
 				C3E7C17F1A85DB4100C58294 /* Bicker.mp3 */,
 				C3E7C1801A85DB4100C58294 /* Chirp.mp3 */,
@@ -770,6 +776,7 @@
 				C33F4E171A7BE46F009A497A /* tutorial_eng.png in Resources */,
 				C3DFE9191A6CB6F20044F52E /* third_selected@2x.png in Resources */,
 				C33644091A78AA1F0047AAE5 /* bg_scancell_gray@2x.png in Resources */,
+				A5EFE1E41A88A052008775B7 /* icon@2x.png in Resources */,
 				C33F4E131A7BE46F009A497A /* tutorial_eng_2.png in Resources */,
 				C33F4E111A7BE46F009A497A /* tutorial_eng_0.png in Resources */,
 				C33F4E211A7DFC10009A497A /* tutorial_eng3_4.png in Resources */,
@@ -780,6 +787,7 @@
 				C33643FA1A7888810047AAE5 /* ProgressHUD.bundle in Resources */,
 				C3DFE9131A6CB6F20044F52E /* tabbar_normal_background@2x.png in Resources */,
 				C3DFE90F1A6CB6F20044F52E /* second_normal@2x.png in Resources */,
+				A5EFE1E61A88A347008775B7 /* ico_sidemenu_about@2x.png in Resources */,
 				C3422B401A56A8BB0095B6AA /* arrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
