@@ -65,18 +65,28 @@
         connectBtn.hidden = NO;
         [connectBtn setTitle:@"Disconnect" forState:UIControlStateNormal];
     }else {
+        dispatch_async(dispatch_get_main_queue(), ^{
         connectBtn.hidden = YES;
-        [connectBtn setTitle:@"Connect" forState:UIControlStateNormal];
+        });
+        //[connectBtn setTitle:@"Connect" forState:UIControlStateNormal];
     }
     UIImageView *bg = (UIImageView *)[self viewWithTag:4];
     if (1 == state) {
+        dispatch_async(dispatch_get_main_queue(), ^{
         bg.image = [UIImage imageNamed:@"bg_scancell_green.png"];
+        });
     }else if(0 == state){
+        dispatch_async(dispatch_get_main_queue(), ^{
         bg.image = [UIImage imageNamed:@"bg_scancell_gray.png"];
+        });
     }else if(2 == state){
+        dispatch_async(dispatch_get_main_queue(), ^{
         bg.image = [UIImage imageNamed:@"bg_scancell_red.png"];
+        });
     }else if(3 == state) {
+        dispatch_async(dispatch_get_main_queue(), ^{
         bg.image = [UIImage imageNamed:@"bg_scancell_blue.png"];
+        });
     }
     
     
