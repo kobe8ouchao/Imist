@@ -20,10 +20,11 @@
 @property (nonatomic,strong) NSString *ampm;
 @property (nonatomic,strong) NSString *sound;
 @property (nonatomic,strong) NSString *days;
+
 @end
 
 @implementation AddAlarmVC
-@synthesize all,hours,minis,pickerview,selectedHour,selectedMinis,ampm;
+@synthesize all,hours,minis,pickerview,selectedHour,selectedMinis,ampm,editAlert;
 - (void)viewDidLoad {
     [super viewDidLoad];
     UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
@@ -35,8 +36,20 @@
     UIPickerView * _pickerview = [[UIPickerView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 200)/2, 40, 200, 200)];
     _pickerview.delegate=self;
     _pickerview.dataSource=self;
-//    [_pickerview selectRow:(1000/(2*[self.hours count]))*[self.hours count] inComponent:1 animated:NO];
-//    [_pickerview selectRow:(1000/(2*[self.minis count]))*[self.minis count] inComponent:2 animated:NO];
+    if (self.editAlert) {
+        NSString *strTime = [self.editAlert objectForKey:@"time"];
+        NSArray *arrTime = [strTime componentsSeparatedByString:@":"];
+        if ([[arrTime objectAtIndex:0] integerValue] > 12) {
+            [_pickerview selectRow:1 inComponent:0 animated:NO];
+            [_pickerview selectRow:[[arrTime objectAtIndex:0] integerValue] - 12 inComponent:1 animated:NO];
+        }else {
+            [_pickerview selectRow:0 inComponent:0 animated:NO];
+            [_pickerview selectRow:[[arrTime objectAtIndex:0] integerValue] inComponent:1 animated:NO];
+        }
+        [_pickerview selectRow:[[arrTime objectAtIndex:1] integerValue] inComponent:2 animated:NO];
+        self.days = [self.editAlert objectForKey:@"repeat"];
+        self.sound = [self.editAlert objectForKey:@"sound"];
+    }
     self.pickerview = _pickerview;
     
     [self.view addSubview:self.pickerview];
@@ -137,9 +150,9 @@
     self.ampm = [all objectAtIndex:row];
     self.selectedHour = [self.hours objectAtIndex:hrow];
     self.selectedMinis = [self.minis objectAtIndex:mrow];
-    if ([self.ampm isEqualToString:@"AM"]) {
+    if ([self.ampm isEqualToString:@"PM"]) {
         NSInteger hourss = [self.selectedHour integerValue] + 12;
-        self.selectedHour = [NSString stringWithFormat:@"%d",hourss];
+        self.selectedHour = [NSString stringWithFormat:@"%ld",(long)hourss];
     }
     NSString *times = [NSString stringWithFormat:@"%@:%@",self.selectedHour,self.selectedMinis];
     NSDictionary * dictionary;
@@ -150,10 +163,15 @@
         self.days = @"1|2|3|4|5|6|7";
     }
     dictionary = [NSDictionary dictionaryWithObjectsAndKeys:times,@"time",self.sound,@"sound",self.days,@"repeat", @"1", @"isOpen",nil];
-    if (!self.appDelegate.defaultBTServer.selectPeripheralInfo.alert ) {
-        self.appDelegate.defaultBTServer.selectPeripheralInfo.alert = [[NSMutableArray alloc] init];
+    if (self.editAlert) {
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert removeObject:self.editAlert];
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert addObject:dictionary];
+    }else {
+        if (!self.appDelegate.defaultBTServer.selectPeripheralInfo.alert ) {
+            self.appDelegate.defaultBTServer.selectPeripheralInfo.alert = [[NSMutableArray alloc] init];
+        }
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert addObject:dictionary];
     }
-    [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert addObject:dictionary];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

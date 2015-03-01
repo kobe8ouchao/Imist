@@ -124,6 +124,12 @@
 		C3E7C1881A85DB4100C58294 /* Rain.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C1821A85DB4100C58294 /* Rain.mp3 */; };
 		C3E7C1891A85DB4100C58294 /* Wave.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C1831A85DB4100C58294 /* Wave.mp3 */; };
 		C3E7C18A1A85DB4100C58294 /* Zen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C1841A85DB4100C58294 /* Zen.mp3 */; };
+		C3E8D7071AA3110500301B6B /* user_set01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3E8D7011AA3110500301B6B /* user_set01@2x.png */; };
+		C3E8D7081AA3110500301B6B /* user_set02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3E8D7021AA3110500301B6B /* user_set02@2x.png */; };
+		C3E8D7091AA3110500301B6B /* user_set03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3E8D7031AA3110500301B6B /* user_set03@2x.png */; };
+		C3E8D70A1AA3110500301B6B /* user_set04@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3E8D7041AA3110500301B6B /* user_set04@2x.png */; };
+		C3E8D70B1AA3110500301B6B /* user_set05@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3E8D7051AA3110500301B6B /* user_set05@2x.png */; };
+		C3E8D70C1AA3110500301B6B /* user_set06@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3E8D7061AA3110500301B6B /* user_set06@2x.png */; };
 		C3F7E0F61A708FB700984037 /* PickSoundVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C3F7E0F51A708FB700984037 /* PickSoundVC.m */; };
 		C3F7E0F81A70930800984037 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3F7E0F71A70930800984037 /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
@@ -296,6 +302,12 @@
 		C3E7C1821A85DB4100C58294 /* Rain.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Rain.mp3; sourceTree = "<group>"; };
 		C3E7C1831A85DB4100C58294 /* Wave.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Wave.mp3; sourceTree = "<group>"; };
 		C3E7C1841A85DB4100C58294 /* Zen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Zen.mp3; sourceTree = "<group>"; };
+		C3E8D7011AA3110500301B6B /* user_set01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_set01@2x.png"; sourceTree = "<group>"; };
+		C3E8D7021AA3110500301B6B /* user_set02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_set02@2x.png"; sourceTree = "<group>"; };
+		C3E8D7031AA3110500301B6B /* user_set03@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_set03@2x.png"; sourceTree = "<group>"; };
+		C3E8D7041AA3110500301B6B /* user_set04@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_set04@2x.png"; sourceTree = "<group>"; };
+		C3E8D7051AA3110500301B6B /* user_set05@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_set05@2x.png"; sourceTree = "<group>"; };
+		C3E8D7061AA3110500301B6B /* user_set06@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_set06@2x.png"; sourceTree = "<group>"; };
 		C3F7E0F41A708FB700984037 /* PickSoundVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickSoundVC.h; sourceTree = "<group>"; };
 		C3F7E0F51A708FB700984037 /* PickSoundVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickSoundVC.m; sourceTree = "<group>"; };
 		C3F7E0F71A70930800984037 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -393,6 +405,12 @@
 		C38819961A523F8C004A98CA /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				C3E8D7011AA3110500301B6B /* user_set01@2x.png */,
+				C3E8D7021AA3110500301B6B /* user_set02@2x.png */,
+				C3E8D7031AA3110500301B6B /* user_set03@2x.png */,
+				C3E8D7041AA3110500301B6B /* user_set04@2x.png */,
+				C3E8D7051AA3110500301B6B /* user_set05@2x.png */,
+				C3E8D7061AA3110500301B6B /* user_set06@2x.png */,
 				A5EFE1E51A88A347008775B7 /* ico_sidemenu_about@2x.png */,
 				A5EFE1E31A88A052008775B7 /* icon@2x.png */,
 				C3C4466C1A875BCB006D3D76 /* setting@2x.png */,
@@ -717,6 +735,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3DFE9091A6CB6F20044F52E /* first_selected@2x.png in Resources */,
+				C3E8D7081AA3110500301B6B /* user_set02@2x.png in Resources */,
 				C3D7CA3F1A84760B00FBE9CB /* ico_plus2@2x.png in Resources */,
 				C3422B521A56C6020095B6AA /* rh_whirl.png in Resources */,
 				C3DFE90C1A6CB6F20044F52E /* navigationbar_background_tall.png in Resources */,
@@ -731,6 +750,7 @@
 				C3E7C1881A85DB4100C58294 /* Rain.mp3 in Resources */,
 				C33644011A78A20E0047AAE5 /* ico_scancell@2x.png in Resources */,
 				C3422B511A56C6020095B6AA /* rh_up@2x.png in Resources */,
+				C3E8D70B1AA3110500301B6B /* user_set05@2x.png in Resources */,
 				C33F4E161A7BE46F009A497A /* tutorial_eng_5.png in Resources */,
 				C3D7CA411A847FCA00FBE9CB /* app40@2x.png in Resources */,
 				C33F4E241A7DFC10009A497A /* tutorial_eng6_4.png in Resources */,
@@ -739,6 +759,7 @@
 				C33F4E071A7BCD41009A497A /* bg_btn_gray@2x.png in Resources */,
 				C33644081A78AA1F0047AAE5 /* bg_scancell_blue@2x.png in Resources */,
 				C3A8A0981A4EB996004C9ADE /* InfoPlist.strings in Resources */,
+				C3E8D70C1AA3110500301B6B /* user_set06@2x.png in Resources */,
 				C33F4E091A7BD8AB009A497A /* bg_btn_green@2x.png in Resources */,
 				C3DFE9121A6CB6F20044F52E /* tabbar_normal_background.png in Resources */,
 				C336440B1A78AA1F0047AAE5 /* bg_scancell_red@2x.png in Resources */,
@@ -749,11 +770,13 @@
 				C3E7C1891A85DB4100C58294 /* Wave.mp3 in Resources */,
 				C388199C1A523FC0004A98CA /* back-arrow.png in Resources */,
 				C33F4E291A7E07ED009A497A /* app41@2x.png in Resources */,
+				C3E8D7091AA3110500301B6B /* user_set03@2x.png in Resources */,
 				C33F4E251A7DFC10009A497A /* tutorial_eng7_4.png in Resources */,
 				C33F4E1F1A7DFC10009A497A /* tutorial_eng1_4.png in Resources */,
 				C3422B4F1A56C6020095B6AA /* rh_pattern@2x.png in Resources */,
 				C3DFE90D1A6CB6F20044F52E /* navigationbar_background_tall@2x.png in Resources */,
 				C33F4E141A7BE46F009A497A /* tutorial_eng_3.png in Resources */,
+				C3E8D7071AA3110500301B6B /* user_set01@2x.png in Resources */,
 				C3DFE90B1A6CB6F20044F52E /* navigationbar_background@2x.png in Resources */,
 				C3422B501A56C6020095B6AA /* rh_up.png in Resources */,
 				C3DFE9071A6CB6F20044F52E /* first_normal@2x.png in Resources */,
@@ -788,6 +811,7 @@
 				C3DFE9131A6CB6F20044F52E /* tabbar_normal_background@2x.png in Resources */,
 				C3DFE90F1A6CB6F20044F52E /* second_normal@2x.png in Resources */,
 				A5EFE1E61A88A347008775B7 /* ico_sidemenu_about@2x.png in Resources */,
+				C3E8D70A1AA3110500301B6B /* user_set04@2x.png in Resources */,
 				C3422B401A56A8BB0095B6AA /* arrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

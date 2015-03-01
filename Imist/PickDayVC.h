@@ -11,6 +11,7 @@
 @interface PickDayVC : BaseViewController {
 }
 @property (nonatomic, assign) id<pickDayDelegate> delegate;
+@property (nonatomic,strong) NSString *editdays;
 @end
 @protocol pickDayDelegate <NSObject>
 -(void)saveDay:(NSArray*)days;

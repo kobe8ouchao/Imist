@@ -9,5 +9,5 @@
 #import "BaseViewController.h"
 
 @interface AddAlarmVC : BaseViewController
-
+@property (nonatomic, strong) NSDictionary *editAlert;
 @end

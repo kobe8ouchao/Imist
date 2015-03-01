@@ -183,7 +183,23 @@
                 [ProgressHUD dismiss];
                 if (status) {
                     pi.state = @"connected";
-                    self.appDelegate.defaultBTServer.selectPeripheralInfo = pi;
+//                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//                    NSData *encodedDataObject = [defaults objectForKey:pi.uuid];
+//                    PeriperalInfo *selectPi = (PeriperalInfo *)[NSKeyedUnarchiver unarchiveObjectWithData: encodedDataObject];
+//                    if (selectPi) {
+//                        pi.water = selectPi.water;
+//                        pi.ledauto = selectPi.ledauto;
+//                        pi.ledcolor = selectPi.ledcolor;
+//                        pi.mode = selectPi.mode;
+//                        pi.alert = selectPi.alert;
+//                        pi.ledlight = selectPi.ledlight;
+//                        self.appDelegate.defaultBTServer.selectPeripheralInfo = selectPi;
+//                    }else {
+//                        NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:[NSString stringWithFormat:@"Key%@",pi.uuid]];
+                        self.appDelegate.defaultBTServer.selectPeripheralInfo = pi;
+//                        [defaults setObject:encodedObject forKey:pi.uuid];
+//                    }
+                    
                     [cell setState:1];
                     [ProgressHUD showSuccess:@"connected success!"];
                     NSMutableData* data = [NSMutableData data];

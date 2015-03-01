@@ -13,6 +13,7 @@
 
 @interface SettingAlerm ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSDictionary *deletealertItem;
 @property (strong,nonatomic)UITableView *alertTable;
 @end
 
@@ -90,6 +91,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSDictionary *alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:indexPath.row];
+    AddAlarmVC* addv = [[AddAlarmVC alloc] init];
+    addv.editAlert = alertItem;
+    [self.navigationController pushViewController:addv animated:YES];
     
 }
 
@@ -107,6 +112,31 @@
     cell.isOpen = [[alertItem objectForKey:@"open"] boolValue];
     [cell setStyle];
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.deletealertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:indexPath.row];
+    [self AlertView];
+}
+
+-(void)AlertView{
+    UIAlertView *aview = [[UIAlertView alloc]initWithTitle:@"Delete Alerm?" message:@"Do you want to delete this alerm?" delegate:self cancelButtonTitle:@"Confirm" otherButtonTitles:@"Cancel", nil];
+    aview.delegate = self;
+    [aview show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    switch (buttonIndex) {
+        case 0:
+            [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert removeObject:self.deletealertItem];
+            [self.alertTable reloadData];
+            break;
+        case 1:
+            [self.alertTable reloadData];
+        default:
+            break;
+    }
 }
 
 @end

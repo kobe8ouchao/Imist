@@ -16,7 +16,7 @@
 @end
 
 @implementation PickDayVC
-@synthesize deviceTable, days, delegate;
+@synthesize deviceTable, days, delegate, editdays;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Select Days";
@@ -39,9 +39,17 @@
     self.deviceTable=_table;
     [self.view addSubview:self.deviceTable];
     _selecteddays = [[NSMutableArray alloc] init];
-    for (NSString *day in self.daysvalue) {
-        [_selecteddays addObject:day];
+    if (self.editdays) {
+        NSArray *editday = [self.editdays componentsSeparatedByString:@"|"];
+        for (NSString *day in editday) {
+            [_selecteddays addObject:day];
+        }
+    }else {
+        for (NSString *day in self.daysvalue) {
+            [_selecteddays addObject:day];
+        }
     }
+    
 }
 
 - (void)didReceiveMemoryWarning {

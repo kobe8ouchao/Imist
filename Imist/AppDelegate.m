@@ -83,11 +83,8 @@
     AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(doChangeDefaultRoute), &doChangeDefaultRoute);
     
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
-    NSString *urlString = [[NSBundle mainBundle]pathForResource:
-                           @"Bicker" ofType:@"mp3"];
-    NSURL *url = [NSURL fileURLWithPath:urlString];
-    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:@"ipod-library://item/item.m4a?id=3931664747562493245"] error:nil];
-    self.player.delegate = self;
+
+
     return YES;
 }
 
@@ -101,28 +98,70 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-//    if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] > 0) {
-//        NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
-//
-//        self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
-//    }
-    
-    NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:2.0];
-    NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
-                                              interval:10
-                                                target:self
-                                              selector:@selector(playAlarm)
-                                              userInfo:nil
-                                               repeats:NO];
-    
-    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-    [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
-    [runLoop run];
+    if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] > 0) {
+        NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+        NSString *soundurl = [alertItem objectForKey:@"sound"];
+        if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
+            self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
+        }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
+            NSString *urlString = [[NSBundle mainBundle]pathForResource:
+                                   soundurl ofType:@"mp3"];
+            NSURL *url = [NSURL fileURLWithPath:urlString];
+            self.player = [[AVAudioPlayer alloc]
+                            initWithContentsOfURL:url
+                            error:nil];
+        }else {
+            NSURL *url = [NSURL fileURLWithPath:soundurl];
+            self.player = [[AVAudioPlayer alloc]
+                           initWithContentsOfURL:url
+                           error:nil];
+        }
+        
+//        self.player.delegate = self;
+        NSString *time = [alertItem objectForKey:@"time"];
+        NSString *repeat = [alertItem objectForKey:@"repeat"];
+        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
+        NSInteger weekday = [comps weekday];
+        NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
+        BOOL isAlert = NO;
+        for (NSString *d in repeatdays) {
+            if ([d integerValue] == weekday) {
+                isAlert = YES;
+                break;
+            }
+        }
+        if (isAlert) {
+            NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
+            NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
+            [timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+            NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
+            NSTimeInterval distanceBetweenDates = [date timeIntervalSinceDate:[NSDate date]];
+            if (distanceBetweenDates >= 0) {
+                NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:distanceBetweenDates];
+                NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
+                                                          interval:10
+                                                            target:self
+                                                          selector:@selector(playAlarm)
+                                                          userInfo:nil
+                                                           repeats:NO];
+                
+                NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+                [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
+                [runLoop run];
+            }
+
+        }
+    }    
 
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    if (self.player) {
+        [self.player stop];
+        self.player = nil;
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -147,13 +186,27 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 {
     static UIBackgroundTaskIdentifier bgTaskId;
     UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
-    [self.player prepareToPlay];
-    if([self.player play]){
+    if (self.player) {
+        [self.player prepareToPlay];
+        if([self.player play]){
+            newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
+        }
+        if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
+            [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
+        bgTaskId = newTaskId;
+    }else {
         newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
+        NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+        NSString *soundurl = [alertItem objectForKey:@"sound"];
+        NSURL *url = [NSURL fileURLWithPath:soundurl];
+        SystemSoundID soundID;
+        AudioServicesCreateSystemSoundID((__bridge_retained CFURLRef)url,&soundID);
+        AudioServicesPlaySystemSound(soundID);
+        if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
+            [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
+        bgTaskId = newTaskId;
     }
-    if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
-        [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
-    bgTaskId = newTaskId;
+    
 
     
 }
