@@ -129,7 +129,7 @@
         {
             self.selectedSound = @"";
         } else {
-            self.selectedSound = [[self.soundlist objectAtIndex:indexPath.row] absoluteString];
+            self.selectedSound = [[self.soundlist objectAtIndex:indexPath.row] lastPathComponent];
         }
 
     }

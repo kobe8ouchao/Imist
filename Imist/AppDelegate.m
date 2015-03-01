@@ -52,10 +52,10 @@
                                                         rightMenuViewController:nil];
         self.window.rootViewController = container;
     }
-//    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)])
-//    {
-//        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
-//    }
+    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)])
+    {
+        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+    }
 //    UILocalNotification *localNotif = [[UILocalNotification alloc] init];
 //    [localNotif setFireDate:[[NSDate date] dateByAddingTimeInterval:5]];
 //    localNotif.timeZone = [NSTimeZone defaultTimeZone];
@@ -111,10 +111,10 @@
                             initWithContentsOfURL:url
                             error:nil];
         }else {
-            NSURL *url = [NSURL fileURLWithPath:soundurl];
-            self.player = [[AVAudioPlayer alloc]
-                           initWithContentsOfURL:url
-                           error:nil];
+//            NSURL *url = [NSURL fileURLWithPath:soundurl];
+//            self.player = [[AVAudioPlayer alloc]
+//                           initWithContentsOfURL:url
+//                           error:nil];
         }
         
 //        self.player.delegate = self;
@@ -139,16 +139,31 @@
             NSTimeInterval distanceBetweenDates = [date timeIntervalSinceDate:[NSDate date]];
             if (distanceBetweenDates >= 0) {
                 NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:distanceBetweenDates];
-                NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
-                                                          interval:10
-                                                            target:self
-                                                          selector:@selector(playAlarm)
-                                                          userInfo:nil
-                                                           repeats:NO];
+                if (self.player) {
+                    NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
+                                                              interval:10
+                                                                target:self
+                                                              selector:@selector(playAlarm)
+                                                              userInfo:nil
+                                                               repeats:NO];
+                    
+                    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+                    [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
+                    [runLoop run];
+                }else {
+                    
+                    UILocalNotification *notification=[[UILocalNotification alloc] init];
+                    if (notification!=nil)
+                    {
+                        notification.repeatInterval=0;
+                        notification.fireDate=fireDate;//距现在多久后触发代理方法
+                        notification.timeZone=[NSTimeZone defaultTimeZone];
+                        notification.soundName = soundurl;
+                        notification.alertBody = [NSString stringWithFormat:@"IMIST ALERM!"];
+                        [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+                    }
+                }
                 
-                NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-                [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
-                [runLoop run];
             }
 
         }
@@ -195,16 +210,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
             [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
         bgTaskId = newTaskId;
     }else {
-        newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
-        NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
-        NSString *soundurl = [alertItem objectForKey:@"sound"];
-        NSURL *url = [NSURL fileURLWithPath:soundurl];
-        SystemSoundID soundID;
-        AudioServicesCreateSystemSoundID((__bridge_retained CFURLRef)url,&soundID);
-        AudioServicesPlaySystemSound(soundID);
-        if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
-            [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
-        bgTaskId = newTaskId;
+        
     }
     
 
