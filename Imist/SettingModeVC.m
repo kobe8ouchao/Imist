@@ -164,7 +164,7 @@ typedef enum{
     [self.view addSubview:threeBtn];
     UIButton *sixBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [sixBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
-    [sixBtn setTitle:@"16 Hour" forState:UIControlStateNormal];
+    [sixBtn setTitle:@"16 Hours" forState:UIControlStateNormal];
     [sixBtn setBackgroundColor:[UIColor clearColor]];
     sixBtn.frame = CGRectMake(self.view.frame.size.width - 20 - 130, 300, 130, 40);
     sixBtn.tag = 14;
@@ -210,6 +210,11 @@ typedef enum{
 }
 
 -(void)btnClick:(UIButton*)sender{
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:sender.titleLabel.text]){
+        [self stopCurMode];
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.mode = @"";
+        return;
+    }
     if([sender.titleLabel.text isEqualToString:@"Relaxation"]){
         self.appDelegate.defaultBTServer.selectPeripheralInfo.mode = @"Relaxation";
     }
@@ -251,6 +256,11 @@ typedef enum{
 
 
 -(void)hoursClick:(UIButton*)btn{
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:btn.titleLabel.text]){
+        [self stopCurMode];
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.mode = @"";
+        return;
+    }
     if([btn.titleLabel.text isEqualToString:@"2 Hours"]){
         self.appDelegate.defaultBTServer.selectPeripheralInfo.mode = @"2 Hours";
     }
@@ -443,6 +453,36 @@ typedef enum{
     
 }
 
+-(void) stopCurMode{
+    NSMutableData* data = [NSMutableData data];
+    
+    NSUInteger query = 0x01;
+    [data appendBytes:&query length:1];
+    NSUInteger imist = 0x0;
+    [data appendBytes:&imist length:1];
+    NSUInteger led = 0x0;
+    [data appendBytes:&led length:1];
+    NSUInteger color1 = 0x0;
+    [data appendBytes:&color1 length:1];
+    NSUInteger color2 = 0x0;
+    [data appendBytes:&color2 length:1];
+    NSUInteger color3 = 0x0;
+    [data appendBytes:&color3 length:1];
+    
+    self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
+    [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        for(UInt8 i = 1; i<=6; i++){
+            UIButton * btn = (UIButton*)[self.view viewWithTag:i];
+            [btn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+        }
+        for(UInt8 i = 11; i<=14; i++){
+            UIButton * btn = (UIButton*)[self.view viewWithTag:i];
+            [btn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+        }
+    });
+}
 
 - (void)getWaterStatus{
     

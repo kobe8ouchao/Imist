@@ -27,7 +27,7 @@
     [super viewDidLoad];
     UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
     self.navigationItem.rightBarButtonItem = saveItem;
-    self.navigationController.navigationBar.topItem.title = @"Select Days";
+    self.navigationController.navigationBar.topItem.title = @"Select Sound";
     //init device tableview
     UITableView *_table=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,  self.view.frame.size.height) style:UITableViewStylePlain];
     _table.autoresizingMask = (UIViewAutoresizingFlexibleWidth |

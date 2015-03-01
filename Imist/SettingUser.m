@@ -12,12 +12,17 @@
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, assign) NSInteger imistValue;
 @property (nonatomic, assign) NSInteger brightnessValue;
+@property (nonatomic, assign) NSInteger colorValue;
 @property (nonatomic, assign) NSInteger color1Value;
 @property (nonatomic, assign) NSInteger color2Value;
 @property (nonatomic, assign) NSInteger color3Value;
 @property (nonatomic, strong) NSDictionary *colorR;
 @property (nonatomic, strong) NSDictionary *colorG;
 @property (nonatomic, strong) NSDictionary *colorB;
+@property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, assign) NSInteger lastImistValue;
+@property (nonatomic, assign) NSInteger lastBrightnessValue;
+@property (nonatomic, assign) NSInteger lastColorValue;
 @end
 
 @implementation SettingUser
@@ -347,6 +352,7 @@
     [modeBtn setTitle:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode forState:UIControlStateNormal];
     [modeBtn setBackgroundColor:[UIColor clearColor]];
     modeBtn.frame = CGRectMake((self.view.frame.size.width - 130)/2, 10, 130, 40);
+    modeBtn.tag = 202;
     [self.view addSubview:modeBtn];
     
     NSInteger mistValue,brightnessValue,colorValue;
@@ -458,7 +464,7 @@
     //continuous属性，是指滑块值在拖地触发滑块值变动
     slider.continuous = YES;
     slider.tag = tag;
-    [slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventTouchUpInside];
+    [slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     [bg addSubview:slider];
     
     UIImageView *plus = [[UIImageView alloc] initWithFrame:CGRectMake(bg.frame.size.width - 35, 24, 30 ,30)];
@@ -490,115 +496,12 @@
     //control.value =value;
     NSLog(@"%ld",(long)value);
     if (control.tag == 1) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(200 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
-            NSMutableData* data = [NSMutableData data];
-            NSUInteger query = 0x09;
-            NSNumber *imistObj = [NSNumber numberWithInteger:value];
-            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]){
-                query = 9;
-                [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour setValue:imistObj forKey:@"mist"];
-            }
-            else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"4 Hours"]){
-                query = 10;
-                [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour setValue:imistObj forKey:@"mist"];
-            }
-            else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"8 Hours"]){
-                query = 11;
-                [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour setValue:imistObj forKey:@"mist"];
-            }
-            else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"16 Hours"]){
-                query = 12;
-                [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour setValue:imistObj forKey:@"mist"];
-            }
-            
-            [data appendBytes:&query length:1];
-            NSUInteger imist = value;
-            self.imistValue = value;
-            [data appendBytes:&imist length:1];
-            NSUInteger led = self.brightnessValue;
-            [data appendBytes:&led length:1];
-            NSUInteger color1 = self.color1Value;
-            [data appendBytes:&color1 length:1];
-            NSUInteger color2 = self.color2Value;
-            [data appendBytes:&color2 length:1];
-            NSUInteger color3 = self.color3Value;
-            [data appendBytes:&color3 length:1];
-            
-            self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
-            [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
-        });
+        self.imistValue = value;
     }else if(control.tag == 2) {
-        NSMutableData* data = [NSMutableData data];
-        NSUInteger query = 0x09;
-        NSNumber *brightnessObj = [NSNumber numberWithInteger:value];
-        if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]){
-            query = 9;
-            [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour setValue:brightnessObj forKey:@"brightness"];
-        }
-        else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"4 Hours"]){
-            query = 10;
-            [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour setValue:brightnessObj forKey:@"brightness"];
-        }
-        else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"8 Hours"]){
-            query = 11;
-            [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour setValue:brightnessObj forKey:@"brightness"];
-        }
-        else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"16 Hours"]){
-            query = 12;
-            [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour setValue:brightnessObj forKey:@"brightness"];
-        }
-        [data appendBytes:&query length:1];
-        NSUInteger imist = self.imistValue;
-        [data appendBytes:&imist length:1];
-        NSUInteger led = value;
         self.brightnessValue = value;
-        [data appendBytes:&led length:1];
-        NSUInteger color1 = self.color1Value;
-        [data appendBytes:&color1 length:1];
-        NSUInteger color2 = self.color1Value;
-        [data appendBytes:&color2 length:1];
-        NSUInteger color3 = self.color1Value;
-        [data appendBytes:&color3 length:1];
-        
-        self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
-        [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
     }else if(control.tag == 3) {
-        NSMutableData* data = [NSMutableData data];
-        NSUInteger query = 0x01;
-        NSNumber *colorObj = [NSNumber numberWithInteger:value];
-        if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]){
-            query = 9;
-            [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour setValue:colorObj forKey:@"color"];
-        }
-        else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"4 Hours"]){
-            query = 10;
-            [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour setValue:colorObj forKey:@"color"];
-        }
-        else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"8 Hours"]){
-            query = 11;
-            [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour setValue:colorObj forKey:@"color"];
-        }
-        else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"16 Hours"]){
-            query = 12;
-            [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour setValue:colorObj forKey:@"color"];
-        }
-        [data appendBytes:&query length:1];
-        NSUInteger imist = self.imistValue;
-        [data appendBytes:&imist length:1];
-        NSUInteger led = self.brightnessValue;
-        [data appendBytes:&led length:1];
-        NSUInteger color1 = [[self.colorR objectForKey:[NSString stringWithFormat:@"%ld",(long)value]] integerValue] *2.55;
-        [data appendBytes:&color1 length:1];
-        NSUInteger color2 = [[self.colorG objectForKey:[NSString stringWithFormat:@"%ld",(long)value]] integerValue] *2.55;
-        [data appendBytes:&color2 length:1];
-        NSUInteger color3 = [[self.colorB objectForKey:[NSString stringWithFormat:@"%ld",(long)value]] integerValue] *2.55;
-        [data appendBytes:&color3 length:1];
-        
-        self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
-        [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+        self.colorValue = value;
     }
-
-    
     
 }
 
@@ -617,5 +520,164 @@
     [noBtn setBackgroundImage:[UIImage imageNamed:@"user_set05.png"] forState:UIControlStateNormal];
     [sureBtn setBackgroundImage:[UIImage imageNamed:@"user_set06.png"] forState:UIControlStateNormal];
 }
+
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self startTimer];
+    UIButton *modeBtn = (UIButton*)[self.view viewWithTag:202];
+    [modeBtn setTitle:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode forState:UIControlStateNormal];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self stopTimer];
+}
+
+- (void)startTimer {
+    
+    if(!self.timer){
+        self.timer=[NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(checkSendValue) userInfo:nil repeats:YES];
+    }
+}
+
+- (void)stopTimer {
+    
+    if (self.timer) {
+        if ([self.timer isValid]) {
+            
+            [self.timer invalidate];
+            self.timer = nil;
+        }
+    }
+}
+
+- (void)checkSendValue{
+    if(self.lastImistValue != self.imistValue){
+        self.lastImistValue = self.imistValue;
+        [self updateImistValue];
+    }
+    else if(self.lastBrightnessValue != self.brightnessValue){
+        self.lastBrightnessValue = self.brightnessValue;
+        [self updateBrightnessValue];
+    }
+    else if(self.lastColorValue != self.colorValue){
+        self.lastColorValue = self.colorValue;
+        [self updateColorValue];
+    }
+}
+
+- (void)updateImistValue{
+    NSMutableData* data = [NSMutableData data];
+    NSUInteger query = 0x09;
+    NSNumber *imistObj = [NSNumber numberWithInteger:self.imistValue];
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]){
+        query = 9;
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour setValue:imistObj forKey:@"mist"];
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"4 Hours"]){
+        query = 10;
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour setValue:imistObj forKey:@"mist"];
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"8 Hours"]){
+        query = 11;
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour setValue:imistObj forKey:@"mist"];
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"16 Hours"]){
+        query = 12;
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour setValue:imistObj forKey:@"mist"];
+    }
+    
+    [data appendBytes:&query length:1];
+    NSUInteger imist = self.imistValue;
+    [data appendBytes:&imist length:1];
+    NSUInteger led = self.brightnessValue;
+    [data appendBytes:&led length:1];
+    NSUInteger color1 = self.color1Value;
+    [data appendBytes:&color1 length:1];
+    NSUInteger color2 = self.color2Value;
+    [data appendBytes:&color2 length:1];
+    NSUInteger color3 = self.color3Value;
+    [data appendBytes:&color3 length:1];
+    
+    self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
+    [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+}
+
+- (void) updateBrightnessValue{
+    NSMutableData* data = [NSMutableData data];
+    NSUInteger query = 0x09;
+    NSNumber *brightnessObj = [NSNumber numberWithInteger:self.brightnessValue];
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]){
+        query = 9;
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour setValue:brightnessObj forKey:@"brightness"];
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"4 Hours"]){
+        query = 10;
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour setValue:brightnessObj forKey:@"brightness"];
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"8 Hours"]){
+        query = 11;
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour setValue:brightnessObj forKey:@"brightness"];
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"16 Hours"]){
+        query = 12;
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour setValue:brightnessObj forKey:@"brightness"];
+    }
+    [data appendBytes:&query length:1];
+    NSUInteger imist = self.imistValue;
+    [data appendBytes:&imist length:1];
+    NSUInteger led = self.brightnessValue;
+    [data appendBytes:&led length:1];
+    NSUInteger color1 = self.color1Value;
+    [data appendBytes:&color1 length:1];
+    NSUInteger color2 = self.color1Value;
+    [data appendBytes:&color2 length:1];
+    NSUInteger color3 = self.color1Value;
+    [data appendBytes:&color3 length:1];
+    
+    self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
+    [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+}
+
+- (void)updateColorValue{
+    NSMutableData* data = [NSMutableData data];
+    NSUInteger query = 0x01;
+    NSNumber *colorObj = [NSNumber numberWithInteger:self.colorValue];
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]){
+        query = 9;
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour setValue:colorObj forKey:@"color"];
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"4 Hours"]){
+        query = 10;
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour setValue:colorObj forKey:@"color"];
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"8 Hours"]){
+        query = 11;
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour setValue:colorObj forKey:@"color"];
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"16 Hours"]){
+        query = 12;
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour setValue:colorObj forKey:@"color"];
+    }
+    [data appendBytes:&query length:1];
+    NSUInteger imist = self.imistValue;
+    [data appendBytes:&imist length:1];
+    NSUInteger led = self.brightnessValue;
+    [data appendBytes:&led length:1];
+    NSUInteger color1 = [[self.colorR objectForKey:[NSString stringWithFormat:@"%ld",(long)self.colorValue]] integerValue] *2.55;
+    [data appendBytes:&color1 length:1];
+    NSUInteger color2 = [[self.colorG objectForKey:[NSString stringWithFormat:@"%ld",(long)self.colorValue]] integerValue] *2.55;
+    [data appendBytes:&color2 length:1];
+    NSUInteger color3 = [[self.colorB objectForKey:[NSString stringWithFormat:@"%ld",(long)self.colorValue]] integerValue] *2.55;
+    [data appendBytes:&color3 length:1];
+    self.color1Value = color1;
+    self.color2Value = color2;
+    self.color3Value = color3;
+    
+    self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
+    [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+}
+
 
 @end
