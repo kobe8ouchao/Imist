@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A578AB711AA35B4000CC0AA5 /* launchScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A578AB701AA35B4000CC0AA5 /* launchScreen@2x.png */; };
+		A578AB731AA35DE500CC0AA5 /* aboutScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A578AB721AA35DE500CC0AA5 /* aboutScreen@2x.png */; };
 		A5EFE1E41A88A052008775B7 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5EFE1E31A88A052008775B7 /* icon@2x.png */; };
 		A5EFE1E61A88A347008775B7 /* ico_sidemenu_about@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5EFE1E51A88A347008775B7 /* ico_sidemenu_about@2x.png */; };
 		C33643FA1A7888810047AAE5 /* ProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C33643F71A7888810047AAE5 /* ProgressHUD.bundle */; };
@@ -145,6 +147,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A578AB701AA35B4000CC0AA5 /* launchScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launchScreen@2x.png"; sourceTree = "<group>"; };
+		A578AB721AA35DE500CC0AA5 /* aboutScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aboutScreen@2x.png"; sourceTree = "<group>"; };
 		A5EFE1E31A88A052008775B7 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		A5EFE1E51A88A347008775B7 /* ico_sidemenu_about@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ico_sidemenu_about@2x.png"; sourceTree = "<group>"; };
 		C33643F71A7888810047AAE5 /* ProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ProgressHUD.bundle; sourceTree = "<group>"; };
@@ -405,6 +409,8 @@
 		C38819961A523F8C004A98CA /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				A578AB721AA35DE500CC0AA5 /* aboutScreen@2x.png */,
+				A578AB701AA35B4000CC0AA5 /* launchScreen@2x.png */,
 				C3E8D7011AA3110500301B6B /* user_set01@2x.png */,
 				C3E8D7021AA3110500301B6B /* user_set02@2x.png */,
 				C3E8D7031AA3110500301B6B /* user_set03@2x.png */,
@@ -751,6 +757,7 @@
 				C33644011A78A20E0047AAE5 /* ico_scancell@2x.png in Resources */,
 				C3422B511A56C6020095B6AA /* rh_up@2x.png in Resources */,
 				C3E8D70B1AA3110500301B6B /* user_set05@2x.png in Resources */,
+				A578AB731AA35DE500CC0AA5 /* aboutScreen@2x.png in Resources */,
 				C33F4E161A7BE46F009A497A /* tutorial_eng_5.png in Resources */,
 				C3D7CA411A847FCA00FBE9CB /* app40@2x.png in Resources */,
 				C33F4E241A7DFC10009A497A /* tutorial_eng6_4.png in Resources */,
@@ -777,6 +784,7 @@
 				C3DFE90D1A6CB6F20044F52E /* navigationbar_background_tall@2x.png in Resources */,
 				C33F4E141A7BE46F009A497A /* tutorial_eng_3.png in Resources */,
 				C3E8D7071AA3110500301B6B /* user_set01@2x.png in Resources */,
+				A578AB711AA35B4000CC0AA5 /* launchScreen@2x.png in Resources */,
 				C3DFE90B1A6CB6F20044F52E /* navigationbar_background@2x.png in Resources */,
 				C3422B501A56C6020095B6AA /* rh_up.png in Resources */,
 				C3DFE9071A6CB6F20044F52E /* first_normal@2x.png in Resources */,

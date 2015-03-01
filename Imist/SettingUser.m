@@ -448,7 +448,7 @@
     [bg addSubview:imgbg];
     
     UIImageView *minus = [[UIImageView alloc] initWithFrame:CGRectMake(5, 24, 30 ,30)];
-    minus.image = [UIImage imageNamed:@"ico_minus2.png"];
+    minus.image = [UIImage imageNamed:@"user_set04.png"];
     minus.backgroundColor = [UIColor clearColor];
     [bg addSubview:minus];
     
@@ -468,7 +468,7 @@
     [bg addSubview:slider];
     
     UIImageView *plus = [[UIImageView alloc] initWithFrame:CGRectMake(bg.frame.size.width - 35, 24, 30 ,30)];
-    plus.image = [UIImage imageNamed:@"ico_plus2.png"];
+    plus.image = [UIImage imageNamed:@"user_set03.png"];
     plus.backgroundColor = [UIColor clearColor];
     [bg addSubview:plus];
     
