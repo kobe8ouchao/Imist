@@ -41,7 +41,7 @@
     self.soundTable=_table;
     [self.view addSubview:self.soundTable];
     defautlist = [[NSMutableArray alloc] initWithObjects:@"Bicker",@"Chirp",@"Hill stream",@"Rain",@"Wave",@"Zen", nil];
-    soundlist = [[NSMutableArray alloc] init];
+//    soundlist = [[NSMutableArray alloc] init];
     musiclist = [[NSMutableArray alloc] init];
     [self loadSound];
 }
@@ -69,9 +69,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 1) {
-        return @"System sound";
-    }else if(3 == section){
+    if(1 == section){
         return @"Music sound";
     }else {
         return @"Imist sound";
@@ -80,7 +78,7 @@
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
 {
-    return 3;
+    return 2;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 44.0f;
@@ -88,10 +86,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
+    if(0 == section){
         return [self.defautlist count];
-    }else if(1 == section){
-        return [self.soundlist count];
     }else {
         return [self.musiclist count];
     }
@@ -111,7 +107,7 @@
             self.selectedSound = [self.defautlist objectAtIndex:indexPath.row];
         }
         
-    }else if(2 == indexPath.section){
+    }else if(1 == indexPath.section){
         NSMutableDictionary *musicDict = [self.musiclist objectAtIndex:indexPath.row];
         player = [[AVAudioPlayer alloc] initWithContentsOfURL:[musicDict objectForKey:@"url"] error:nil];
         [player play];
@@ -153,7 +149,7 @@
         {
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
-    }else if(2 == indexPath.section){
+    }else if(1 == indexPath.section){
         NSMutableDictionary *musicDict = [self.musiclist objectAtIndex:indexPath.row];
         if ( [self.selectedSound isEqualToString:[[musicDict objectForKey:@"url"]  absoluteString]])
         {
@@ -195,30 +191,30 @@
             }
         }
         
-        NSFileManager *fileManager = [[NSFileManager alloc] init];
-        NSURL *directoryURL = [NSURL URLWithString:@"/System/Library/Audio/UISounds"];
-        NSArray *keys = [NSArray arrayWithObject:NSURLIsDirectoryKey];
-        
-        NSDirectoryEnumerator *enumerator = [fileManager
-                                             enumeratorAtURL:directoryURL
-                                             includingPropertiesForKeys:keys
-                                             options:0
-                                             errorHandler:^(NSURL *url, NSError *error) {
-                                                 // Handle the error.
-                                                 // Return YES if the enumeration should continue after the error.
-                                                 return YES;
-                                             }];
-        
-        for (NSURL *url in enumerator) {
-            NSError *error;
-            NSNumber *isDirectory = nil;
-            if (![url getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:&error]) {
-                // handle error
-            }
-            else if (! [isDirectory boolValue]) {
-                [currentBlockSel_f.soundlist addObject:url];
-            }
-        }
+//        NSFileManager *fileManager = [[NSFileManager alloc] init];
+//        NSURL *directoryURL = [NSURL URLWithString:@"/System/Library/Audio/UISounds"];
+//        NSArray *keys = [NSArray arrayWithObject:NSURLIsDirectoryKey];
+//        
+//        NSDirectoryEnumerator *enumerator = [fileManager
+//                                             enumeratorAtURL:directoryURL
+//                                             includingPropertiesForKeys:keys
+//                                             options:0
+//                                             errorHandler:^(NSURL *url, NSError *error) {
+//                                                 // Handle the error.
+//                                                 // Return YES if the enumeration should continue after the error.
+//                                                 return YES;
+//                                             }];
+//        
+//        for (NSURL *url in enumerator) {
+//            NSError *error;
+//            NSNumber *isDirectory = nil;
+//            if (![url getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:&error]) {
+//                // handle error
+//            }
+//            else if (! [isDirectory boolValue]) {
+//                [currentBlockSel_f.soundlist addObject:url];
+//            }
+//        }
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [currentBlockSel_f.soundTable reloadData];
