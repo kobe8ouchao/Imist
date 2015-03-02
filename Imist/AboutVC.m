@@ -26,7 +26,7 @@
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
     self.navigationItem.leftBarButtonItem = leftItem;
     self.navigationItem.leftBarButtonItem = leftItem;
-    
+    self.navigationController.navigationBar.translucent=YES;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
 //    UILabel *namelab=[[UILabel alloc] initWithFrame:CGRectMake(10, 30, self.view.frame.size.width - 20, 500)];
