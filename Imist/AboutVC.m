@@ -39,7 +39,7 @@
 //    namelab.tag=222;
     
     UIImageView  *imageView=[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, [UIImage imageNamed:@"aboutScreen"].size.width, [UIImage imageNamed:@"aboutScreen"].size.height)];
-    [imageView setImage:[UIImage imageNamed:@"aboutScreen"]];
+
     [self.view addSubview:imageView];
 }
 
