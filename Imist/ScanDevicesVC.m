@@ -195,9 +195,10 @@
 //                        pi.ledlight = selectPi.ledlight;
 //                        self.appDelegate.defaultBTServer.selectPeripheralInfo = selectPi;
 //                    }else {
-//                        NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:[NSString stringWithFormat:@"Key%@",pi.uuid]];
+//                        NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:pi];
                         self.appDelegate.defaultBTServer.selectPeripheralInfo = pi;
 //                        [defaults setObject:encodedObject forKey:pi.uuid];
+//                        [defaults synchronize];
 //                    }
                     
                     [cell setState:1];
