@@ -245,12 +245,26 @@
     cell.delegate = self;
     cell.icon = @"ico_imist.png";
     [cell setStyle];
-    if (pi == self.appDelegate.defaultBTServer.selectPeripheralInfo) {
-        if (pi.water == [NSNumber numberWithInt:1]) {
-            [cell setState:3];
-        }else {
-            [cell setState:2];
+    if([pi.state isEqualToString: @"connected"]){
+        if (pi == self.appDelegate.defaultBTServer.selectPeripheralInfo) {
+            if(pi.mode){
+                if (pi.water == [NSNumber numberWithInt:1]) {
+                    [cell setState:1];
+                }else {
+                    [cell setState:2];
+                }
+            }
+            else{
+                if (pi.water == [NSNumber numberWithInt:1]) {
+                    [cell setState:3];
+                }else {
+                    [cell setState:2];
+                }
+            }
         }
+    }
+    else{
+        //[cell setState:0];
     }
     
     //    cell.topName.text = pi.name;

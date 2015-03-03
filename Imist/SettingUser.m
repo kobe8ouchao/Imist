@@ -404,7 +404,7 @@
     
     [self setUpBar:CGRectMake(20, 60, self.view.frame.size.width - 40 ,80) withTitle:@"mist" withMin:0 withMax:50 withTag:1 withValue:self.imistValue];
     [self setUpBar:CGRectMake(20, 130, self.view.frame.size.width - 40 ,80) withTitle:@"led brightness" withMin:0 withMax:100 withTag:2 withValue:self.brightnessValue];
-    [self setUpBar:CGRectMake(20, 210, self.view.frame.size.width - 40 ,80) withTitle:@"led color" withMin:0 withMax:50 withTag:3 withValue:self.colorValue];
+    [self setUpBar:CGRectMake(20, 210, self.view.frame.size.width - 40 ,80) withTitle:@"led color" withMin:0 withMax:100 withTag:3 withValue:self.colorValue];
 //    [self setUpBar:CGRectMake(20, 230, self.view.frame.size.width - 40 ,40) withTitle:@"led auto" withMin:0 withMax:50 withTag:4];
     
     UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(0, 280, self.view.frame.size.width ,18)];
@@ -415,7 +415,7 @@
     [self.view addSubview:lable];
     
     UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    sureBtn.frame = CGRectMake(20, 310, 115, 44);
+    sureBtn.frame = CGRectMake(self.view.frame.size.width - 20 - 115, 310, 115, 44);
     if(YES == self.ledAutoEnable)
         [sureBtn setBackgroundImage:[UIImage imageNamed:@"user_set05.png"] forState:UIControlStateNormal];
     else
@@ -437,7 +437,7 @@
     [noBtn setTitle:@"" forState:UIControlStateNormal];
     noBtn.tag = 200;
     [noBtn setBackgroundColor:[UIColor clearColor]];
-    noBtn.frame = CGRectMake(self.view.frame.size.width - 20 - 115, 310, 115, 44);
+    noBtn.frame = CGRectMake(20, 310, 115, 44);
     [noBtn addTarget:self action:@selector(btnNo:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:noBtn];
     
@@ -682,9 +682,9 @@
     [data appendBytes:&led length:1];
     NSUInteger color1 = self.color1Value;
     [data appendBytes:&color1 length:1];
-    NSUInteger color2 = self.color1Value;
+    NSUInteger color2 = self.color2Value;
     [data appendBytes:&color2 length:1];
-    NSUInteger color3 = self.color1Value;
+    NSUInteger color3 = self.color3Value;
     [data appendBytes:&color3 length:1];
     
     self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
@@ -780,9 +780,9 @@
         [data appendBytes:&led length:1];
         NSUInteger color1 = self.color1Value;
         [data appendBytes:&color1 length:1];
-        NSUInteger color2 = self.color1Value;
+        NSUInteger color2 = self.color2Value;
         [data appendBytes:&color2 length:1];
-        NSUInteger color3 = self.color1Value;
+        NSUInteger color3 = self.color3Value;
         [data appendBytes:&color3 length:1];
     }
     

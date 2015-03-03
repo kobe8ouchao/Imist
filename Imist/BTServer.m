@@ -192,7 +192,7 @@ static BTServer* _defaultBTServer = nil;
     [NSObject cancelPreviousPerformRequestsWithTarget:self
                                              selector:@selector(cancelConnect)
                                                object:nil];
-    [self performSelector:@selector(stopScan)
+    [self performSelector:@selector(cancelConnect)
                withObject:nil
                afterDelay:AUTO_CANCEL_CONNECT_TIMEOUT];
 }

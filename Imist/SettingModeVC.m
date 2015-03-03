@@ -11,7 +11,13 @@
 @interface SettingModeVC ()
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSMutableDictionary * essenceName;
-@property (nonatomic, assign) BOOL doNotShowHint;
+@property (nonatomic, assign) BOOL doNotShowHint_UserMode;
+@property (nonatomic, assign) BOOL doNotShowHint_Relaxation;
+@property (nonatomic, assign) BOOL doNotShowHint_Sleep;
+@property (nonatomic, assign) BOOL doNotShowHint_Energization;
+@property (nonatomic, assign) BOOL doNotShowHint_Soothing;
+@property (nonatomic, assign) BOOL doNotShowHint_Concentration;
+@property (nonatomic, assign) BOOL doNotShowHint_Sensuality;
 
 @end
 typedef enum{
@@ -20,7 +26,7 @@ typedef enum{
     NO_WATER,
 }waterStatus;
 @implementation SettingModeVC
-@synthesize title,essenceName,doNotShowHint;
+@synthesize title,essenceName;
 - (void)viewDidLoad {
     [super viewDidLoad];
     if(!self.title) self.title = title;
@@ -215,7 +221,7 @@ typedef enum{
         [self getWaterStatus];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(200 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
             if(self.appDelegate.defaultBTServer.selectPeripheralInfo.water){
-                self.doNotShowHint = YES;
+                [self setDoNotShowHint: YES];
                 [self setMode:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode waterStatus:HAS_WATER_AND_WORK];
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
@@ -251,7 +257,7 @@ typedef enum{
 -(void)btnClick:(UIButton*)sender{
     if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:sender.titleLabel.text]){
         [self stopCurMode];
-        self.appDelegate.defaultBTServer.selectPeripheralInfo.mode = @"";
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.mode = nil;
         return;
     }
     if([sender.titleLabel.text isEqualToString:@"Relaxation"]){
@@ -276,7 +282,7 @@ typedef enum{
     [self getWaterStatus];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(200 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
         if(self.appDelegate.defaultBTServer.selectPeripheralInfo.water){//has water
-            if(NO == self.doNotShowHint){
+            if(NO == [self getDoNotShowHint]){
                 [self setMode:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode waterStatus:HAS_WATER_NOT_WORK];
                 
                 NSString * hintString = [self composeHint:[self.essenceName valueForKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode]];
@@ -297,7 +303,7 @@ typedef enum{
 -(void)hoursClick:(UIButton*)btn{
     if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:btn.titleLabel.text]){
         [self stopCurMode];
-        self.appDelegate.defaultBTServer.selectPeripheralInfo.mode = @"";
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.mode = nil;
         return;
     }
     if([btn.titleLabel.text isEqualToString:@"2 Hours"]){
@@ -316,7 +322,7 @@ typedef enum{
     [self getWaterStatus];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(200 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
         if(self.appDelegate.defaultBTServer.selectPeripheralInfo.water){//has water
-            if(NO == self.doNotShowHint){
+            if(NO == [self getDoNotShowHint]){
                 [self setMode:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode waterStatus:HAS_WATER_NOT_WORK];
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
@@ -403,6 +409,65 @@ typedef enum{
     });
     
 }
+
+
+- (void)showMode:(NSString*)modeString waterStatus:(NSInteger)status{
+    NSInteger btnTag;
+    if([modeString isEqualToString:@"Relaxation"]){
+        btnTag = 1;
+    }
+    else if([modeString isEqualToString:@"Sleep"]){
+        btnTag = 2;
+    }
+    else if([modeString isEqualToString:@"Energization"]){
+        btnTag = 3;
+    }
+    else if([modeString isEqualToString:@"Soothing"]){
+        btnTag = 4;
+    }
+    else if([modeString isEqualToString:@"Concentration"]){
+        btnTag = 5;
+    }
+    else if([modeString isEqualToString:@"Sensuality"]){
+        btnTag = 6;
+    }else if([modeString isEqualToString:@"2 Hours"]){
+        btnTag = 11;
+    }
+    else if([modeString isEqualToString:@"4 Hours"]){
+        btnTag = 12;
+    }
+    else if([modeString isEqualToString:@"8 Hours"]){
+        btnTag = 13;
+    }
+    else if([modeString isEqualToString:@"16 Hours"]){
+        btnTag = 14;
+    }
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        for(UInt8 i = 1; i<=6; i++){
+            UIButton * btn = (UIButton*)[self.view viewWithTag:i];
+            [btn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+        }
+        for(UInt8 i = 11; i<=14; i++){
+            UIButton * btn = (UIButton*)[self.view viewWithTag:i];
+            [btn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+        }
+        
+        UIButton * btn = (UIButton*)[self.view viewWithTag:btnTag];
+        if(status == 0){
+            [btn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+        }
+        else if(status == 1){
+            [btn setBackgroundImage:[UIImage imageNamed:@"bg_btn_blue.png"] forState:UIControlStateNormal];
+        }
+        else if(status == 2){
+            [btn setBackgroundImage:[UIImage imageNamed:@"bg_btn_red.png"] forState:UIControlStateNormal];
+        }
+    });
+    
+}
+
 - (void)sendAutoModeCmd:(NSString*)modeString{
     
     NSInteger cmd = 0;
@@ -550,6 +615,78 @@ typedef enum{
     self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = GET_WATER_STATUS;
     
     [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    if(self.appDelegate.defaultBTServer.selectPeripheralInfo.mode){
+        [self getWaterStatus];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(200 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
+            if(self.appDelegate.defaultBTServer.selectPeripheralInfo.water){
+                [self showMode:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode waterStatus:HAS_WATER_AND_WORK];
+            }
+            else{
+                NSString * hintString = [[NSString alloc]init];
+                hintString = [self composeHint:[self.essenceName valueForKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode]];
+                [self showHint:hintString];
+            }
+        });
+    }
+}
+
+- (void)setDoNotShowHint:(BOOL)yesNo{
+    if(!self.appDelegate.defaultBTServer.selectPeripheralInfo.mode){ //nil
+        return;
+    }
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Relaxation"]){
+        self.doNotShowHint_Relaxation = yesNo;
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Sleep"]){
+        self.doNotShowHint_Sleep = yesNo;
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Energization"]){
+        self.doNotShowHint_Energization = yesNo;
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Soothing"]){
+        self.doNotShowHint_Soothing = yesNo;
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Concentration"]){
+        self.doNotShowHint_Concentration = yesNo;
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Sensuality"]){
+        self.doNotShowHint_Sensuality = yesNo;
+    }
+    else{
+        self.doNotShowHint_UserMode = yesNo;
+    }
+}
+
+- (BOOL)getDoNotShowHint{
+    BOOL yesNo = NO;
+    if(!self.appDelegate.defaultBTServer.selectPeripheralInfo.mode){ //nil
+        yesNo = NO;
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Relaxation"]){
+        yesNo = self.doNotShowHint_Relaxation;
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Sleep"]){
+        yesNo = self.doNotShowHint_Sleep;
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Energization"]){
+        yesNo = self.doNotShowHint_Energization;
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Soothing"]){
+        yesNo = self.doNotShowHint_Soothing;
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Concentration"]){
+        yesNo = self.doNotShowHint_Concentration;
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Sensuality"]){
+        yesNo = self.doNotShowHint_Sensuality;
+    }
+    else {
+        yesNo = self.doNotShowHint_UserMode;
+    }
+    return yesNo;
 }
 
 @end
