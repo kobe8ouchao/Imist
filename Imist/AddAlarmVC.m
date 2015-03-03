@@ -20,7 +20,7 @@
 @property (nonatomic,strong) NSString *ampm;
 @property (nonatomic,strong) NSString *sound;
 @property (nonatomic,strong) NSString *days;
-
+@property (nonatomic,strong) UITableView * wakeSettingTable;
 @end
 
 @implementation AddAlarmVC
@@ -54,21 +54,100 @@
     
     [self.view addSubview:self.pickerview];
     
-    UIButton *repeatBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [repeatBtn setTitle:@"Repeat" forState:UIControlStateNormal];
-    [repeatBtn setBackgroundColor:[UIColor clearColor]];
-    [repeatBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
-    repeatBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, 250, 140, 44);
-    [repeatBtn addTarget:self action:@selector(repeatClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:repeatBtn];
+    //    UIButton *repeatBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    //    [repeatBtn setTitle:@"Repeat" forState:UIControlStateNormal];
+    //    [repeatBtn setBackgroundColor:[UIColor clearColor]];
+    //    [repeatBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    //    repeatBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, 250, 140, 44);
+    //    [repeatBtn addTarget:self action:@selector(repeatClick:) forControlEvents:UIControlEventTouchUpInside];
+    //    [self.view addSubview:repeatBtn];
+    //
+    //    UIButton *soundBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    //    [soundBtn setTitle:@"Sound" forState:UIControlStateNormal];
+    //    [soundBtn setBackgroundColor:[UIColor clearColor]];
+    //    [soundBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    //    soundBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, 300, 140, 44);
+    //    [soundBtn addTarget:self action:@selector(soundClick:) forControlEvents:UIControlEventTouchUpInside];
+    //    [self.view addSubview:soundBtn];
+    UITableView *_table=[[UITableView alloc] initWithFrame:CGRectMake(0, 260, self.view.frame.size.width,  self.view.frame.size.height) style:UITableViewStyleGrouped];
+    _table.autoresizingMask = (UIViewAutoresizingFlexibleWidth |
+                               UIViewAutoresizingFlexibleHeight);
+    _table.delegate = self;
+    _table.dataSource = self;
+    _table.showsVerticalScrollIndicator = NO;
+    _table.separatorStyle=UITableViewCellSeparatorStyleSingleLine;
+    _table.backgroundColor=[UIColor colorWith256Red:245 green:245 blue:250];
+    _table.scrollEnabled = NO;
     
-    UIButton *soundBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [soundBtn setTitle:@"Sound" forState:UIControlStateNormal];
-    [soundBtn setBackgroundColor:[UIColor clearColor]];
-    [soundBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
-    soundBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, 300, 140, 44);
-    [soundBtn addTarget:self action:@selector(soundClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:soundBtn];
+    self.wakeSettingTable=_table;
+    [self.view addSubview:self.wakeSettingTable];
+    
+    
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    
+    return 3;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    switch (indexPath.row) {
+        case 0:
+            cell.textLabel.text = @"Repeat";
+            break;
+        case 1:
+            cell.textLabel.text = @"Label";
+            break;
+        case 2:
+            cell.textLabel.text = @"Sound";
+            break;
+        default:
+            break;
+    }
+    
+    return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    switch (indexPath.row) {
+        case 0:
+        {
+            PickDayVC *pick = [[PickDayVC alloc] init];
+            pick.delegate = self;
+            [self.navigationController pushViewController:pick animated:YES];
+            break;
+        }
+        case 1:
+            break;
+        case 2:
+        {
+            PickSoundVC *pickSound = [[PickSoundVC alloc] init];
+            pickSound.delegate = self;
+            [self.navigationController pushViewController:pickSound animated:YES];
+            break;
+        }
+        default:
+            break;
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {
