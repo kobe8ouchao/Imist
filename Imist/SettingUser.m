@@ -398,7 +398,7 @@
     [self.view addSubview:lable];
     
     UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    sureBtn.frame = CGRectMake(20, 310, 115, 44);
+    sureBtn.frame = CGRectMake(self.view.frame.size.width - 20 - 115, 310, 115, 44);
     if(YES == self.ledAutoEnable)
         [sureBtn setBackgroundImage:[UIImage imageNamed:@"user_set05.png"] forState:UIControlStateNormal];
     else
@@ -420,7 +420,7 @@
     [noBtn setTitle:@"" forState:UIControlStateNormal];
     noBtn.tag = 200;
     [noBtn setBackgroundColor:[UIColor clearColor]];
-    noBtn.frame = CGRectMake(self.view.frame.size.width - 20 - 115, 310, 115, 44);
+    noBtn.frame = CGRectMake(20, 310, 115, 44);
     [noBtn addTarget:self action:@selector(btnNo:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:noBtn];
     
