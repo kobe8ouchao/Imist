@@ -29,6 +29,7 @@
 @property (strong, nonatomic) UITableView *deviceTable;
 @property (strong, nonatomic) UITextField *txtInfo;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
+@property (strong, nonatomic) PeriperalInfo *deleteItem;
 
 @end
 
@@ -286,6 +287,39 @@
     
     return cell;
 }
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.deleteItem = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
+    [self AlertView];
+}
+
+-(void)AlertView{
+    UIAlertView *aview = [[UIAlertView alloc]initWithTitle:@"Delete Imist?" message:@"Do you want to delete this Imist?" delegate:self cancelButtonTitle:@"Confirm" otherButtonTitles:@"Cancel", nil];
+    aview.delegate = self;
+    [aview show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    switch (buttonIndex) {
+        case 0:
+            [self.appDelegate.defaultBTServer.discoveredPeripherals removeObject:self.deleteItem];
+            [self.deviceTable reloadData];
+            break;
+        case 1:
+            [self.deviceTable reloadData];
+        default:
+            break;
+    }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSData *encodedDataObject = [defaults objectForKey:self.deleteItem.uuid];
+    PeriperalInfo *deletePi = (PeriperalInfo *)[NSKeyedUnarchiver unarchiveObjectWithData: encodedDataObject];
+    if (deletePi) {
+        [defaults removeObjectForKey:self.deleteItem.uuid];
+        [defaults synchronize];
+    }
+}
+
 
 #pragma cell delegate
 -(void)btnClick:(NSInteger)index

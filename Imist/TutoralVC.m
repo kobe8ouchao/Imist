@@ -26,7 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.translucent = YES;
     sv=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     sv.pagingEnabled=YES;
     sv.scrollsToTop=NO;
@@ -35,7 +35,7 @@
     sv.showsVerticalScrollIndicator=NO;
     sv.bounces = NO;
     [self.view addSubview:sv];
-    sv.contentSize=CGSizeMake(sv.frame.size.width*7, sv.frame.size.height);
+    sv.contentSize=CGSizeMake(sv.frame.size.width*1, sv.frame.size.height);
     UIImageView *help1=[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, sv.frame.size.width, sv.frame.size.height)];
     [help1 setBackgroundColor:[UIColor clearColor]];
     if (iPhone4) {
@@ -45,7 +45,7 @@
     }
     
     [sv addSubview:help1];
-    
+
     UIImageView *help2=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width, 0, sv.frame.size.width, sv.frame.size.height)];
     [help2 setBackgroundColor:[UIColor clearColor]];
     if (iPhone4) {
