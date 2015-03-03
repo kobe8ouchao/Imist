@@ -18,6 +18,7 @@
     [encoder encodeObject:self.ledauto forKey:@"ledautoKey"];
     [encoder encodeObject:self.ledcolor forKey:@"ledcolorKey"];
     [encoder encodeObject:self.ledlight forKey:@"ledlightKey"];
+    [encoder encodeObject:self.imist forKey:@"imistKey"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder
@@ -30,6 +31,7 @@
         self.ledauto = [decoder decodeObjectForKey:@"ledautoKey"];
         self.ledcolor = [decoder decodeObjectForKey:@"ledcolorKey"];
         self.ledlight = [decoder decodeObjectForKey:@"ledlightKey"];
+        self.imist = [decoder decodeObjectForKey:@"imistKey"];
     }
     return self;
 }

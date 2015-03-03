@@ -25,6 +25,8 @@
 #import "RDVTabBarItem.h"
 #import <objc/runtime.h>
 #import "AppDelegate.h"
+#import "AddAlarmVC.H"
+#import "ProgressHUD.h"
 
 @interface UIViewController (RDVTabBarControllerItemInternal)
 
@@ -245,6 +247,19 @@
         return NO;
     }
     
+    if (index == 1) {
+        UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(actionAdd:)];
+        rightItem.tintColor = [UIColor whiteColor];
+        self.navigationItem.rightBarButtonItem = rightItem;
+    }else {
+        UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [leftBtn setFrame:CGRectMake( 0, 0, 22, 22)];
+        [leftBtn setImage:[UIImage imageNamed:@"setting.png"] forState:UIControlStateNormal];
+        [leftBtn addTarget:self action:@selector(changeName:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
+        self.navigationItem.rightBarButtonItem = leftItem;
+    }
+    
     if ([[self delegate] respondsToSelector:@selector(tabBarController:shouldSelectViewController:)]) {
         if (![[self delegate] tabBarController:self shouldSelectViewController:[self viewControllers][index]]) {
             return NO;
@@ -331,6 +346,17 @@
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeDefault];
     [alert show];
+}
+
+-(void)actionAdd:(id)sender
+{
+    AppDelegate *application = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    if ([application.defaultBTServer.selectPeripheralInfo.alert count] == 3) {
+        [ProgressHUD showError:@"Only set three alerms"];
+    }else {
+        AddAlarmVC* addv = [[AddAlarmVC alloc] init];
+        [self.navigationController pushViewController:addv animated:YES];
+    }
 }
 
 -(void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

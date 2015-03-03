@@ -27,6 +27,7 @@
 @synthesize all,hours,minis,pickerview,selectedHour,selectedMinis,ampm,editAlert;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"Set Alarm";
     UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
     self.navigationItem.rightBarButtonItem = saveItem;
     
@@ -151,10 +152,10 @@
     self.selectedHour = [self.hours objectAtIndex:hrow];
     self.selectedMinis = [self.minis objectAtIndex:mrow];
     if ([self.ampm isEqualToString:@"PM"]) {
-        NSInteger hourss = [self.selectedHour integerValue] + 12;
+        NSInteger hourss = [self.selectedHour integerValue];
         self.selectedHour = [NSString stringWithFormat:@"%ld",(long)hourss];
     }
-    NSString *times = [NSString stringWithFormat:@"%@:%@",self.selectedHour,self.selectedMinis];
+    NSString *times = [NSString stringWithFormat:@"%@ %@:%@",self.ampm,self.selectedHour,self.selectedMinis];
     NSDictionary * dictionary;
     if (!self.sound) {
         self.sound = @"nil";
@@ -172,6 +173,10 @@
         }
         [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert addObject:dictionary];
     }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
+    [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
+    [defaults synchronize];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

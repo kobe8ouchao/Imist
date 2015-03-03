@@ -88,6 +88,9 @@ typedef enum{
 {
     UIButton *relexBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [relexBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Relaxation"]) {
+        [relexBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    }
     [relexBtn setTitle:@"Relaxation" forState:UIControlStateNormal];
     [relexBtn setBackgroundColor:[UIColor clearColor]];
     relexBtn.frame = CGRectMake(20, 60, 130, 40);
@@ -96,6 +99,9 @@ typedef enum{
     [self.view addSubview:relexBtn];
     UIButton *sleepBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [sleepBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Sleep"]) {
+        [sleepBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    }
     [sleepBtn setTitle:@"Sleep" forState:UIControlStateNormal];
     [sleepBtn setBackgroundColor:[UIColor clearColor]];
     sleepBtn.tag = 2;
@@ -104,6 +110,9 @@ typedef enum{
     [self.view addSubview:sleepBtn];
     UIButton *energBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [energBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Energization"]) {
+        [energBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    }
     [energBtn setTitle:@"Energization" forState:UIControlStateNormal];
     [energBtn setBackgroundColor:[UIColor clearColor]];
     energBtn.frame = CGRectMake(20, 110, 130, 40);
@@ -112,6 +121,9 @@ typedef enum{
     [self.view addSubview:energBtn];
     UIButton *soothBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [soothBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Soothing"]) {
+        [soothBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    }
     [soothBtn setTitle:@"Soothing" forState:UIControlStateNormal];
     [soothBtn setBackgroundColor:[UIColor clearColor]];
     soothBtn.frame = CGRectMake(self.view.frame.size.width - 20 - 130, 110, 130, 40);
@@ -120,6 +132,9 @@ typedef enum{
     [self.view addSubview:soothBtn];
     UIButton *sensuBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [sensuBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Sensuality"]) {
+        [sensuBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    }
     [sensuBtn setTitle:@"Sensuality" forState:UIControlStateNormal];
     [sensuBtn setBackgroundColor:[UIColor clearColor]];
     sensuBtn.frame = CGRectMake(self.view.frame.size.width - 20 - 130, 160, 130, 40);
@@ -128,6 +143,9 @@ typedef enum{
     [self.view addSubview:sensuBtn];
     UIButton *concenBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [concenBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"Concentration"]) {
+        [concenBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    }
     [concenBtn setTitle:@"Concentration" forState:UIControlStateNormal];
     [concenBtn setBackgroundColor:[UIColor clearColor]];
     concenBtn.frame = CGRectMake(20, 160, 130, 40);
@@ -140,6 +158,9 @@ typedef enum{
 {
     UIButton *twoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [twoBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]) {
+        [twoBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    }
     [twoBtn setTitle:@"2 Hours" forState:UIControlStateNormal];
     [twoBtn setBackgroundColor:[UIColor clearColor]];
     twoBtn.frame = CGRectMake(20, 250, 130, 40);
@@ -148,6 +169,9 @@ typedef enum{
     [self.view addSubview:twoBtn];
     UIButton *fourBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [fourBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"4 Hours"]) {
+        [fourBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    }
     [fourBtn setTitle:@"4 Hours" forState:UIControlStateNormal];
     [fourBtn setBackgroundColor:[UIColor clearColor]];
     fourBtn.frame = CGRectMake(self.view.frame.size.width - 20 - 130, 250, 130, 40);
@@ -156,6 +180,10 @@ typedef enum{
     [self.view addSubview:fourBtn];
     UIButton *threeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [threeBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"8 Hours"]) {
+        [threeBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    }
+
     [threeBtn setTitle:@"8 Hours" forState:UIControlStateNormal];
     [threeBtn setBackgroundColor:[UIColor clearColor]];
     threeBtn.frame = CGRectMake(20, 300, 130, 40);
@@ -164,6 +192,9 @@ typedef enum{
     [self.view addSubview:threeBtn];
     UIButton *sixBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [sixBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"16 Hours"]) {
+        [sixBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+    }
     [sixBtn setTitle:@"16 Hours" forState:UIControlStateNormal];
     [sixBtn setBackgroundColor:[UIColor clearColor]];
     sixBtn.frame = CGRectMake(self.view.frame.size.width - 20 - 130, 300, 130, 40);
@@ -186,6 +217,10 @@ typedef enum{
             if(self.appDelegate.defaultBTServer.selectPeripheralInfo.water){
                 self.doNotShowHint = YES;
                 [self setMode:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode waterStatus:HAS_WATER_AND_WORK];
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
+                [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
+                [defaults synchronize];
             }
             else{
                 NSString * hintString = [[NSString alloc]init];
@@ -199,6 +234,10 @@ typedef enum{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(200 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
             if(self.appDelegate.defaultBTServer.selectPeripheralInfo.water){
                 [self setMode:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode waterStatus:HAS_WATER_AND_WORK];
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
+                [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
+                [defaults synchronize];
             }
             else{
                 NSString * hintString = [[NSString alloc]init];
@@ -279,12 +318,19 @@ typedef enum{
         if(self.appDelegate.defaultBTServer.selectPeripheralInfo.water){//has water
             if(NO == self.doNotShowHint){
                 [self setMode:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode waterStatus:HAS_WATER_NOT_WORK];
-                
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
+                [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
+                [defaults synchronize];
                 NSString * hintString = [self composeHint:[self.essenceName valueForKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode]];
                 [self showHint:hintString];
             }
             else{
                 [self setMode:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode waterStatus:HAS_WATER_AND_WORK];
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
+                [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
+                [defaults synchronize];
             }
         }
         else{

@@ -183,23 +183,23 @@
                 [ProgressHUD dismiss];
                 if (status) {
                     pi.state = @"connected";
-//                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//                    NSData *encodedDataObject = [defaults objectForKey:pi.uuid];
-//                    PeriperalInfo *selectPi = (PeriperalInfo *)[NSKeyedUnarchiver unarchiveObjectWithData: encodedDataObject];
-//                    if (selectPi) {
-//                        pi.water = selectPi.water;
-//                        pi.ledauto = selectPi.ledauto;
-//                        pi.ledcolor = selectPi.ledcolor;
-//                        pi.mode = selectPi.mode;
-//                        pi.alert = selectPi.alert;
-//                        pi.ledlight = selectPi.ledlight;
-//                        self.appDelegate.defaultBTServer.selectPeripheralInfo = selectPi;
-//                    }else {
-//                        NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:pi];
+                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    NSData *encodedDataObject = [defaults objectForKey:pi.uuid];
+                    PeriperalInfo *selectPi = (PeriperalInfo *)[NSKeyedUnarchiver unarchiveObjectWithData: encodedDataObject];
+                    if (selectPi) {
+                        pi.water = selectPi.water;
+                        pi.ledauto = selectPi.ledauto;
+                        pi.ledcolor = selectPi.ledcolor;
+                        pi.mode = selectPi.mode;
+                        pi.alert = selectPi.alert;
+                        pi.ledlight = selectPi.ledlight;
                         self.appDelegate.defaultBTServer.selectPeripheralInfo = pi;
-//                        [defaults setObject:encodedObject forKey:pi.uuid];
-//                        [defaults synchronize];
-//                    }
+                    }else {
+                        NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:pi];
+                        self.appDelegate.defaultBTServer.selectPeripheralInfo = pi;
+                        [defaults setObject:encodedObject forKey:pi.uuid];
+                        [defaults synchronize];
+                    }
                     
                     [cell setState:1];
                     [ProgressHUD showSuccess:@"connected success!"];

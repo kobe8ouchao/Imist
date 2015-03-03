@@ -26,7 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-    
+    self.navigationController.navigationBar.translucent = NO;
     sv=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     sv.pagingEnabled=YES;
     sv.scrollsToTop=NO;
@@ -36,7 +36,7 @@
     sv.bounces = NO;
     [self.view addSubview:sv];
     sv.contentSize=CGSizeMake(sv.frame.size.width*7, sv.frame.size.height);
-    UIImageView *help1=[[UIImageView alloc] initWithFrame:CGRectMake(0, 20, sv.frame.size.width, sv.frame.size.height)];
+    UIImageView *help1=[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, sv.frame.size.width, sv.frame.size.height)];
     [help1 setBackgroundColor:[UIColor clearColor]];
     if (iPhone4) {
         help1.image=[UIImage imageNamed:@"tutorial_eng1_4.png"];
@@ -46,7 +46,7 @@
     
     [sv addSubview:help1];
     
-    UIImageView *help2=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width, 20, sv.frame.size.width, sv.frame.size.height)];
+    UIImageView *help2=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width, 0, sv.frame.size.width, sv.frame.size.height)];
     [help2 setBackgroundColor:[UIColor clearColor]];
     if (iPhone4) {
        help2.image = [UIImage imageNamed:@"tutorial_eng2_4.png"];
@@ -56,7 +56,7 @@
     
     [sv addSubview:help2];
     
-    UIImageView *help3=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*2, 20, sv.frame.size.width, sv.frame.size.height )];
+    UIImageView *help3=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*2, 0, sv.frame.size.width, sv.frame.size.height )];
     [help3 setBackgroundColor:[UIColor clearColor]];
     if (iPhone4) {
         help3.image = [UIImage imageNamed:@"tutorial_eng3_4.png"];
@@ -65,7 +65,7 @@
     }
     [sv addSubview:help3];
     
-    UIImageView *help4=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*3, 20, sv.frame.size.width, sv.frame.size.height)];
+    UIImageView *help4=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*3, 0, sv.frame.size.width, sv.frame.size.height)];
     [help4 setBackgroundColor:[UIColor clearColor]];
     if (iPhone4) {
         help4.image = [UIImage imageNamed:@"tutorial_eng4_4.png"];
@@ -74,7 +74,7 @@
     }
     [sv addSubview:help4];
     
-    UIImageView *help5=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*4, 20, sv.frame.size.width, sv.frame.size.height)];
+    UIImageView *help5=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*4, 0, sv.frame.size.width, sv.frame.size.height)];
     [help5 setBackgroundColor:[UIColor clearColor]];
     if (iPhone4) {
         help5.image = [UIImage imageNamed:@"tutorial_eng5_4.png"];
@@ -83,7 +83,7 @@
     }
     [sv addSubview:help5];
     
-    UIImageView *help6=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*5, 20, sv.frame.size.width, sv.frame.size.height)];
+    UIImageView *help6=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*5, 0, sv.frame.size.width, sv.frame.size.height)];
     [help6 setBackgroundColor:[UIColor clearColor]];
     if (iPhone4) {
         help6.image = [UIImage imageNamed:@"tutorial_eng6_4.png"];
@@ -92,7 +92,7 @@
     }
     [sv addSubview:help6];
     
-    UIImageView *help7=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*6, 20, sv.frame.size.width, sv.frame.size.height)];
+    UIImageView *help7=[[UIImageView alloc] initWithFrame:CGRectMake(sv.frame.size.width*6, 0, sv.frame.size.width, sv.frame.size.height)];
     [help7 setBackgroundColor:[UIColor clearColor]];
     if (iPhone4) {
         help7.image = [UIImage imageNamed:@"tutorial_eng7_4.png"];

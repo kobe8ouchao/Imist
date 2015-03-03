@@ -40,13 +40,13 @@
     [self.view addSubview:self.alertTable];
     
     
-    UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [addBtn setTitle:@"Add Alarm" forState:UIControlStateNormal];
-    [addBtn setBackgroundColor:[UIColor clearColor]];
-    [addBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
-    addBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, 300, 140, 44);
-    [addBtn addTarget:self action:@selector(addAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:addBtn];
+//    UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [addBtn setTitle:@"Add Alarm" forState:UIControlStateNormal];
+//    [addBtn setBackgroundColor:[UIColor clearColor]];
+//    [addBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+//    addBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, 300, 140, 44);
+//    [addBtn addTarget:self action:@selector(addAction:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:addBtn];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -137,6 +137,11 @@
         default:
             break;
     }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
+    [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
+    [defaults synchronize];
+
 }
 
 @end
