@@ -212,7 +212,7 @@ typedef enum{
 -(void)btnClick:(UIButton*)sender{
     if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:sender.titleLabel.text]){
         [self stopCurMode];
-        self.appDelegate.defaultBTServer.selectPeripheralInfo.mode = @"";
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.mode = nil;
         return;
     }
     if([sender.titleLabel.text isEqualToString:@"Relaxation"]){
@@ -258,7 +258,7 @@ typedef enum{
 -(void)hoursClick:(UIButton*)btn{
     if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:btn.titleLabel.text]){
         [self stopCurMode];
-        self.appDelegate.defaultBTServer.selectPeripheralInfo.mode = @"";
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.mode = nil;
         return;
     }
     if([btn.titleLabel.text isEqualToString:@"2 Hours"]){
@@ -357,6 +357,65 @@ typedef enum{
     });
     
 }
+
+
+- (void)showMode:(NSString*)modeString waterStatus:(NSInteger)status{
+    NSInteger btnTag;
+    if([modeString isEqualToString:@"Relaxation"]){
+        btnTag = 1;
+    }
+    else if([modeString isEqualToString:@"Sleep"]){
+        btnTag = 2;
+    }
+    else if([modeString isEqualToString:@"Energization"]){
+        btnTag = 3;
+    }
+    else if([modeString isEqualToString:@"Soothing"]){
+        btnTag = 4;
+    }
+    else if([modeString isEqualToString:@"Concentration"]){
+        btnTag = 5;
+    }
+    else if([modeString isEqualToString:@"Sensuality"]){
+        btnTag = 6;
+    }else if([modeString isEqualToString:@"2 Hours"]){
+        btnTag = 11;
+    }
+    else if([modeString isEqualToString:@"4 Hours"]){
+        btnTag = 12;
+    }
+    else if([modeString isEqualToString:@"8 Hours"]){
+        btnTag = 13;
+    }
+    else if([modeString isEqualToString:@"16 Hours"]){
+        btnTag = 14;
+    }
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        for(UInt8 i = 1; i<=6; i++){
+            UIButton * btn = (UIButton*)[self.view viewWithTag:i];
+            [btn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+        }
+        for(UInt8 i = 11; i<=14; i++){
+            UIButton * btn = (UIButton*)[self.view viewWithTag:i];
+            [btn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
+        }
+        
+        UIButton * btn = (UIButton*)[self.view viewWithTag:btnTag];
+        if(status == 0){
+            [btn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
+        }
+        else if(status == 1){
+            [btn setBackgroundImage:[UIImage imageNamed:@"bg_btn_blue.png"] forState:UIControlStateNormal];
+        }
+        else if(status == 2){
+            [btn setBackgroundImage:[UIImage imageNamed:@"bg_btn_red.png"] forState:UIControlStateNormal];
+        }
+    });
+    
+}
+
 - (void)sendAutoModeCmd:(NSString*)modeString{
     
     NSInteger cmd = 0;
@@ -504,6 +563,22 @@ typedef enum{
     self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = GET_WATER_STATUS;
     
     [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    if(self.appDelegate.defaultBTServer.selectPeripheralInfo.mode){
+        [self getWaterStatus];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(200 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
+            if(self.appDelegate.defaultBTServer.selectPeripheralInfo.water){
+                [self showMode:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode waterStatus:HAS_WATER_AND_WORK];
+            }
+            else{
+                NSString * hintString = [[NSString alloc]init];
+                hintString = [self composeHint:[self.essenceName valueForKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode]];
+                [self showHint:hintString];
+            }
+        });
+    }
 }
 
 @end

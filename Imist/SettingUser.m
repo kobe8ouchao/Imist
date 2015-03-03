@@ -649,9 +649,9 @@
     [data appendBytes:&led length:1];
     NSUInteger color1 = self.color1Value;
     [data appendBytes:&color1 length:1];
-    NSUInteger color2 = self.color1Value;
+    NSUInteger color2 = self.color2Value;
     [data appendBytes:&color2 length:1];
-    NSUInteger color3 = self.color1Value;
+    NSUInteger color3 = self.color3Value;
     [data appendBytes:&color3 length:1];
     
     self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
@@ -735,9 +735,9 @@
         [data appendBytes:&led length:1];
         NSUInteger color1 = self.color1Value;
         [data appendBytes:&color1 length:1];
-        NSUInteger color2 = self.color1Value;
+        NSUInteger color2 = self.color2Value;
         [data appendBytes:&color2 length:1];
-        NSUInteger color3 = self.color1Value;
+        NSUInteger color3 = self.color3Value;
         [data appendBytes:&color3 length:1];
     }
     
