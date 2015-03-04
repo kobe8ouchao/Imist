@@ -549,6 +549,8 @@
     [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
     [defaults synchronize];
     [self updateLedAutoValue:1];
+    UISlider *slider = (UISlider*)[self.view viewWithTag:3];
+    slider.enabled = NO;
 }
 
 - (void) btnNo:(id)sender
@@ -564,6 +566,9 @@
     [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
     [defaults synchronize];
     [self updateLedAutoValue:0];
+    UISlider *slider = (UISlider*)[self.view viewWithTag:3];
+    slider.enabled = YES;
+
 }
 
 
@@ -572,6 +577,9 @@
     [self startTimer];
     UIButton *modeBtn = (UIButton*)[self.view viewWithTag:202];
     [modeBtn setTitle:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode forState:UIControlStateNormal];
+    UISlider *slider = (UISlider*)[self.view viewWithTag:3];
+    if(self.ledAutoEnable)
+        slider.enabled = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
