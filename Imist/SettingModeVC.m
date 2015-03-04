@@ -548,15 +548,15 @@ typedef enum{
     
     NSUInteger query = cmd;
     [data appendBytes:&query length:1];
-    NSUInteger imist = mistValue;
+    NSUInteger imist = 50;//mistValue;
     [data appendBytes:&imist length:1];
-    NSUInteger led = brightnessValue;
+    NSUInteger led = 0x65;//brightnessValue;
     [data appendBytes:&led length:1];
-    NSUInteger color1 = 33; //fix me
+    NSUInteger color1 = 0;
     [data appendBytes:&color1 length:1];
-    NSUInteger color2 = 33;
+    NSUInteger color2 = 0;
     [data appendBytes:&color2 length:1];
-    NSUInteger color3 = 34;
+    NSUInteger color3 = 0;
     [data appendBytes:&color3 length:1];
     
     self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
