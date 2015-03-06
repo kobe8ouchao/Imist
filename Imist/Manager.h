@@ -22,6 +22,7 @@
 - (NSInteger) getColorR:(NSInteger)color;
 - (NSInteger) getColorG:(NSInteger)color;
 - (NSInteger) getColorB:(NSInteger)color;
+- (NSInteger)getCurModeCmd:(NSString*)modeString;
 
 @end
 

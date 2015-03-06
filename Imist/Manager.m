@@ -360,6 +360,7 @@ static NSDictionary *colorB;
     return returncolor;
 }
 
+
 - (void)dealloc {
     // 永远不要调用这个方法
 }

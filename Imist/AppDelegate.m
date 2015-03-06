@@ -12,6 +12,7 @@
 #import "MFSideMenuContainerViewController.h"
 #import "ScanDevicesVC.h"
 #import <AVFoundation/AVFoundation.h>
+#import "Manager.h"
 
 @interface AppDelegate ()
 @property(nonatomic, strong)NSTimer *playerTM;
@@ -213,7 +214,26 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         
     }
     
-
+    Manager *sharedManager = [Manager sharedManager];
+    NSMutableData* data = [NSMutableData data];
+    NSUInteger query = [sharedManager getCurModeCmd:self.defaultBTServer.selectPeripheralInfo.mode];
+    [data appendBytes:&query length:1];
+    NSUInteger imist = [self.defaultBTServer.selectPeripheralInfo.imist integerValue];
+    [data appendBytes:&imist length:1];
+    NSUInteger led = [self.defaultBTServer.selectPeripheralInfo.ledlight integerValue];
+    if(self.defaultBTServer.selectPeripheralInfo.ledauto)
+        led = 0x65;
+    [data appendBytes:&led length:1];
+    
+    NSUInteger color1 = [sharedManager getColorR:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+    [data appendBytes:&color1 length:1];
+    NSUInteger color2 = [sharedManager getColorG:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+    [data appendBytes:&color2 length:1];
+    NSUInteger color3 = [sharedManager getColorB:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+    [data appendBytes:&color3 length:1];
+    
+    self.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
+    [self.defaultBTServer writeValue:[self.defaultBTServer converCMD:data] withCharacter:[self.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
     
 }
 

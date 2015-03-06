@@ -130,7 +130,7 @@
                 if(initWork == 0 && self.appDelegate.defaultBTServer.selectPeripheralInfo.mode){
                     initWork = 1;
                     NSMutableData* data = [NSMutableData data];
-                    NSUInteger query = [self getCurModeCmd:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode];;
+                    NSUInteger query = [self getCurModeCmd:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode];
                     [data appendBytes:&query length:1];
                     NSUInteger imist = [self.appDelegate.defaultBTServer.selectPeripheralInfo.imist integerValue];
                     [data appendBytes:&imist length:1];
@@ -193,11 +193,11 @@
     if ([pi.state isEqualToString:@"connected"]) {
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
         SettingUser *thirdViewController = [[SettingUser alloc] init];
-        thirdViewController.title = pi.name;
+        thirdViewController.title = @"IMIST";//pi.name;
         SettingModeVC *firstViewController = [[SettingModeVC alloc] init];
-        firstViewController.title = pi.name;
+        firstViewController.title = @"IMIST";//pi.name;
         SettingAlerm *secondViewController = [[SettingAlerm alloc] init];
-        secondViewController.title = pi.name;
+        secondViewController.title = @"IMIST";//pi.name;
         
         RDVTabBarController *tabBarController = [[RDVTabBarController alloc] init];
         [tabBarController setViewControllers:@[firstViewController, secondViewController,thirdViewController]];
@@ -223,6 +223,7 @@
                         pi.mode = selectPi.mode;
                         pi.alert = selectPi.alert;
                         self.appDelegate.defaultBTServer.selectPeripheralInfo = pi;
+                        [self restoreSelPiUserset:pi.mode];
                     }else {
                         NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:pi];
                         pi.userset2Hour = [[NSMutableDictionary alloc] init];
@@ -327,7 +328,7 @@
 }
 
 -(void)AlertView{
-    UIAlertView *aview = [[UIAlertView alloc]initWithTitle:@"Delete Imist?" message:@"Do you want to delete this Imist?" delegate:self cancelButtonTitle:@"Confirm" otherButtonTitles:@"Cancel", nil];
+    UIAlertView *aview = [[UIAlertView alloc]initWithTitle:@"Delete diffuser?" message:@"Do you want to delete this diffuser?" delegate:self cancelButtonTitle:@"Confirm" otherButtonTitles:@"Cancel", nil];
     aview.delegate = self;
     [aview show];
 }
@@ -407,13 +408,13 @@
     else if([modeString isEqualToString:@"2 Hours"]){
         cmd = 9;
     }
-    else if([modeString isEqualToString:@"2 Hours"]){
+    else if([modeString isEqualToString:@"4 Hours"]){
         cmd = 10;
     }
-    else if([modeString isEqualToString:@"2 Hours"]){
+    else if([modeString isEqualToString:@"8 Hours"]){
         cmd = 11;
     }
-    else if([modeString isEqualToString:@"2 Hours"]){
+    else if([modeString isEqualToString:@"16 Hours"]){
         cmd = 12;
     }
     
@@ -421,5 +422,60 @@
     
 }
 
+- (void)restoreSelPiUserset:(NSString*)modeString{
+    PeriperalInfo *selectPi =  self.appDelegate.defaultBTServer.selectPeripheralInfo;
+
+    if([selectPi.mode isEqualToString:@"2 Hours"]){
+        selectPi.imist = [selectPi.userset2Hour valueForKey:@"mist"];
+    }
+    else if([selectPi.mode isEqualToString:@"4 Hours"]){
+        selectPi.imist = [selectPi.userset4Hour valueForKey:@"mist"];
+    }
+    else if([selectPi.mode isEqualToString:@"8 Hours"]){
+        selectPi.imist = [selectPi.userset8Hour valueForKey:@"mist"];
+    }
+    else if([selectPi.mode isEqualToString:@"16 Hours"]){
+        selectPi.imist = [selectPi.userset16Hour valueForKey:@"mist"];
+    }
+    
+    if([selectPi.mode isEqualToString:@"2 Hours"]){
+        selectPi.ledlight = [selectPi.userset2Hour valueForKey:@"brightness"];
+    }
+    else if([selectPi.mode isEqualToString:@"4 Hours"]){
+        selectPi.ledlight = [selectPi.userset4Hour valueForKey:@"brightness"];
+    }
+    else if([selectPi.mode isEqualToString:@"8 Hours"]){
+        selectPi.ledlight = [selectPi.userset8Hour valueForKey:@"brightness"];
+    }
+    else if([selectPi.mode isEqualToString:@"16 Hours"]){
+        selectPi.ledlight = [selectPi.userset16Hour valueForKey:@"brightness"];
+    }
+    
+    if([selectPi.mode isEqualToString:@"2 Hours"]){
+        selectPi.ledauto = [selectPi.userset2Hour valueForKey:@"auto"];
+    }
+    else if([selectPi.mode isEqualToString:@"4 Hours"]){
+        selectPi.ledauto = [selectPi.userset4Hour valueForKey:@"auto"];
+    }
+    else if([selectPi.mode isEqualToString:@"8 Hours"]){
+        selectPi.ledauto = [selectPi.userset8Hour valueForKey:@"auto"];
+    }
+    else if([selectPi.mode isEqualToString:@"16 Hours"]){
+        selectPi.ledauto = [selectPi.userset16Hour valueForKey:@"auto"];
+    }
+    
+    if([selectPi.mode isEqualToString:@"2 Hours"]){
+        selectPi.ledcolor = [selectPi.userset2Hour valueForKey:@"color"];
+    }
+    else if([selectPi.mode isEqualToString:@"4 Hours"]){
+        selectPi.ledcolor = [selectPi.userset4Hour valueForKey:@"color"];
+    }
+    else if([selectPi.mode isEqualToString:@"8 Hours"]){
+        selectPi.ledcolor = [selectPi.userset8Hour valueForKey:@"color"];
+    }
+    else if([selectPi.mode isEqualToString:@"16 Hours"]){
+        selectPi.ledcolor = [selectPi.userset16Hour valueForKey:@"color"];
+    }
+}
 
 @end
