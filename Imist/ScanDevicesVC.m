@@ -18,12 +18,14 @@
 #import "RDVTabBarController.h"
 #import "RDVTabBarItem.h"
 #import "ProgressHUD.h"
+#import "Manager.h"
 
 @interface ScanDevicesVC ()<UITableViewDataSource,UITableViewDelegate,BTServerDelegate,scanDeviceCellDelegate> {
     BOOL reloading;
     BOOL isTag;
     activityView *activety;
     NSInteger selectRow;
+    BOOL initWork;
 }
 @property (strong,nonatomic)BTServer *defaultBTServer;
 @property (strong, nonatomic) UITableView *deviceTable;
@@ -112,6 +114,7 @@
         if (reloading) {
             reloading = NO;
         }
+        self.title = @"CONNECT";
     });
 }
 -(void)didReadvalue:(NSData*)data
@@ -124,6 +127,29 @@
         {
             if (state == 0x00) {
                 self.appDelegate.defaultBTServer.selectPeripheralInfo.water = [NSNumber numberWithInt:1];
+                if(initWork == 0 && self.appDelegate.defaultBTServer.selectPeripheralInfo.mode){
+                    initWork = 1;
+                    NSMutableData* data = [NSMutableData data];
+                    NSUInteger query = [self getCurModeCmd:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode];;
+                    [data appendBytes:&query length:1];
+                    NSUInteger imist = [self.appDelegate.defaultBTServer.selectPeripheralInfo.imist integerValue];
+                    [data appendBytes:&imist length:1];
+                    NSUInteger led = [self.appDelegate.defaultBTServer.selectPeripheralInfo.ledlight integerValue];
+                    if(self.appDelegate.defaultBTServer.selectPeripheralInfo.ledauto)
+                        led = 0x65;
+                    [data appendBytes:&led length:1];
+                    Manager *sharedManager = [Manager sharedManager];
+                    NSUInteger color1 = [sharedManager getColorR:[self.appDelegate.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+                    [data appendBytes:&color1 length:1];
+                    NSUInteger color2 = [sharedManager getColorG:[self.appDelegate.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+                    [data appendBytes:&color2 length:1];
+                    NSUInteger color3 = [sharedManager getColorB:[self.appDelegate.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+                    [data appendBytes:&color3 length:1];
+                    
+                    self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
+                    [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+                }
+                
             }else if (state == 0xAA){
                 self.appDelegate.defaultBTServer.selectPeripheralInfo.water = 0;
             }else {
@@ -142,6 +168,7 @@
     NSIndexPath * selectIndexPath = [NSIndexPath indexPathForRow:selectRow inSection:0];
     ScanDeviceCell *cell = (ScanDeviceCell*)[self.deviceTable cellForRowAtIndexPath:selectIndexPath];
     [cell setState:0];
+    initWork = 0;
     //    [ProgressHUD show:@"disconnect from peripheral"];
 }
 
@@ -188,7 +215,7 @@
                     NSData *encodedDataObject = [defaults objectForKey:pi.uuid];
                     PeriperalInfo *selectPi = (PeriperalInfo *)[NSKeyedUnarchiver unarchiveObjectWithData: encodedDataObject];
                     if (selectPi) {
-                        pi.water = selectPi.water;
+                        //pi.water = selectPi.water;
                         pi.userset2Hour = selectPi.userset2Hour;
                         pi.userset4Hour = selectPi.userset4Hour;
                         pi.userset8Hour = selectPi.userset8Hour;
@@ -207,7 +234,7 @@
                         [defaults synchronize];
                     }
                     
-                    [cell setState:1];
+                    //[cell setState:1];
                     [ProgressHUD showSuccess:@"connected success!"];
                     NSMutableData* data = [NSMutableData data];
                     NSUInteger query = 0xa1;
@@ -355,5 +382,44 @@
         index++;
     }
 }
+
+- (NSInteger)getCurModeCmd:(NSString*)modeString{
+    NSInteger cmd = 0;
+    if([modeString isEqualToString:@"Relaxation"]){
+        cmd = 3;
+    }
+    else if([modeString isEqualToString:@"Sleep"]){
+        cmd = 4;
+    }
+    else if([modeString isEqualToString:@"Energization"]){
+        cmd = 5;
+    }
+    else if([modeString isEqualToString:@"Soothing"]){
+        cmd = 6;
+    }
+    else if([modeString isEqualToString:@"Concentration"]){
+        cmd = 7;
+    }
+    else if([modeString isEqualToString:@"Sensuality"]){
+        cmd = 8;
+    }
+    
+    else if([modeString isEqualToString:@"2 Hours"]){
+        cmd = 9;
+    }
+    else if([modeString isEqualToString:@"2 Hours"]){
+        cmd = 10;
+    }
+    else if([modeString isEqualToString:@"2 Hours"]){
+        cmd = 11;
+    }
+    else if([modeString isEqualToString:@"2 Hours"]){
+        cmd = 12;
+    }
+    
+    return cmd;
+    
+}
+
 
 @end
