@@ -175,7 +175,7 @@
         RDVTabBarController *tabBarController = [[RDVTabBarController alloc] init];
         [tabBarController setViewControllers:@[firstViewController, secondViewController,thirdViewController]];
         [self customizeTabBarForController:tabBarController];
-        tabBarController.title = pi.name;
+        tabBarController.title = @"IMIST";//pi.name;
         [self.navigationController pushViewController:tabBarController animated:YES];
     }else if([pi.state isEqualToString:@"disConnected"]) {
         [ProgressHUD show:@"connecting ..."];
@@ -245,8 +245,8 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
-    cell.name = pi.name;
-    //    cell.name = [NSString stringWithFormat:@"Imist-%ld",(long)indexPath.row];
+    //cell.name = pi.name;
+    cell.name = [NSString stringWithFormat:@"IMIST%ld",(long)indexPath.row+1];
     cell.index = indexPath;
     cell.delegate = self;
     cell.icon = @"ico_imist.png";

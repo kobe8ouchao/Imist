@@ -392,7 +392,7 @@
 
     
     [self setUpBar:CGRectMake(20, 60, self.view.frame.size.width - 40 ,80) withTitle:@"mist" withMin:0 withMax:50 withTag:1 withValue:self.imistValue];
-    [self setUpBar:CGRectMake(20, 130, self.view.frame.size.width - 40 ,80) withTitle:@"led brightness" withMin:0 withMax:100 withTag:2 withValue:self.brightnessValue];
+    [self setUpBar:CGRectMake(20, 130, self.view.frame.size.width - 40 ,80) withTitle:@"led brightness" withMin:0 withMax:46 withTag:2 withValue:self.brightnessValue];
     [self setUpBar:CGRectMake(20, 210, self.view.frame.size.width - 40 ,80) withTitle:@"led color" withMin:0 withMax:100 withTag:3 withValue:self.colorValue];
 //    [self setUpBar:CGRectMake(20, 230, self.view.frame.size.width - 40 ,40) withTitle:@"led auto" withMin:0 withMax:50 withTag:4];
     
@@ -546,6 +546,8 @@
     [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
     [defaults synchronize];
     [self updateLedAutoValue:1];
+    UISlider *slider = (UISlider*)[self.view viewWithTag:3];
+    slider.enabled = NO;
 }
 
 - (void) btnNo:(id)sender
@@ -569,6 +571,9 @@
     [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
     [defaults synchronize];
     [self updateLedAutoValue:0];
+    UISlider *slider = (UISlider*)[self.view viewWithTag:3];
+    slider.enabled = YES;
+
 }
 
 
@@ -577,6 +582,9 @@
     [self startTimer];
     UIButton *modeBtn = (UIButton*)[self.view viewWithTag:202];
     [modeBtn setTitle:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode forState:UIControlStateNormal];
+    UISlider *slider = (UISlider*)[self.view viewWithTag:3];
+    if(self.ledAutoEnable)
+        slider.enabled = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -642,6 +650,8 @@
     NSUInteger imist = self.imistValue;
     [data appendBytes:&imist length:1];
     NSUInteger led = self.brightnessValue;
+    if(self.ledAutoEnable)
+        led = 0x65;
     [data appendBytes:&led length:1];
     NSUInteger color1 = self.color1Value;
     [data appendBytes:&color1 length:1];
@@ -692,6 +702,8 @@
     NSUInteger imist = self.imistValue;
     [data appendBytes:&imist length:1];
     NSUInteger led = self.brightnessValue;
+    if(self.ledAutoEnable)
+        led = 0x65;
     [data appendBytes:&led length:1];
     NSUInteger color1 = self.color1Value;
     [data appendBytes:&color1 length:1];
