@@ -15,10 +15,10 @@
     [encoder encodeObject:self.water forKey:@"waterKey"];
     [encoder encodeObject:self.mode forKey:@"modeKey"];
     [encoder encodeObject:self.alert forKey:@"alertKey"];
-    [encoder encodeObject:self.ledauto forKey:@"ledautoKey"];
-    [encoder encodeObject:self.ledcolor forKey:@"ledcolorKey"];
-    [encoder encodeObject:self.ledlight forKey:@"ledlightKey"];
-    [encoder encodeObject:self.imist forKey:@"imistKey"];
+    [encoder encodeObject:self.userset2Hour forKey:@"2Hour"];
+    [encoder encodeObject:self.userset4Hour forKey:@"4Hour"];
+    [encoder encodeObject:self.userset8Hour forKey:@"8Hour"];
+    [encoder encodeObject:self.userset16Hour forKey:@"16Hour"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder
@@ -28,10 +28,10 @@
         self.water = [decoder decodeObjectForKey:@"waterKey"];
         self.mode = [decoder decodeObjectForKey:@"modeKey"];
         self.alert = (NSMutableArray*)[decoder decodeObjectForKey:@"alertKey"];
-        self.ledauto = [decoder decodeObjectForKey:@"ledautoKey"];
-        self.ledcolor = [decoder decodeObjectForKey:@"ledcolorKey"];
-        self.ledlight = [decoder decodeObjectForKey:@"ledlightKey"];
-        self.imist = [decoder decodeObjectForKey:@"imistKey"];
+        self.userset2Hour = [decoder decodeObjectForKey:@"2Hour"];
+        self.userset4Hour = [decoder decodeObjectForKey:@"4Hour"];
+        self.userset8Hour = [decoder decodeObjectForKey:@"8Hour"];
+        self.userset16Hour = [decoder decodeObjectForKey:@"16Hour"];
     }
     return self;
 }

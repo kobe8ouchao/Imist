@@ -189,14 +189,19 @@
                     PeriperalInfo *selectPi = (PeriperalInfo *)[NSKeyedUnarchiver unarchiveObjectWithData: encodedDataObject];
                     if (selectPi) {
                         pi.water = selectPi.water;
-                        pi.ledauto = selectPi.ledauto;
-                        pi.ledcolor = selectPi.ledcolor;
+                        pi.userset2Hour = selectPi.userset2Hour;
+                        pi.userset4Hour = selectPi.userset4Hour;
+                        pi.userset8Hour = selectPi.userset8Hour;
+                        pi.userset16Hour = selectPi.userset16Hour;
                         pi.mode = selectPi.mode;
                         pi.alert = selectPi.alert;
-                        pi.ledlight = selectPi.ledlight;
                         self.appDelegate.defaultBTServer.selectPeripheralInfo = pi;
                     }else {
                         NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:pi];
+                        pi.userset2Hour = [[NSMutableDictionary alloc] init];
+                        pi.userset4Hour = [[NSMutableDictionary alloc] init];
+                        pi.userset8Hour = [[NSMutableDictionary alloc] init];
+                        pi.userset16Hour = [[NSMutableDictionary alloc] init];
                         self.appDelegate.defaultBTServer.selectPeripheralInfo = pi;
                         [defaults setObject:encodedObject forKey:pi.uuid];
                         [defaults synchronize];
