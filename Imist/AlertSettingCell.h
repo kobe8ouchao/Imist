@@ -7,10 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol alertSettingCellDelegate;
+@interface AlertSettingCell : UITableViewCell{
+    __weak id <alertSettingCellDelegate> delegate;
+}
 
-@interface AlertSettingCell : UITableViewCell
 @property (nonatomic, strong)NSString *time;
 @property (nonatomic, strong)NSString *days;
 @property (nonatomic, assign)BOOL isOpen;
+@property (nonatomic, strong)NSIndexPath *index;
+@property (nonatomic ,weak) id delegate;
 -(void) setStyle;
+@end
+@protocol alertSettingCellDelegate <NSObject>
+-(void)switchChange:(NSInteger)index enable:(BOOL)yesNo;
 @end

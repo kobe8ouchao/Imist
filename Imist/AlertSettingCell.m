@@ -81,7 +81,15 @@
 }
 
 -(void)switchAction:(UISwitch*)showBuzzerSwich{
-    
+    if(showBuzzerSwich.on){
+        self.isOpen = YES;
+    }
+    else{
+        self.isOpen = NO;
+    }
+    if ([self.delegate respondsToSelector:@selector(switchChange: enable:)]) {
+        [self.delegate switchChange:self.index.row enable:self.isOpen];
+    }
 }
 
 @end

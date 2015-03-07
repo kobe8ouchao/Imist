@@ -11,9 +11,9 @@
 #import "AlertSettingCell.h"
 #import "ProgressHUD.h"
 
-@interface SettingAlerm ()<UITableViewDataSource,UITableViewDelegate>
+@interface SettingAlerm ()<UITableViewDataSource,UITableViewDelegate,alertSettingCellDelegate>
 @property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSDictionary *deletealertItem;
+@property (nonatomic, strong) NSMutableDictionary *deletealertItem;
 @property (strong,nonatomic)UITableView *alertTable;
 @end
 
@@ -91,7 +91,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:indexPath.row];
+    NSMutableDictionary *alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:indexPath.row];
     AddAlarmVC* addv = [[AddAlarmVC alloc] init];
     addv.editAlert = alertItem;
     [self.navigationController pushViewController:addv animated:YES];
@@ -101,15 +101,17 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *MyIdentifier = @"AlertSettingCell";
-    NSDictionary *alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:indexPath.row];
+    NSMutableDictionary *alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:indexPath.row];
     AlertSettingCell *cell = [tableView dequeueReusableCellWithIdentifier:MyIdentifier];
     if (cell == nil) {
         cell = [[AlertSettingCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.index = indexPath;
+    cell.delegate = self;
     cell.time = [alertItem objectForKey:@"time"];
     cell.days = [alertItem objectForKey:@"repeat"];
-    cell.isOpen = [[alertItem objectForKey:@"open"] boolValue];
+    cell.isOpen = [[alertItem objectForKey:@"isOpen"] boolValue];
     [cell setStyle];
     return cell;
 }
@@ -141,6 +143,17 @@
     NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
     [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
     [defaults synchronize];
+
+}
+
+- (void)switchChange:(NSInteger)index enable:(BOOL)yesNo{
+    NSString* ifenable;
+    if(yesNo)
+        ifenable = @"1";
+    else
+        ifenable = @"0";
+
+    [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert[index] setObject:ifenable forKey:@"isOpen"];
 
 }
 

@@ -9,6 +9,7 @@
 #import "AddAlarmVC.h"
 #import "PickDayVC.h"
 #import "PickSoundVC.h"
+#import "AlertSettingCell.h"
 
 @interface AddAlarmVC ()<UIPickerViewDelegate,UIPickerViewDataSource,pickDayDelegate,pickSoundDelegate>
 @property (nonatomic,strong) NSArray *all;
@@ -40,7 +41,7 @@
     if (self.editAlert) {
         NSString *strTime = [self.editAlert objectForKey:@"time"];
         NSArray *arrTime = [strTime componentsSeparatedByString:@":"];
-        if ([[arrTime objectAtIndex:0] integerValue] > 12) {
+        if ([[arrTime objectAtIndex:0] integerValue] >= 12) {
             [_pickerview selectRow:1 inComponent:0 animated:NO];
             [_pickerview selectRow:[[arrTime objectAtIndex:0] integerValue] - 12 inComponent:1 animated:NO];
         }else {
@@ -231,18 +232,18 @@
     self.selectedHour = [self.hours objectAtIndex:hrow];
     self.selectedMinis = [self.minis objectAtIndex:mrow];
     if ([self.ampm isEqualToString:@"PM"]) {
-        NSInteger hourss = [self.selectedHour integerValue];
+        NSInteger hourss = [self.selectedHour integerValue] + 12;
         self.selectedHour = [NSString stringWithFormat:@"%ld",(long)hourss];
     }
-    NSString *times = [NSString stringWithFormat:@"%@ %@:%@",self.ampm,self.selectedHour,self.selectedMinis];
-    NSDictionary * dictionary;
+    NSString *times = [NSString stringWithFormat:@"%@:%@",self.selectedHour,self.selectedMinis];
+    NSMutableDictionary * dictionary;
     if (!self.sound) {
         self.sound = @"nil";
     }
     if (!self.days) {
         self.days = @"1|2|3|4|5|6|7";
     }
-    dictionary = [NSDictionary dictionaryWithObjectsAndKeys:times,@"time",self.sound,@"sound",self.days,@"repeat", @"1", @"isOpen",nil];
+    dictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:times,@"time",self.sound,@"sound",self.days,@"repeat", @"1", @"isOpen",nil];
     if (self.editAlert) {
         [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert removeObject:self.editAlert];
         [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert addObject:dictionary];
@@ -271,6 +272,7 @@
     NSLog(@"days====%@",daysStr);
     self.days = daysStr;
 }
+
 
 
 @end
