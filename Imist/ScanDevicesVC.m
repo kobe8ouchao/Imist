@@ -175,7 +175,7 @@
         RDVTabBarController *tabBarController = [[RDVTabBarController alloc] init];
         [tabBarController setViewControllers:@[firstViewController, secondViewController,thirdViewController]];
         [self customizeTabBarForController:tabBarController];
-        tabBarController.title = @"IMIST";//pi.name;
+        tabBarController.title = pi.name;
         [self.navigationController pushViewController:tabBarController animated:YES];
     }else if([pi.state isEqualToString:@"disConnected"]) {
         [ProgressHUD show:@"connecting ..."];
@@ -189,6 +189,7 @@
                     PeriperalInfo *selectPi = (PeriperalInfo *)[NSKeyedUnarchiver unarchiveObjectWithData: encodedDataObject];
                     if (selectPi) {
                         pi.water = selectPi.water;
+                        pi.name = selectPi.name;
                         pi.userset2Hour = selectPi.userset2Hour;
                         pi.userset4Hour = selectPi.userset4Hour;
                         pi.userset8Hour = selectPi.userset8Hour;
@@ -244,9 +245,21 @@
         cell = [[ScanDeviceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
-    //cell.name = pi.name;
-    cell.name = [NSString stringWithFormat:@"IMIST%ld",(long)indexPath.row+1];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSData *encodedDataObject = [defaults objectForKey:pi.uuid];
+    PeriperalInfo *selectPi = (PeriperalInfo *)[NSKeyedUnarchiver unarchiveObjectWithData: encodedDataObject];
+    if (selectPi) {
+        if (selectPi.name && ![selectPi.name isEqualToString:@""]) {
+             cell.name = selectPi.name;
+        }else {
+            cell.name = [NSString stringWithFormat:@"IMIST%ld",(long)indexPath.row+1];
+        }
+    }else {
+        cell.name = [NSString stringWithFormat:@"IMIST%ld",(long)indexPath.row+1];
+    }
+    
     cell.index = indexPath;
     cell.delegate = self;
     cell.icon = @"ico_imist.png";

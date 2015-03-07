@@ -642,24 +642,38 @@ typedef enum{
     }
     if([self.modeString isEqualToString:@"Relaxation"]){
         self.doNotShowHint_Relaxation = yesNo;
+        [[NSUserDefaults standardUserDefaults] setBool:yesNo forKey:@"HintRelaxation"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     else if([self.modeString isEqualToString:@"Sleep"]){
         self.doNotShowHint_Sleep = yesNo;
+        [[NSUserDefaults standardUserDefaults] setBool:yesNo forKey:@"HintSleep"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     else if([self.modeString isEqualToString:@"Energization"]){
         self.doNotShowHint_Energization = yesNo;
+        [[NSUserDefaults standardUserDefaults] setBool:yesNo forKey:@"HintEnergization"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     else if([self.modeString isEqualToString:@"Soothing"]){
         self.doNotShowHint_Soothing = yesNo;
+        [[NSUserDefaults standardUserDefaults] setBool:yesNo forKey:@"HintSoothing"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     else if([self.modeString isEqualToString:@"Concentration"]){
         self.doNotShowHint_Concentration = yesNo;
+        [[NSUserDefaults standardUserDefaults] setBool:yesNo forKey:@"HintConcentration"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     else if([self.modeString isEqualToString:@"Sensuality"]){
         self.doNotShowHint_Sensuality = yesNo;
+        [[NSUserDefaults standardUserDefaults] setBool:yesNo forKey:@"HintSensuality"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     else{
         self.doNotShowHint_UserMode = yesNo;
+        [[NSUserDefaults standardUserDefaults] setBool:yesNo forKey:@"HintUserMode"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
 
@@ -669,25 +683,32 @@ typedef enum{
         yesNo = NO;
     }
     else if([self.modeString isEqualToString:@"Relaxation"]){
-        yesNo = self.doNotShowHint_Relaxation;
+//        self.doNotShowHint_Relaxation;
+        yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintRelaxation"] boolValue];
     }
     else if([self.modeString isEqualToString:@"Sleep"]){
         yesNo = self.doNotShowHint_Sleep;
+        yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintSleep"] boolValue];
     }
     else if([self.modeString isEqualToString:@"Energization"]){
         yesNo = self.doNotShowHint_Energization;
+        yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintEnergization"] boolValue];
     }
     else if([self.modeString isEqualToString:@"Soothing"]){
         yesNo = self.doNotShowHint_Soothing;
+        yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintSoothing"] boolValue];
     }
     else if([self.modeString isEqualToString:@"Concentration"]){
         yesNo = self.doNotShowHint_Concentration;
+        yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintConcentration"] boolValue];
     }
     else if([self.modeString isEqualToString:@"Sensuality"]){
         yesNo = self.doNotShowHint_Sensuality;
+        yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintSensuality"] boolValue];
     }
     else {
         yesNo = self.doNotShowHint_UserMode;
+        yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintRelaxation"] boolValue];
     }
     return yesNo;
 }

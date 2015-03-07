@@ -367,6 +367,11 @@
             self.title = tf.text;
             AppDelegate *application = (AppDelegate*)[UIApplication sharedApplication].delegate;
             application.defaultBTServer.selectPeripheralInfo.name = tf.text;
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:application.defaultBTServer.selectPeripheralInfo];
+            [defaults setObject:encodedObject forKey:application.defaultBTServer.selectPeripheralInfo.uuid];
+            [defaults synchronize];
+            
         }
     }
 }

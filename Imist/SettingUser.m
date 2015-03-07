@@ -582,7 +582,44 @@
     [self startTimer];
     UIButton *modeBtn = (UIButton*)[self.view viewWithTag:202];
     [modeBtn setTitle:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode forState:UIControlStateNormal];
+    UISlider *slider1 = (UISlider*)[self.view viewWithTag:1];
+    UISlider *slider2 = (UISlider*)[self.view viewWithTag:2];
     UISlider *slider = (UISlider*)[self.view viewWithTag:3];
+    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]){
+        //        self.imistValue = [self.appDelegate.defaultBTServer.selectPeripheralInfo.imist integerValue];
+        //        self.brightnessValue = [self.appDelegate.defaultBTServer.selectPeripheralInfo.ledlight integerValue];
+        //        self.colorValue = [self.appDelegate.defaultBTServer.selectPeripheralInfo.ledcolor integerValue];
+        //        self.ledAutoEnable = [self.appDelegate.defaultBTServer.selectPeripheralInfo.ledauto integerValue];
+        
+        self.imistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"mist"] integerValue];
+        self.brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"brightness"] integerValue];
+        self.colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"color"] integerValue];
+        self.ledAutoEnable = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"auto"] integerValue];
+        
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"4 Hours"]){
+        self.imistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"mist"] integerValue];
+        self.brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"brightness"] integerValue];
+        self.colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"color"] integerValue];
+        self.ledAutoEnable = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"auto"] integerValue];
+        
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"8 Hours"]){
+        self.imistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"mist"] integerValue];
+        self.brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"brightness"] integerValue];
+        self.colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"color"] integerValue];
+        self.ledAutoEnable = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"auto"] integerValue];
+        
+    }
+    else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"16 Hours"]){
+        self.imistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"mist"] integerValue];
+        self.brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"brightness"] integerValue];
+        self.colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"color"] integerValue];
+        self.ledAutoEnable = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"auto"] integerValue];
+    }
+    slider1.value = self.imistValue;
+    slider2.value = self.brightnessValue;
+    slider.value = self.colorValue;
     if(self.ledAutoEnable)
         slider.enabled = NO;
 }

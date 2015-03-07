@@ -43,6 +43,8 @@
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"isFirst"] == NULL && ![[[NSUserDefaults standardUserDefaults] objectForKey:@"isFirst"] boolValue]) { // First
         TutoralVC *tutorvc=[[TutoralVC alloc] init];
         self.window.rootViewController = tutorvc;
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isFirst"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     } else {
         self.scanVC = [self scanDevicesController];
         SideMenuViewController *leftMenuViewController = [[SideMenuViewController alloc] init];

@@ -12,6 +12,7 @@
 @synthesize water,mode,alert,ledauto,ledcolor,ledlight,imist;
 - (void)encodeWithCoder:(NSCoder *)encoder
 {
+    [encoder encodeObject:self.name forKey:@"nameKey"];
     [encoder encodeObject:self.water forKey:@"waterKey"];
     [encoder encodeObject:self.mode forKey:@"modeKey"];
     [encoder encodeObject:self.alert forKey:@"alertKey"];
@@ -25,6 +26,7 @@
 {
     if((self = [super init]))
     {
+        self.name = [decoder decodeObjectForKey:@"nameKey"];
         self.water = [decoder decodeObjectForKey:@"waterKey"];
         self.mode = [decoder decodeObjectForKey:@"modeKey"];
         self.alert = (NSMutableArray*)[decoder decodeObjectForKey:@"alertKey"];
