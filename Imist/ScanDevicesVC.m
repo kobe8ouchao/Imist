@@ -18,12 +18,14 @@
 #import "RDVTabBarController.h"
 #import "RDVTabBarItem.h"
 #import "ProgressHUD.h"
+#import "Manager.h"
 
 @interface ScanDevicesVC ()<UITableViewDataSource,UITableViewDelegate,BTServerDelegate,scanDeviceCellDelegate> {
     BOOL reloading;
     BOOL isTag;
     activityView *activety;
     NSInteger selectRow;
+    BOOL initWork;
 }
 @property (strong,nonatomic)BTServer *defaultBTServer;
 @property (strong, nonatomic) UITableView *deviceTable;
@@ -112,6 +114,7 @@
         if (reloading) {
             reloading = NO;
         }
+        self.title = @"CONNECT";
     });
 }
 -(void)didReadvalue:(NSData*)data
@@ -124,6 +127,29 @@
         {
             if (state == 0x00) {
                 self.appDelegate.defaultBTServer.selectPeripheralInfo.water = [NSNumber numberWithInt:1];
+                if(initWork == 0 && self.appDelegate.defaultBTServer.selectPeripheralInfo.mode){
+                    initWork = 1;
+                    NSMutableData* data = [NSMutableData data];
+                    NSUInteger query = [self getCurModeCmd:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode];
+                    [data appendBytes:&query length:1];
+                    NSUInteger imist = [self.appDelegate.defaultBTServer.selectPeripheralInfo.imist integerValue];
+                    [data appendBytes:&imist length:1];
+                    NSUInteger led = [self.appDelegate.defaultBTServer.selectPeripheralInfo.ledlight integerValue];
+                    if(self.appDelegate.defaultBTServer.selectPeripheralInfo.ledauto)
+                        led = 0x65;
+                    [data appendBytes:&led length:1];
+                    Manager *sharedManager = [Manager sharedManager];
+                    NSUInteger color1 = [sharedManager getColorR:[self.appDelegate.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+                    [data appendBytes:&color1 length:1];
+                    NSUInteger color2 = [sharedManager getColorG:[self.appDelegate.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+                    [data appendBytes:&color2 length:1];
+                    NSUInteger color3 = [sharedManager getColorB:[self.appDelegate.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+                    [data appendBytes:&color3 length:1];
+                    
+                    self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
+                    [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+                }
+                
             }else if (state == 0xAA){
                 self.appDelegate.defaultBTServer.selectPeripheralInfo.water = 0;
             }else {
@@ -142,6 +168,7 @@
     NSIndexPath * selectIndexPath = [NSIndexPath indexPathForRow:selectRow inSection:0];
     ScanDeviceCell *cell = (ScanDeviceCell*)[self.deviceTable cellForRowAtIndexPath:selectIndexPath];
     [cell setState:0];
+    initWork = 0;
     //    [ProgressHUD show:@"disconnect from peripheral"];
 }
 
@@ -166,11 +193,11 @@
     if ([pi.state isEqualToString:@"connected"]) {
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
         SettingUser *thirdViewController = [[SettingUser alloc] init];
-        thirdViewController.title = pi.name;
+        thirdViewController.title = @"IMIST";//pi.name;
         SettingModeVC *firstViewController = [[SettingModeVC alloc] init];
-        firstViewController.title = pi.name;
+        firstViewController.title = @"IMIST";//pi.name;
         SettingAlerm *secondViewController = [[SettingAlerm alloc] init];
-        secondViewController.title = pi.name;
+        secondViewController.title = @"IMIST";//pi.name;
         
         RDVTabBarController *tabBarController = [[RDVTabBarController alloc] init];
         [tabBarController setViewControllers:@[firstViewController, secondViewController,thirdViewController]];
@@ -188,7 +215,7 @@
                     NSData *encodedDataObject = [defaults objectForKey:pi.uuid];
                     PeriperalInfo *selectPi = (PeriperalInfo *)[NSKeyedUnarchiver unarchiveObjectWithData: encodedDataObject];
                     if (selectPi) {
-                        pi.water = selectPi.water;
+//                        pi.water = selectPi.water;
                         pi.name = selectPi.name;
                         pi.userset2Hour = selectPi.userset2Hour;
                         pi.userset4Hour = selectPi.userset4Hour;
@@ -197,6 +224,7 @@
                         pi.mode = selectPi.mode;
                         pi.alert = selectPi.alert;
                         self.appDelegate.defaultBTServer.selectPeripheralInfo = pi;
+                        [self restoreSelPiUserset:pi.mode];
                     }else {
                         NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:pi];
                         pi.userset2Hour = [[NSMutableDictionary alloc] init];
@@ -208,7 +236,7 @@
                         [defaults synchronize];
                     }
                     
-                    [cell setState:1];
+                    //[cell setState:1];
                     [ProgressHUD showSuccess:@"connected success!"];
                     NSMutableData* data = [NSMutableData data];
                     NSUInteger query = 0xa1;
@@ -313,7 +341,7 @@
 }
 
 -(void)AlertView{
-    UIAlertView *aview = [[UIAlertView alloc]initWithTitle:@"Delete Imist?" message:@"Do you want to delete this Imist?" delegate:self cancelButtonTitle:@"Confirm" otherButtonTitles:@"Cancel", nil];
+    UIAlertView *aview = [[UIAlertView alloc]initWithTitle:@"Delete diffuser?" message:@"Do you want to delete this diffuser?" delegate:self cancelButtonTitle:@"Confirm" otherButtonTitles:@"Cancel", nil];
     aview.delegate = self;
     [aview show];
 }
@@ -366,6 +394,100 @@
         [item setFinishedSelectedImage:selectedimage withFinishedUnselectedImage:unselectedimage];
         
         index++;
+    }
+}
+
+- (NSInteger)getCurModeCmd:(NSString*)modeString{
+    NSInteger cmd = 0;
+    if([modeString isEqualToString:@"Relaxation"]){
+        cmd = 3;
+    }
+    else if([modeString isEqualToString:@"Sleep"]){
+        cmd = 4;
+    }
+    else if([modeString isEqualToString:@"Energization"]){
+        cmd = 5;
+    }
+    else if([modeString isEqualToString:@"Soothing"]){
+        cmd = 6;
+    }
+    else if([modeString isEqualToString:@"Concentration"]){
+        cmd = 7;
+    }
+    else if([modeString isEqualToString:@"Sensuality"]){
+        cmd = 8;
+    }
+    
+    else if([modeString isEqualToString:@"2 Hours"]){
+        cmd = 9;
+    }
+    else if([modeString isEqualToString:@"4 Hours"]){
+        cmd = 10;
+    }
+    else if([modeString isEqualToString:@"8 Hours"]){
+        cmd = 11;
+    }
+    else if([modeString isEqualToString:@"16 Hours"]){
+        cmd = 12;
+    }
+    
+    return cmd;
+    
+}
+
+- (void)restoreSelPiUserset:(NSString*)modeString{
+    PeriperalInfo *selectPi =  self.appDelegate.defaultBTServer.selectPeripheralInfo;
+
+    if([selectPi.mode isEqualToString:@"2 Hours"]){
+        selectPi.imist = [selectPi.userset2Hour valueForKey:@"mist"];
+    }
+    else if([selectPi.mode isEqualToString:@"4 Hours"]){
+        selectPi.imist = [selectPi.userset4Hour valueForKey:@"mist"];
+    }
+    else if([selectPi.mode isEqualToString:@"8 Hours"]){
+        selectPi.imist = [selectPi.userset8Hour valueForKey:@"mist"];
+    }
+    else if([selectPi.mode isEqualToString:@"16 Hours"]){
+        selectPi.imist = [selectPi.userset16Hour valueForKey:@"mist"];
+    }
+    
+    if([selectPi.mode isEqualToString:@"2 Hours"]){
+        selectPi.ledlight = [selectPi.userset2Hour valueForKey:@"brightness"];
+    }
+    else if([selectPi.mode isEqualToString:@"4 Hours"]){
+        selectPi.ledlight = [selectPi.userset4Hour valueForKey:@"brightness"];
+    }
+    else if([selectPi.mode isEqualToString:@"8 Hours"]){
+        selectPi.ledlight = [selectPi.userset8Hour valueForKey:@"brightness"];
+    }
+    else if([selectPi.mode isEqualToString:@"16 Hours"]){
+        selectPi.ledlight = [selectPi.userset16Hour valueForKey:@"brightness"];
+    }
+    
+    if([selectPi.mode isEqualToString:@"2 Hours"]){
+        selectPi.ledauto = [selectPi.userset2Hour valueForKey:@"auto"];
+    }
+    else if([selectPi.mode isEqualToString:@"4 Hours"]){
+        selectPi.ledauto = [selectPi.userset4Hour valueForKey:@"auto"];
+    }
+    else if([selectPi.mode isEqualToString:@"8 Hours"]){
+        selectPi.ledauto = [selectPi.userset8Hour valueForKey:@"auto"];
+    }
+    else if([selectPi.mode isEqualToString:@"16 Hours"]){
+        selectPi.ledauto = [selectPi.userset16Hour valueForKey:@"auto"];
+    }
+    
+    if([selectPi.mode isEqualToString:@"2 Hours"]){
+        selectPi.ledcolor = [selectPi.userset2Hour valueForKey:@"color"];
+    }
+    else if([selectPi.mode isEqualToString:@"4 Hours"]){
+        selectPi.ledcolor = [selectPi.userset4Hour valueForKey:@"color"];
+    }
+    else if([selectPi.mode isEqualToString:@"8 Hours"]){
+        selectPi.ledcolor = [selectPi.userset8Hour valueForKey:@"color"];
+    }
+    else if([selectPi.mode isEqualToString:@"16 Hours"]){
+        selectPi.ledcolor = [selectPi.userset16Hour valueForKey:@"color"];
     }
 }
 

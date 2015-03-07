@@ -129,6 +129,15 @@
     }else {
         [skipBtn setTitle:@"Skip" forState:UIControlStateNormal];
     }
+    
+    if (scrollView.contentOffset.y < 0) {
+        scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, 0);
+    }
+    
+    if (scrollView.contentOffset.y > 0) {
+        scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, 0);
+    }
+
 }
 
 -(void)goPage:(UIPageControl*)pg{

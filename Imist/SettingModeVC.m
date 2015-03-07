@@ -343,7 +343,7 @@ typedef enum{
             }
         }
         else{
-            NSString * hintString = [self composeHint:[self.essenceName valueForKey:btn.titleLabel.text]];
+            NSString * hintString = [self composeHint:[self.essenceName valueForKey:self.modeString]];
             [self showHint:hintString];
         }
     });

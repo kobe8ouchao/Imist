@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A54EC4BA1AA97F2700EBD2DE /* Manager.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EC4B91AA97F2700EBD2DE /* Manager.m */; };
 		A56C26611AA5E20600285B64 /* first_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A56C265E1AA5E20600285B64 /* first_selected@2x.png */; };
 		A56C26621AA5E20600285B64 /* second_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A56C265F1AA5E20600285B64 /* second_selected@2x.png */; };
 		A56C26631AA5E20600285B64 /* third_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A56C26601AA5E20600285B64 /* third_selected@2x.png */; };
@@ -150,6 +151,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A54EC4B81AA97F2700EBD2DE /* Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Manager.h; sourceTree = "<group>"; };
+		A54EC4B91AA97F2700EBD2DE /* Manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Manager.m; sourceTree = "<group>"; };
 		A56C265E1AA5E20600285B64 /* first_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "first_selected@2x.png"; sourceTree = "<group>"; };
 		A56C265F1AA5E20600285B64 /* second_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second_selected@2x.png"; sourceTree = "<group>"; };
 		A56C26601AA5E20600285B64 /* third_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "third_selected@2x.png"; sourceTree = "<group>"; };
@@ -612,6 +615,8 @@
 		C3A8A0C31A4EBF66004C9ADE /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				A54EC4B81AA97F2700EBD2DE /* Manager.h */,
+				A54EC4B91AA97F2700EBD2DE /* Manager.m */,
 				C38819A41A524D02004A98CA /* AboutVC.h */,
 				C38819A51A524D02004A98CA /* AboutVC.m */,
 				C3A8A09F1A4EBB9D004C9ADE /* BaseViewController.h */,
@@ -869,6 +874,7 @@
 				C3A8A0C61A4EC2DC004C9ADE /* NSStringEx.m in Sources */,
 				C3A8A0761A4EB94D004C9ADE /* AppDelegate.m in Sources */,
 				C38819A61A524D02004A98CA /* AboutVC.m in Sources */,
+				A54EC4BA1AA97F2700EBD2DE /* Manager.m in Sources */,
 				C3422B471A56C4E90095B6AA /* EGORefreshTableHeaderView.m in Sources */,
 				C38819821A516DC7004A98CA /* PeriperalInfo.m in Sources */,
 				C3A8A0A11A4EBB9D004C9ADE /* BaseViewController.m in Sources */,
