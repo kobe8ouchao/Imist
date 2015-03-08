@@ -133,6 +133,10 @@
         case 0:
         {
             PickDayVC *pick = [[PickDayVC alloc] init];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.alert count]){
+                NSString *editDays = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:indexPath.row] objectForKey:@"repeat"];
+                pick.editdays = editDays;
+            }
             pick.delegate = self;
             [self.navigationController pushViewController:pick animated:YES];
             break;

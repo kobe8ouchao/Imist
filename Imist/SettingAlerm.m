@@ -154,7 +154,10 @@
         ifenable = @"0";
 
     [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert[index] setObject:ifenable forKey:@"isOpen"];
-
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
+    [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
+    [defaults synchronize];
 }
 
 @end

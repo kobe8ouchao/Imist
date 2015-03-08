@@ -103,7 +103,7 @@
 -(void)save
 {
     if ([delegate respondsToSelector:@selector(saveDay:)]) {
-        [delegate saveDay:self.days];
+        [delegate saveDay:self.selecteddays];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

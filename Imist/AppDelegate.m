@@ -103,6 +103,7 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] > 0) {
         NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+        if([alertItem objectForKey:@"isOpen"]){
         NSString *soundurl = [alertItem objectForKey:@"sound"];
         if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
             self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
@@ -170,7 +171,8 @@
             }
 
         }
-    }    
+    }
+    }
 
 }
 
