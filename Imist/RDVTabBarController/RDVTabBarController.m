@@ -352,7 +352,7 @@
 {
     AppDelegate *application = (AppDelegate*)[UIApplication sharedApplication].delegate;
     if ([application.defaultBTServer.selectPeripheralInfo.alert count] == 3) {
-        [ProgressHUD showError:@"Only set three alerms"];
+        [ProgressHUD showError:@"Only set three alarms"];
     }else {
         AddAlarmVC* addv = [[AddAlarmVC alloc] init];
         [self.navigationController pushViewController:addv animated:YES];

@@ -163,7 +163,7 @@
                         notification.fireDate=fireDate;//距现在多久后触发代理方法
                         notification.timeZone=[NSTimeZone defaultTimeZone];
                         notification.soundName = soundurl;
-                        notification.alertBody = [NSString stringWithFormat:@"IMIST ALERM!"];
+                        notification.alertBody = [NSString stringWithFormat:@"IMIST ALARM!"];
                         [[UIApplication sharedApplication] scheduleLocalNotification:notification];
                     }
                 }

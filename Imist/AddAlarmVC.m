@@ -21,6 +21,7 @@
 @property (nonatomic,strong) NSString *ampm;
 @property (nonatomic,strong) NSString *sound;
 @property (nonatomic,strong) NSString *days;
+@property (nonatomic,strong) NSString *repeatString;
 @property (nonatomic,strong) UITableView * wakeSettingTable;
 @end
 
@@ -84,7 +85,12 @@
     self.wakeSettingTable=_table;
     [self.view addSubview:self.wakeSettingTable];
     
-    
+    if (!self.sound) {
+        self.sound = @"";
+    }
+    if (!self.days) {
+        self.days = @"1|2|3|4|5|6|7";
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -110,12 +116,14 @@
     switch (indexPath.row) {
         case 0:
             cell.textLabel.text = @"Repeat";
+            cell.detailTextLabel.text = self.repeatString;
             break;
         case 1:
             cell.textLabel.text = @"Label";
             break;
         case 2:
             cell.textLabel.text = @"Sound";
+            cell.detailTextLabel.text = self.sound;
             break;
         default:
             break;
@@ -133,9 +141,12 @@
         case 0:
         {
             PickDayVC *pick = [[PickDayVC alloc] init];
-            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.alert count]){
-                NSString *editDays = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:indexPath.row] objectForKey:@"repeat"];
+            if (self.editAlert){
+                NSString *editDays = [self.editAlert objectForKey:@"repeat"];
                 pick.editdays = editDays;
+            }
+            else{
+                pick.editdays = self.days;
             }
             pick.delegate = self;
             [self.navigationController pushViewController:pick animated:YES];
@@ -241,12 +252,7 @@
     }
     NSString *times = [NSString stringWithFormat:@"%@:%@",self.selectedHour,self.selectedMinis];
     NSMutableDictionary * dictionary;
-    if (!self.sound) {
-        self.sound = @"nil";
-    }
-    if (!self.days) {
-        self.days = @"1|2|3|4|5|6|7";
-    }
+    
     dictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:times,@"time",self.sound,@"sound",self.days,@"repeat", @"1", @"isOpen",nil];
     if (self.editAlert) {
         [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert removeObject:self.editAlert];
@@ -268,6 +274,9 @@
 {
     NSLog(@"sound====%@",sound);
     self.sound = sound;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.wakeSettingTable reloadData];
+    });
 }
 
 -(void)saveDay:(NSArray *)days
@@ -275,6 +284,29 @@
     NSString * daysStr = [days componentsJoinedByString:@"|"];
     NSLog(@"days====%@",daysStr);
     self.days = daysStr;
+    
+    if([self.days isEqualToString:@"1|2|3|4|5|6|7"])
+        self.repeatString = @"Everyday";
+    else if([self.days isEqualToString:@""]){
+        self.repeatString = @"Never";
+    }
+    else{
+        NSArray *daymask = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",nil];
+        NSArray *weekday = [NSArray arrayWithObjects:@"Mon",@"Tue",@"Wed",@"Thu",@"Fri",@"Sat",@"Sun",nil];
+        NSMutableArray *repeatDay = [[NSMutableArray alloc]init];
+        NSArray *arrSelDay = [self.days componentsSeparatedByString:@"|"];
+        for (NSString *d in daymask) {
+            if ([arrSelDay containsObject:d]) {
+                NSInteger index = [d integerValue]-1;
+                [repeatDay addObject: weekday[index]];
+            }
+        }
+        self.repeatString = [repeatDay componentsJoinedByString:@" "];
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.wakeSettingTable reloadData];
+    });
+
 }
 
 
