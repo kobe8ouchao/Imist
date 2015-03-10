@@ -16,6 +16,7 @@
 @property (nonatomic, strong)NSString *days;
 @property (nonatomic, assign)BOOL isOpen;
 @property (nonatomic, strong)NSIndexPath *index;
+@property (nonatomic, strong)NSString *name;
 @property (nonatomic ,weak) id delegate;
 -(void) setStyle;
 @end

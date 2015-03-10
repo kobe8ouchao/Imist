@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 
 @implementation AlertSettingCell
-@synthesize time,days;
+@synthesize time,days,name;
 - (void)awakeFromNib {
     
 }
@@ -30,6 +30,14 @@
         lable.text = time;
         lable.textColor = [UIColor whiteColor];
         [bg addSubview:lable];
+        
+        UILabel *alarmName = [[UILabel alloc] initWithFrame:CGRectMake(40, 11, 200 ,18)];
+        [alarmName setFont:[UIFont boldSystemFontOfSize:18]];
+        alarmName.tag = 2;
+        alarmName.textAlignment = NSTextAlignmentLeft;
+        alarmName.text = name;
+        alarmName.textColor = [UIColor whiteColor];
+        [bg addSubview:alarmName];
 //        UILabel *weekday = [[UILabel alloc] initWithFrame:CGRectMake(40, 11, 200 ,18)];
 //        [weekday setFont:[UIFont boldSystemFontOfSize:14]];
 //        weekday.tag = 2;
@@ -53,6 +61,8 @@
 //    NSDictionary *weekday = [NSDictionary dictionaryWithObjectsAndKeys:@"Mon",@"1",@"thu",@"2",@"Wed",@"3",@"Thr",@"4",@"Fri",@"5",@"Sat",@"6",@"Sun",@"7",nil];
     UILabel *timelable = (UILabel *)[self viewWithTag:1];
     timelable.text = self.time;
+    UILabel *namelabel = (UILabel *)[self viewWithTag:2];
+    namelabel.text = self.name;
 //    UILabel *weekdays = (UILabel *)[self viewWithTag:2];
 //    NSArray *weds = [self.days componentsSeparatedByString:@"|"];
 //    NSString *repeatText = @"(";

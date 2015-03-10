@@ -109,6 +109,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.index = indexPath;
     cell.delegate = self;
+    cell.name = [alertItem objectForKey:@"alarmName"];
     cell.time = [alertItem objectForKey:@"time"];
     cell.days = [alertItem objectForKey:@"repeat"];
     cell.isOpen = [[alertItem objectForKey:@"isOpen"] boolValue];
@@ -147,11 +148,9 @@
 }
 
 - (void)switchChange:(NSInteger)index enable:(BOOL)yesNo{
-    NSString* ifenable;
-    if(yesNo)
-        ifenable = @"1";
-    else
-        ifenable = @"0";
+    NSNumber* ifenable;
+
+    ifenable = [NSNumber numberWithBool:yesNo];
 
     [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert[index] setObject:ifenable forKey:@"isOpen"];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

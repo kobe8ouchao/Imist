@@ -11,7 +11,7 @@
 #import "PickSoundVC.h"
 #import "AlertSettingCell.h"
 
-@interface AddAlarmVC ()<UIPickerViewDelegate,UIPickerViewDataSource,pickDayDelegate,pickSoundDelegate>
+@interface AddAlarmVC ()<UIPickerViewDelegate,UIPickerViewDataSource,pickDayDelegate,pickSoundDelegate,UIAlertViewDelegate>
 @property (nonatomic,strong) NSArray *all;
 @property (nonatomic,strong) NSArray *hours;
 @property (nonatomic,strong) NSArray *minis;
@@ -21,7 +21,9 @@
 @property (nonatomic,strong) NSString *ampm;
 @property (nonatomic,strong) NSString *sound;
 @property (nonatomic,strong) NSString *days;
+@property (nonatomic,assign) NSNumber *isAlarmOpen;
 @property (nonatomic,strong) NSString *repeatString;
+@property (nonatomic,strong) NSString *alarmName;
 @property (nonatomic,strong) UITableView * wakeSettingTable;
 @end
 
@@ -52,6 +54,8 @@
         [_pickerview selectRow:[[arrTime objectAtIndex:1] integerValue] inComponent:2 animated:NO];
         self.days = [self.editAlert objectForKey:@"repeat"];
         self.sound = [self.editAlert objectForKey:@"sound"];
+        self.isAlarmOpen = [self.editAlert objectForKey:@"isOpen"];
+        self.alarmName = [self.editAlert objectForKey:@"alarmName"];
     }
     self.pickerview = _pickerview;
     
@@ -85,12 +89,16 @@
     self.wakeSettingTable=_table;
     [self.view addSubview:self.wakeSettingTable];
     
+    if (!self.alarmName) {
+        self.alarmName = @"";
+    }
     if (!self.sound) {
         self.sound = @"";
     }
     if (!self.days) {
         self.days = @"1|2|3|4|5|6|7";
     }
+    [self getRepeatString];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -120,6 +128,7 @@
             break;
         case 1:
             cell.textLabel.text = @"Label";
+            cell.detailTextLabel.text = self.alarmName;
             break;
         case 2:
             cell.textLabel.text = @"Sound";
@@ -153,6 +162,7 @@
             break;
         }
         case 1:
+            [self changeAlarmName];
             break;
         case 2:
         {
@@ -165,6 +175,31 @@
             break;
     }
     
+}
+
+-(void)changeAlarmName
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Change Alarm Name" message:nil delegate:nil cancelButtonTitle:InterNation(@"cancel") otherButtonTitles:InterNation(@"confirm") ,nil];
+    alert.tag = 222;
+    alert.delegate = self;
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeDefault];
+    [alert show];
+}
+
+
+-(void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    UITextField *tf=[alertView textFieldAtIndex:0];
+    if (alertView.tag==222) {
+        if (alertView.cancelButtonIndex != buttonIndex) {
+            self.title = tf.text;
+            self.alarmName = tf.text;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.wakeSettingTable reloadData];
+            });
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -253,8 +288,9 @@
     NSString *times = [NSString stringWithFormat:@"%@:%@",self.selectedHour,self.selectedMinis];
     NSMutableDictionary * dictionary;
     
-    dictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:times,@"time",self.sound,@"sound",self.days,@"repeat", @"1", @"isOpen",nil];
+    dictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:times,@"time",self.sound,@"sound",self.days,@"repeat", @"1", @"isOpen", self.alarmName,@"alarmName", nil];
     if (self.editAlert) {
+        [dictionary setObject:self.isAlarmOpen forKey:@"isOpen"];
         [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert removeObject:self.editAlert];
         [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert addObject:dictionary];
     }else {
@@ -284,7 +320,15 @@
     NSString * daysStr = [days componentsJoinedByString:@"|"];
     NSLog(@"days====%@",daysStr);
     self.days = daysStr;
+    [self getRepeatString];
     
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.wakeSettingTable reloadData];
+    });
+
+}
+
+- (void)getRepeatString{
     if([self.days isEqualToString:@"1|2|3|4|5|6|7"])
         self.repeatString = @"Everyday";
     else if([self.days isEqualToString:@""]){
@@ -303,12 +347,7 @@
         }
         self.repeatString = [repeatDay componentsJoinedByString:@" "];
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.wakeSettingTable reloadData];
-    });
-
 }
-
 
 
 @end

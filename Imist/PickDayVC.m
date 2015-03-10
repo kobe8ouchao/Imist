@@ -24,7 +24,7 @@
     self.navigationItem.rightBarButtonItem = saveItem;
 
     
-    self.days = [NSArray arrayWithObjects:@"Mon",@"Thr",@"Wed",@"Thu",@"Fri",@"Sat",@"Sun",nil];
+    self.days = [NSArray arrayWithObjects:@"Mon",@"Tue",@"Wed",@"Thu",@"Fri",@"Sat",@"Sun",nil];
     self.daysvalue = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",nil];
     //init device tableview
     UITableView *_table=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width,  self.view.frame.size.height) style:UITableViewStylePlain];
