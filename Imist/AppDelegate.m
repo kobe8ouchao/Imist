@@ -16,12 +16,14 @@
 
 @interface AppDelegate ()
 @property(nonatomic, strong)NSTimer *playerTM;
-@property (nonatomic,strong) AVAudioPlayer *player;
+@property (nonatomic,strong) AVAudioPlayer *player1;
+@property (nonatomic,strong) AVAudioPlayer *player2;
+@property (nonatomic,strong) AVAudioPlayer *player3;
 @end
 
 @implementation AppDelegate
 
-@synthesize scanVC,playerTM,player;
+@synthesize scanVC,playerTM,player1,player2,player3;
 
 - (UIViewController *)scanDevicesController {
     self.scanVC = [[ScanDevicesVC alloc] init];
@@ -99,88 +101,51 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] > 0) {
+    if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 1) {
         NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-        NSString *soundurl = [alertItem objectForKey:@"sound"];
-        if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
-            self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
-        }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
-            NSString *urlString = [[NSBundle mainBundle]pathForResource:
-                                   soundurl ofType:@"mp3"];
-            NSURL *url = [NSURL fileURLWithPath:urlString];
-            self.player = [[AVAudioPlayer alloc]
-                            initWithContentsOfURL:url
-                            error:nil];
-        }else {
-//            NSURL *url = [NSURL fileURLWithPath:soundurl];
-//            self.player = [[AVAudioPlayer alloc]
-//                           initWithContentsOfURL:url
-//                           error:nil];
+            [self setPlayer1:self.player1];
         }
-        
-//        self.player.delegate = self;
-        NSString *time = [alertItem objectForKey:@"time"];
-        NSString *repeat = [alertItem objectForKey:@"repeat"];
-        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-        NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
-        NSInteger weekday = [comps weekday];
-        NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
-        BOOL isAlert = NO;
-        for (NSString *d in repeatdays) {
-            if ([d integerValue] == weekday) {
-                isAlert = YES;
-                break;
-            }
+    } else if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 2) {
+        NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self setPlayer1:self.player1];
         }
-        if (isAlert) {
-            NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
-            NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
-            [timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
-            NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
-            NSTimeInterval distanceBetweenDates = [date timeIntervalSinceDate:[NSDate date]];
-            if (distanceBetweenDates >= 0) {
-                NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:distanceBetweenDates];
-                if (self.player) {
-                    NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
-                                                              interval:10
-                                                                target:self
-                                                              selector:@selector(playAlarm)
-                                                              userInfo:nil
-                                                               repeats:NO];
-                    
-                    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-                    [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
-                    [runLoop run];
-                }else {
-                    
-                    UILocalNotification *notification=[[UILocalNotification alloc] init];
-                    if (notification!=nil)
-                    {
-                        notification.repeatInterval=0;
-                        notification.fireDate=fireDate;//距现在多久后触发代理方法
-                        notification.timeZone=[NSTimeZone defaultTimeZone];
-                        notification.soundName = soundurl;
-                        notification.alertBody = [NSString stringWithFormat:@"IMIST ALARM!"];
-                        [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-                    }
-                }
-                
-            }
+        alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:1];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self setPlayer1:self.player2];
+        }
 
+    }else if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 3) {
+        NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self setPlayer1:self.player1];
         }
-    }
+        alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self setPlayer1:self.player2];
+        }
+        alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self setPlayer1:self.player3];
+        }
     }
 
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    if (self.player) {
-        [self.player stop];
-        self.player = nil;
+    if (self.player1) {
+        [self.player1 stop];
+        self.player1 = nil;
+    }
+    if (self.player2) {
+        [self.player2 stop];
+        self.player2 = nil;
+    }
+    if (self.player3) {
+        [self.player3 stop];
+        self.player3 = nil;
     }
 }
 
@@ -202,13 +167,13 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     return nav.topViewController.navigationController;
 }
 
--(void) playAlarm
+-(void) playAlarm1
 {
     static UIBackgroundTaskIdentifier bgTaskId;
     UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
-    if (self.player) {
-        [self.player prepareToPlay];
-        if([self.player play]){
+    if (self.player1) {
+        [self.player1 prepareToPlay];
+        if([self.player1 play]){
             newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
         }
         if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
@@ -240,5 +205,282 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     [self.defaultBTServer writeValue:[self.defaultBTServer converCMD:data] withCharacter:[self.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
     
 }
+
+-(void) playAlarm2
+{
+    static UIBackgroundTaskIdentifier bgTaskId;
+    UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
+    if (self.player2) {
+        [self.player2 prepareToPlay];
+        if([self.player2 play]){
+            newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
+        }
+        if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
+            [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
+        bgTaskId = newTaskId;
+    }else {
+        
+    }
+    
+    Manager *sharedManager = [Manager sharedManager];
+    NSMutableData* data = [NSMutableData data];
+    NSUInteger query = [sharedManager getCurModeCmd:self.defaultBTServer.selectPeripheralInfo.mode];
+    [data appendBytes:&query length:1];
+    NSUInteger imist = [self.defaultBTServer.selectPeripheralInfo.imist integerValue];
+    [data appendBytes:&imist length:1];
+    NSUInteger led = [self.defaultBTServer.selectPeripheralInfo.ledlight integerValue];
+    if(self.defaultBTServer.selectPeripheralInfo.ledauto)
+        led = 0x65;
+    [data appendBytes:&led length:1];
+    
+    NSUInteger color1 = [sharedManager getColorR:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+    [data appendBytes:&color1 length:1];
+    NSUInteger color2 = [sharedManager getColorG:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+    [data appendBytes:&color2 length:1];
+    NSUInteger color3 = [sharedManager getColorB:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+    [data appendBytes:&color3 length:1];
+    
+    self.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
+    [self.defaultBTServer writeValue:[self.defaultBTServer converCMD:data] withCharacter:[self.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+    
+}
+
+-(void) playAlarm3
+{
+    static UIBackgroundTaskIdentifier bgTaskId;
+    UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
+    if (self.player3) {
+        [self.player3 prepareToPlay];
+        if([self.player3 play]){
+            newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
+        }
+        if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
+            [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
+        bgTaskId = newTaskId;
+    }else {
+        
+    }
+    
+    Manager *sharedManager = [Manager sharedManager];
+    NSMutableData* data = [NSMutableData data];
+    NSUInteger query = [sharedManager getCurModeCmd:self.defaultBTServer.selectPeripheralInfo.mode];
+    [data appendBytes:&query length:1];
+    NSUInteger imist = [self.defaultBTServer.selectPeripheralInfo.imist integerValue];
+    [data appendBytes:&imist length:1];
+    NSUInteger led = [self.defaultBTServer.selectPeripheralInfo.ledlight integerValue];
+    if(self.defaultBTServer.selectPeripheralInfo.ledauto)
+        led = 0x65;
+    [data appendBytes:&led length:1];
+    
+    NSUInteger color1 = [sharedManager getColorR:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+    [data appendBytes:&color1 length:1];
+    NSUInteger color2 = [sharedManager getColorG:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+    [data appendBytes:&color2 length:1];
+    NSUInteger color3 = [sharedManager getColorB:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+    [data appendBytes:&color3 length:1];
+    
+    self.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
+    [self.defaultBTServer writeValue:[self.defaultBTServer converCMD:data] withCharacter:[self.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+    
+}
+
+-(void) setPlayer1:(NSDictionary*)alertItem
+{
+    NSString *soundurl = [alertItem objectForKey:@"sound"];
+    if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
+        self.player1 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
+    }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
+        NSString *urlString = [[NSBundle mainBundle]pathForResource:
+                               soundurl ofType:@"mp3"];
+        NSURL *url = [NSURL fileURLWithPath:urlString];
+        self.player1 = [[AVAudioPlayer alloc]
+                        initWithContentsOfURL:url
+                        error:nil];
+    }
+    
+    //        self.player.delegate = self;
+    NSString *time = [alertItem objectForKey:@"time"];
+    NSString *repeat = [alertItem objectForKey:@"repeat"];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
+    NSInteger weekday = [comps weekday];
+    NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
+    BOOL isAlert = NO;
+    for (NSString *d in repeatdays) {
+        if ([d integerValue] == weekday) {
+            isAlert = YES;
+            break;
+        }
+    }
+    if (isAlert) {
+        NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
+        NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
+        [timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+        NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
+        NSTimeInterval distanceBetweenDates = [date timeIntervalSinceDate:[NSDate date]];
+        if (distanceBetweenDates >= 0) {
+            NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:distanceBetweenDates];
+            if (self.player1) {
+                NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
+                                                          interval:10
+                                                            target:self
+                                                          selector:@selector(playAlarm1)
+                                                          userInfo:nil
+                                                           repeats:NO];
+                
+                NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+                [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
+                [runLoop run];
+            }else {
+                
+                UILocalNotification *notification=[[UILocalNotification alloc] init];
+                if (notification!=nil)
+                {
+                    notification.repeatInterval=0;
+                    notification.fireDate=fireDate;//距现在多久后触发代理方法
+                    notification.timeZone=[NSTimeZone defaultTimeZone];
+                    notification.soundName = soundurl;
+                    notification.alertBody = [NSString stringWithFormat:@"IMIST ALARM!"];
+                    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+                }
+            }
+            
+        }
+        
+    }
+}
+
+-(void) setPlayer2:(NSDictionary*)alertItem
+{
+    NSString *soundurl = [alertItem objectForKey:@"sound"];
+    if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
+        self.player1 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
+    }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
+        NSString *urlString = [[NSBundle mainBundle]pathForResource:
+                               soundurl ofType:@"mp3"];
+        NSURL *url = [NSURL fileURLWithPath:urlString];
+        self.player1 = [[AVAudioPlayer alloc]
+                        initWithContentsOfURL:url
+                        error:nil];
+    }
+    
+    //        self.player.delegate = self;
+    NSString *time = [alertItem objectForKey:@"time"];
+    NSString *repeat = [alertItem objectForKey:@"repeat"];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
+    NSInteger weekday = [comps weekday];
+    NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
+    BOOL isAlert = NO;
+    for (NSString *d in repeatdays) {
+        if ([d integerValue] == weekday) {
+            isAlert = YES;
+            break;
+        }
+    }
+    if (isAlert) {
+        NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
+        NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
+        [timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+        NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
+        NSTimeInterval distanceBetweenDates = [date timeIntervalSinceDate:[NSDate date]];
+        if (distanceBetweenDates >= 0) {
+            NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:distanceBetweenDates];
+            if (self.player1) {
+                NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
+                                                          interval:10
+                                                            target:self
+                                                          selector:@selector(playAlarm2)
+                                                          userInfo:nil
+                                                           repeats:NO];
+                
+                NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+                [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
+                [runLoop run];
+            }else {
+                
+                UILocalNotification *notification=[[UILocalNotification alloc] init];
+                if (notification!=nil)
+                {
+                    notification.repeatInterval=0;
+                    notification.fireDate=fireDate;//距现在多久后触发代理方法
+                    notification.timeZone=[NSTimeZone defaultTimeZone];
+                    notification.soundName = soundurl;
+                    notification.alertBody = [NSString stringWithFormat:@"IMIST ALARM!"];
+                    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+                }
+            }
+            
+        }
+        
+    }
+}
+
+-(void) setPlayer3:(NSDictionary*)alertItem
+{
+    NSString *soundurl = [alertItem objectForKey:@"sound"];
+    if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
+        self.player1 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
+    }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
+        NSString *urlString = [[NSBundle mainBundle]pathForResource:
+                               soundurl ofType:@"mp3"];
+        NSURL *url = [NSURL fileURLWithPath:urlString];
+        self.player1 = [[AVAudioPlayer alloc]
+                        initWithContentsOfURL:url
+                        error:nil];
+    }
+    
+    //        self.player.delegate = self;
+    NSString *time = [alertItem objectForKey:@"time"];
+    NSString *repeat = [alertItem objectForKey:@"repeat"];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
+    NSInteger weekday = [comps weekday];
+    NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
+    BOOL isAlert = NO;
+    for (NSString *d in repeatdays) {
+        if ([d integerValue] == weekday) {
+            isAlert = YES;
+            break;
+        }
+    }
+    if (isAlert) {
+        NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
+        NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
+        [timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+        NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
+        NSTimeInterval distanceBetweenDates = [date timeIntervalSinceDate:[NSDate date]];
+        if (distanceBetweenDates >= 0) {
+            NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:distanceBetweenDates];
+            if (self.player1) {
+                NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
+                                                          interval:10
+                                                            target:self
+                                                          selector:@selector(playAlarm3)
+                                                          userInfo:nil
+                                                           repeats:NO];
+                
+                NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+                [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
+                [runLoop run];
+            }else {
+                
+                UILocalNotification *notification=[[UILocalNotification alloc] init];
+                if (notification!=nil)
+                {
+                    notification.repeatInterval=0;
+                    notification.fireDate=fireDate;//距现在多久后触发代理方法
+                    notification.timeZone=[NSTimeZone defaultTimeZone];
+                    notification.soundName = soundurl;
+                    notification.alertBody = [NSString stringWithFormat:@"IMIST ALARM!"];
+                    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+                }
+            }
+            
+        }
+        
+    }
+}
+
 
 @end
