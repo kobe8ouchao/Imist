@@ -20,6 +20,7 @@
 @property (nonatomic,strong) NSString *selectedMinis;
 @property (nonatomic,strong) NSString *ampm;
 @property (nonatomic,strong) NSString *sound;
+@property (nonatomic,strong) NSString *soundName;
 @property (nonatomic,strong) NSString *days;
 @property (nonatomic,assign) NSNumber *isAlarmOpen;
 @property (nonatomic,strong) NSString *repeatString;
@@ -56,6 +57,7 @@
         self.sound = [self.editAlert objectForKey:@"sound"];
         self.isAlarmOpen = [self.editAlert objectForKey:@"isOpen"];
         self.alarmName = [self.editAlert objectForKey:@"alarmName"];
+        self.soundName = [self.editAlert objectForKey:@"soundName"];
     }
     self.pickerview = _pickerview;
     
@@ -132,7 +134,7 @@
             break;
         case 2:
             cell.textLabel.text = @"Sound";
-            cell.detailTextLabel.text = self.sound;
+            cell.detailTextLabel.text = self.soundName;
             break;
         default:
             break;
@@ -288,7 +290,7 @@
     NSString *times = [NSString stringWithFormat:@"%@:%@",self.selectedHour,self.selectedMinis];
     NSMutableDictionary * dictionary;
     
-    dictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:times,@"time",self.sound,@"sound",self.days,@"repeat", @"1", @"isOpen", self.alarmName,@"alarmName", nil];
+    dictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:times,@"time",self.sound,@"sound",self.soundName,@"soundName",self.days,@"repeat", @"1", @"isOpen", self.alarmName,@"alarmName", nil];
     if (self.editAlert) {
         [dictionary setObject:self.isAlarmOpen forKey:@"isOpen"];
         [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert removeObject:self.editAlert];
@@ -306,10 +308,11 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(void)saveSound:(NSString *)sound
+-(void)saveSound:(NSString *)sound :(NSString*)soundName
 {
     NSLog(@"sound====%@",sound);
     self.sound = sound;
+    self.soundName = soundName;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.wakeSettingTable reloadData];
     });

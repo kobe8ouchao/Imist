@@ -386,7 +386,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         NSTimeInterval distanceBetweenDates = [date timeIntervalSinceDate:[NSDate date]];
         if (distanceBetweenDates >= 0) {
             NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:distanceBetweenDates];
-            if (self.player1) {
+            if (self.player2) {
                 NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
                                                           interval:10
                                                             target:self
@@ -452,7 +452,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         NSTimeInterval distanceBetweenDates = [date timeIntervalSinceDate:[NSDate date]];
         if (distanceBetweenDates >= 0) {
             NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:distanceBetweenDates];
-            if (self.player1) {
+            if (self.player3) {
                 NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
                                                           interval:10
                                                             target:self

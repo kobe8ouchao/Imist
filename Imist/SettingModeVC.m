@@ -7,6 +7,7 @@
 //
 
 #import "SettingModeVC.h"
+#import "Manager.h"
 
 @interface SettingModeVC ()
 @property (nonatomic, strong) NSString *title;
@@ -73,11 +74,15 @@ typedef enum{
 
 - (NSString *) composeHint:(NSString*)essence
 {
+    if(essence){
     NSMutableString * hint = [[NSMutableString alloc] init];
     [hint appendString:@"Please add clean, cold water & 5-10 drops of"];
     [hint appendString:essence];
     [hint appendString:@"essential oil into water tank of IMIST(make sure not over max level), then replace the cover."];
     return hint;
+    }else{
+        return nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -231,6 +236,7 @@ typedef enum{
             else{
                 NSString * hintString = [[NSString alloc]init];
                 hintString = [self composeHint:[self.essenceName valueForKey:self.modeString]];
+                if(hintString)
                 [self showHint:hintString];
             }
         });
@@ -248,6 +254,7 @@ typedef enum{
             else{
                 NSString * hintString = [[NSString alloc]init];
                 hintString = [self composeHint:[self.essenceName valueForKey:self.modeString]];
+                if(hintString)
                 [self showHint:hintString];
             }
         });
@@ -287,6 +294,7 @@ typedef enum{
                 [self setMode:self.modeString waterStatus:HAS_WATER_NOT_WORK];
                 
                 NSString * hintString = [self composeHint:[self.essenceName valueForKey:self.modeString]];
+                if(hintString)
                 [self showHint:hintString];
             }
             else{
@@ -295,6 +303,7 @@ typedef enum{
         }
         else{
             NSString * hintString = [self composeHint:[self.essenceName valueForKey:self.modeString]];
+            if(hintString)
             [self showHint:hintString];
         }
     });
@@ -332,6 +341,7 @@ typedef enum{
                 [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
                 [defaults synchronize];
                 NSString * hintString = [self composeHint:[self.essenceName valueForKey:self.modeString]];
+                if(hintString)
                 [self showHint:hintString];
             }
             else{
@@ -344,6 +354,7 @@ typedef enum{
         }
         else{
             NSString * hintString = [self composeHint:[self.essenceName valueForKey:self.modeString]];
+            if(hintString)
             [self showHint:hintString];
         }
     });
@@ -524,44 +535,84 @@ typedef enum{
     
     if([modeString isEqualToString:@"2 Hours"]){
         cmd = 9;
-        mistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"mist"] integerValue];
-        brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"brightness"] integerValue];
-        colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"color"] integerValue];
+        if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour count]){
+            mistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"mist"] integerValue];
+            brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"brightness"] integerValue];
+            colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"color"] integerValue];
+            ledauto = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"auto"] integerValue];
+        }
+        else{
+            mistValue = 50;
+            brightnessValue = 46;
+            colorValue = 100;
+            ledauto = 0;
+        }
         
     }
     else if([modeString isEqualToString:@"4 Hours"]){
         cmd = 10;
-        mistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"mist"] integerValue];
-        brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"brightness"] integerValue];
-        colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"color"] integerValue];
+        if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour count]){
+            mistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"mist"] integerValue];
+            brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"brightness"] integerValue];
+            colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"color"] integerValue];
+            ledauto = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"auto"] integerValue];
+        }
+        else{
+            mistValue = 50;
+            brightnessValue = 46;
+            colorValue = 100;
+            ledauto = 0;
+        }
     }
     else if([modeString isEqualToString:@"8 Hours"]){
         cmd = 11;
-        mistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"mist"] integerValue];
-        brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"brightness"] integerValue];
-        colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"color"] integerValue];
+        if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour count]){
+            mistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"mist"] integerValue];
+            brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"brightness"] integerValue];
+            colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"color"] integerValue];
+            ledauto = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"auto"] integerValue];
+        }
+        else{
+            mistValue = 50;
+            brightnessValue = 46;
+            colorValue = 100;
+            ledauto = 0;
+        }
     }
     else if([modeString isEqualToString:@"16 Hours"]){
         cmd = 12;
-        mistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"mist"] integerValue];
-        brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"brightness"] integerValue];
-        colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"color"] integerValue];
+        if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour count]){
+            mistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"mist"] integerValue];
+            brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"brightness"] integerValue];
+            colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"color"] integerValue];
+            ledauto = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"auto"] integerValue];
+        }
+        else{
+            mistValue = 50;
+            brightnessValue = 46;
+            colorValue = 100;
+            ledauto = 0;
+        }
     }
     NSMutableData* data = [NSMutableData data];
     
     NSUInteger query = cmd;
     [data appendBytes:&query length:1];
-    NSUInteger imist = 50;//mistValue;
+    NSUInteger imist = mistValue;
     [data appendBytes:&imist length:1];
-    NSUInteger led = 0x65;//brightnessValue;
+    NSUInteger led = brightnessValue;
     [data appendBytes:&led length:1];
-    NSUInteger color1 = 0;
+    if(ledauto)
+        led = 0x65;
+    [data appendBytes:&led length:1];
+    Manager *sharedManager = [Manager sharedManager];
+    NSInteger color1 = [sharedManager getColorR:colorValue];
+    NSInteger color2 = [sharedManager getColorG:colorValue];
+    NSInteger color3 = [sharedManager getColorB:colorValue];
     [data appendBytes:&color1 length:1];
-    NSUInteger color2 = 0;
     [data appendBytes:&color2 length:1];
-    NSUInteger color3 = 0;
     [data appendBytes:&color3 length:1];
-    
+
     self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
     [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
     
@@ -630,6 +681,7 @@ typedef enum{
             else{
                 NSString * hintString = [[NSString alloc]init];
                 hintString = [self composeHint:[self.essenceName valueForKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode]];
+                if(hintString)
                 [self showHint:hintString];
             }
         });
