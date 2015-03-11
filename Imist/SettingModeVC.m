@@ -601,7 +601,7 @@ typedef enum{
     NSUInteger imist = mistValue;
     [data appendBytes:&imist length:1];
     NSUInteger led = brightnessValue;
-    [data appendBytes:&led length:1];
+    //[data appendBytes:&led length:1];
     if(ledauto)
         led = 0x65;
     [data appendBytes:&led length:1];
@@ -760,7 +760,7 @@ typedef enum{
     }
     else {
         yesNo = self.doNotShowHint_UserMode;
-        yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintRelaxation"] boolValue];
+        yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintUserMode"] boolValue];
     }
     return yesNo;
 }
