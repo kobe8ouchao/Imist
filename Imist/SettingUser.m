@@ -237,12 +237,14 @@
     UISlider *slider1 = (UISlider*)[self.view viewWithTag:1];
     UISlider *slider2 = (UISlider*)[self.view viewWithTag:2];
     UISlider *slider = (UISlider*)[self.view viewWithTag:3];
+    UIButton* noBtn = (UIButton*)[self.view viewWithTag:200];;
+    UIButton* sureBtn = (UIButton*)[self.view viewWithTag:100];
     if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]){
         //        self.imistValue = [self.appDelegate.defaultBTServer.selectPeripheralInfo.imist integerValue];
         //        self.brightnessValue = [self.appDelegate.defaultBTServer.selectPeripheralInfo.ledlight integerValue];
         //        self.colorValue = [self.appDelegate.defaultBTServer.selectPeripheralInfo.ledcolor integerValue];
         //        self.ledAutoEnable = [self.appDelegate.defaultBTServer.selectPeripheralInfo.ledauto integerValue];
-        if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]){
+        if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour count]){
             self.imistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"mist"] integerValue];
             self.brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"brightness"] integerValue];
             self.colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"color"] integerValue];
@@ -306,11 +308,21 @@
     slider1.value = self.imistValue;
     slider2.value = self.brightnessValue;
     slider.value = self.colorValue;
+    
     if(self.ledAutoEnable){
         slider.enabled = NO;
         slider2.enabled = NO;
+        [noBtn setBackgroundImage:[UIImage imageNamed:@"user_set06.png"] forState:UIControlStateNormal];
+        [sureBtn setBackgroundImage:[UIImage imageNamed:@"user_set05.png"] forState:UIControlStateNormal];
     }
-}
+    else{
+        slider.enabled = YES;
+        slider2.enabled = YES;
+        [noBtn setBackgroundImage:[UIImage imageNamed:@"user_set05.png"] forState:UIControlStateNormal];
+        [sureBtn setBackgroundImage:[UIImage imageNamed:@"user_set06.png"] forState:UIControlStateNormal];
+    }
+    
+    }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -511,6 +523,11 @@
         query = 12;
         [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour setValue:ledAutoObj forKey:@"brightness"];
     }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
+    [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
+    [defaults synchronize];
+
     [data appendBytes:&query length:1];
     NSUInteger imist = self.imistValue;
     [data appendBytes:&imist length:1];

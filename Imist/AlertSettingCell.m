@@ -31,7 +31,7 @@
         lable.textColor = [UIColor whiteColor];
         [bg addSubview:lable];
         
-        UILabel *alarmName = [[UILabel alloc] initWithFrame:CGRectMake(40, 11, 100 ,18)];
+        UILabel *alarmName = [[UILabel alloc] initWithFrame:CGRectMake(100, 11, 120 ,18)];
         [alarmName setFont:[UIFont boldSystemFontOfSize:18]];
         alarmName.tag = 2;
         alarmName.textAlignment = NSTextAlignmentLeft;

@@ -531,7 +531,7 @@ typedef enum{
     NSUInteger mistValue = 0;
     NSUInteger brightnessValue = 0;
     NSUInteger colorValue = 0;
-
+    NSUInteger ledauto = 0;
     
     if([modeString isEqualToString:@"2 Hours"]){
         cmd = 9;

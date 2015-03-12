@@ -35,6 +35,17 @@
             initWithRootViewController:[self scanDevicesController]];
 }
 
+
+- (NSInteger)currentWeekDay
+{
+    NSDate *today = [NSDate date];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents * componentsToday = [calendar components:(NSWeekdayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:today];
+    
+    NSLog(@"componentsToday.weekday %i", componentsToday.weekday);
+    return componentsToday.weekday;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -42,6 +53,8 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     self.defaultBTServer = [BTServer defaultBTServer];
+    
+    [self currentWeekDay];
 
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"isFirst"] == NULL && ![[[NSUserDefaults standardUserDefaults] objectForKey:@"isFirst"] boolValue]) { // First
         TutoralVC *tutorvc=[[TutoralVC alloc] init];
@@ -303,50 +316,55 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     NSString *repeat = [alertItem objectForKey:@"repeat"];
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
+    NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
+    NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
+    [timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+    NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
+    //
+    
     NSInteger weekday = [comps weekday];
     NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
     BOOL isAlert = NO;
-    for (NSString *d in repeatdays) {
-        if ([d integerValue] == weekday) {
-            isAlert = YES;
-            break;
-        }
-    }
-    if (isAlert) {
-        NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
-        NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
-        [timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
-        NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
-        NSTimeInterval distanceBetweenDates = [date timeIntervalSinceDate:[NSDate date]];
-        if (distanceBetweenDates >= 0) {
-            NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:distanceBetweenDates];
+    NSInteger fireDateApart = 0;
+    NSDate *fireDate = [[NSDate alloc]init];
+    if([repeatdays count]){
+        for (NSString *d in repeatdays) {
+            if ([d integerValue] < weekday) {
+                fireDateApart = 7-weekday+[d integerValue];
+                fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
+            }
+            else if([d integerValue] > weekday){
+                fireDateApart = [d integerValue] - weekday;
+                fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
+            }
+            else{
+                NSDate *d = [[NSDate date] earlierDate: date];
+                if([d isEqualToDate:date]){
+                    fireDateApart = 7;
+                    NSTimeInterval distanceBetweenDates = [[NSDate date] timeIntervalSinceDate:date];
+                    fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600+distanceBetweenDates sinceDate:date];
+                }
+                else{
+                    fireDate = date;
+                }
+            }
+            
             if (self.player1) {
                 NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
-                                                          interval:10
+                                                          interval:7*24*3600
                                                             target:self
                                                           selector:@selector(playAlarm1)
                                                           userInfo:nil
-                                                           repeats:NO];
+                                                           repeats:YES];
                 
                 NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
                 [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
                 [runLoop run];
-            }else {
-                
-                UILocalNotification *notification=[[UILocalNotification alloc] init];
-                if (notification!=nil)
-                {
-                    notification.repeatInterval=0;
-                    notification.fireDate=fireDate;//距现在多久后触发代理方法
-                    notification.timeZone=[NSTimeZone defaultTimeZone];
-                    notification.soundName = soundurl;
-                    notification.alertBody = [NSString stringWithFormat:@"IMIST ALARM!"];
-                    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-                }
             }
-            
         }
-        
+    }
+    else{
+        //fix me
     }
 }
 
@@ -359,7 +377,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         NSString *urlString = [[NSBundle mainBundle]pathForResource:
                                soundurl ofType:@"mp3"];
         NSURL *url = [NSURL fileURLWithPath:urlString];
-        self.player1 = [[AVAudioPlayer alloc]
+        self.player2 = [[AVAudioPlayer alloc]
                         initWithContentsOfURL:url
                         error:nil];
     }
@@ -425,7 +443,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         NSString *urlString = [[NSBundle mainBundle]pathForResource:
                                soundurl ofType:@"mp3"];
         NSURL *url = [NSURL fileURLWithPath:urlString];
-        self.player1 = [[AVAudioPlayer alloc]
+        self.player3 = [[AVAudioPlayer alloc]
                         initWithContentsOfURL:url
                         error:nil];
     }
