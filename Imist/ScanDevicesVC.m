@@ -129,6 +129,7 @@
                 self.appDelegate.defaultBTServer.selectPeripheralInfo.water = [NSNumber numberWithInt:1];
                 if(initWork == 0 && self.appDelegate.defaultBTServer.selectPeripheralInfo.mode){
                     initWork = 1;
+                    Manager *sharedManager = [Manager sharedManager];
                     NSMutableData* data = [NSMutableData data];
                     NSUInteger query = [self getCurModeCmd:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode];
                     [data appendBytes:&query length:1];
@@ -138,7 +139,7 @@
                     if(self.appDelegate.defaultBTServer.selectPeripheralInfo.ledauto)
                         led = 0x65;
                     [data appendBytes:&led length:1];
-                    Manager *sharedManager = [Manager sharedManager];
+                    
                     NSUInteger color1 = [sharedManager getColorR:[self.appDelegate.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
                     [data appendBytes:&color1 length:1];
                     NSUInteger color2 = [sharedManager getColorG:[self.appDelegate.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];

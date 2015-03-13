@@ -13,9 +13,13 @@
 #import "ScanDevicesVC.h"
 #import <AVFoundation/AVFoundation.h>
 #import "Manager.h"
+#import "ProgressHUD.h"
 
 @interface AppDelegate ()
 @property(nonatomic, strong) NSTimer *playerTM;
+@property (nonatomic,strong) NSMutableArray *alarm1Timers;
+@property (nonatomic,strong) NSMutableArray *alarm2Timers;
+@property (nonatomic,strong) NSMutableArray *alarm3Timers;
 @property (nonatomic,strong) AVAudioPlayer *player1;
 @property (nonatomic,strong) AVAudioPlayer *player2;
 @property (nonatomic,strong) AVAudioPlayer *player3;
@@ -53,6 +57,10 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     self.defaultBTServer = [BTServer defaultBTServer];
+    
+    self.alarm1Timers = [[NSMutableArray alloc]init];
+    self.alarm2Timers = [[NSMutableArray alloc]init];
+    self.alarm3Timers = [[NSMutableArray alloc]init];
     
     [self currentWeekDay];
 
@@ -197,28 +205,63 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     }else {
         
     }
-    
-    Manager *sharedManager = [Manager sharedManager];
-    NSMutableData* data = [NSMutableData data];
-    NSUInteger query = [sharedManager getCurModeCmd:self.defaultBTServer.selectPeripheralInfo.mode];
-    [data appendBytes:&query length:1];
-    NSUInteger imist = [self.defaultBTServer.selectPeripheralInfo.imist integerValue];
-    [data appendBytes:&imist length:1];
-    NSUInteger led = [self.defaultBTServer.selectPeripheralInfo.ledlight integerValue];
-    if(self.defaultBTServer.selectPeripheralInfo.ledauto)
-        led = 0x65;
-    [data appendBytes:&led length:1];
-    
-    NSUInteger color1 = [sharedManager getColorR:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
-    [data appendBytes:&color1 length:1];
-    NSUInteger color2 = [sharedManager getColorG:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
-    [data appendBytes:&color2 length:1];
-    NSUInteger color3 = [sharedManager getColorB:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
-    [data appendBytes:&color3 length:1];
-    
-    self.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
-    [self.defaultBTServer writeValue:[self.defaultBTServer converCMD:data] withCharacter:[self.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
-    
+    if([self.defaultBTServer.selectPeripheralInfo.state isEqualToString:@"connected"]){
+        Manager *sharedManager = [Manager sharedManager];
+        NSMutableData* data = [NSMutableData data];
+        NSUInteger query = [sharedManager getCurModeCmd:self.defaultBTServer.selectPeripheralInfo.mode];
+        [data appendBytes:&query length:1];
+        NSUInteger imist = [self.defaultBTServer.selectPeripheralInfo.imist integerValue];
+        [data appendBytes:&imist length:1];
+        NSUInteger led = [self.defaultBTServer.selectPeripheralInfo.ledlight integerValue];
+        if(self.defaultBTServer.selectPeripheralInfo.ledauto)
+            led = 0x65;
+        [data appendBytes:&led length:1];
+        
+        NSUInteger color1 = [sharedManager getColorR:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+        [data appendBytes:&color1 length:1];
+        NSUInteger color2 = [sharedManager getColorG:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+        [data appendBytes:&color2 length:1];
+        NSUInteger color3 = [sharedManager getColorB:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+        [data appendBytes:&color3 length:1];
+        
+        self.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
+        [self.defaultBTServer writeValue:[self.defaultBTServer converCMD:data] withCharacter:[self.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+    }
+    else{
+        NSArray *identifiers = [NSArray arrayWithObjects: self.defaultBTServer.selectPeripheralInfo.peripheral.identifier,nil];
+        NSArray *result = [self.defaultBTServer retrievePeripheralsWithIdentifiers:identifiers];
+        if([result count]){
+            [ProgressHUD show:@"connecting ..."];
+            [self.defaultBTServer connect:self.defaultBTServer.selectPeripheralInfo withFinishCB:^(CBPeripheral *peripheral, BOOL status, NSError *error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [ProgressHUD dismiss];
+                    if (status) {
+                        self.defaultBTServer.selectPeripheralInfo.state = @"connected";
+                       
+                        //[cell setState:1];
+                        [ProgressHUD showSuccess:@"connected success!"];
+                        NSMutableData* data = [NSMutableData data];
+                        NSUInteger query = 0xa1;
+                        [data appendBytes:&query length:1];
+                        NSUInteger imist = 0x00;
+                        [data appendBytes:&imist length:1];
+                        NSUInteger led = 0x00;
+                        [data appendBytes:&led length:1];
+                        NSUInteger color1 = 0x00;
+                        [data appendBytes:&color1 length:1];
+                        NSUInteger color2 = 0x00;
+                        [data appendBytes:&color2 length:1];
+                        NSUInteger color3 = 0x00;
+                        [data appendBytes:&color3 length:1];
+                        
+                        self.defaultBTServer.selectPeripheralInfo.curCmd = GET_WATER_STATUS;
+                        [self.defaultBTServer writeValue:[self.defaultBTServer converCMD:data] withCharacter:[self.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+                    }
+                });
+            }];
+
+        }
+    }
 }
 
 -(void) playAlarm2
@@ -301,6 +344,18 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 
 -(void) configPlayer1:(NSDictionary*)alertItem
 {
+    for(NSTimer *timer in self.alarm1Timers){
+        if(timer){
+            if([timer isValid]){
+                [timer invalidate];
+            }
+        }
+    }
+    
+    [self.alarm1Timers removeAllObjects];
+    
+    NSLog(@"alarm1Timers %ld",[self.alarm1Timers count]);
+
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
         self.player1 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
@@ -332,6 +387,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     NSInteger fireDateApart = 0;
     NSDate *fireDate = [[NSDate alloc]init];
     if([repeatdays count]){
+        NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
         for (NSString *d in repeatdays) {
             if ([d integerValue] < weekday) {
                 fireDateApart = 7-weekday+[d integerValue];
@@ -361,11 +417,27 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                                                           userInfo:nil
                                                            repeats:YES];
                 
-                NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
                 [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
-                [runLoop run];
+                [self.alarm1Timers addObject:timer];
+            }
+            
+            else{
+                UILocalNotification *notification=[[UILocalNotification alloc] init];
+                if (notification!=nil)
+                {
+                    notification.repeatInterval=NSWeekCalendarUnit;
+                    notification.fireDate=fireDate;//距现在多久后触发代理方法
+                    notification.timeZone=[NSTimeZone defaultTimeZone];
+                    notification.soundName = soundurl;
+                    notification.alertBody = [NSString stringWithFormat:@"IMIST ALARM!"];
+                    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+                }
             }
         }
+        if (self.player1) {
+            [runLoop run];
+        }
+
     }
     else{
         //fix me

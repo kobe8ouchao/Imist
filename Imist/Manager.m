@@ -360,6 +360,44 @@ static NSDictionary *colorB;
     return returncolor;
 }
 
+- (NSInteger)getCurModeCmd:(NSString*)modeString{
+    NSInteger cmd = 0;
+    if([modeString isEqualToString:@"Relaxation"]){
+        cmd = 3;
+    }
+    else if([modeString isEqualToString:@"Sleep"]){
+        cmd = 4;
+    }
+    else if([modeString isEqualToString:@"Energization"]){
+        cmd = 5;
+    }
+    else if([modeString isEqualToString:@"Soothing"]){
+        cmd = 6;
+    }
+    else if([modeString isEqualToString:@"Concentration"]){
+        cmd = 7;
+    }
+    else if([modeString isEqualToString:@"Sensuality"]){
+        cmd = 8;
+    }
+    
+    else if([modeString isEqualToString:@"2 Hours"]){
+        cmd = 9;
+    }
+    else if([modeString isEqualToString:@"4 Hours"]){
+        cmd = 10;
+    }
+    else if([modeString isEqualToString:@"8 Hours"]){
+        cmd = 11;
+    }
+    else if([modeString isEqualToString:@"16 Hours"]){
+        cmd = 12;
+    }
+    
+    return cmd;
+    
+}
+
 
 - (void)dealloc {
     // 永远不要调用这个方法
