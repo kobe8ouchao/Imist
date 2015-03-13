@@ -104,30 +104,30 @@
     if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 1) {
         NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer1:self.player1];
+            [self configPlayer1:alertItem];
         }
     } else if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 2) {
         NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer1:self.player1];
+            [self configPlayer1:alertItem];
         }
         alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:1];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer1:self.player2];
+            [self configPlayer2:alertItem];
         }
 
     }else if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 3) {
         NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer1:self.player1];
+            [self configPlayer1:alertItem];
         }
         alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer1:self.player2];
+            [self configPlayer2:alertItem];
         }
         alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer1:self.player3];
+            [self configPlayer3:alertItem];
         }
     }
 
@@ -284,7 +284,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     
 }
 
--(void) setPlayer1:(NSDictionary*)alertItem
+-(void) configPlayer1:(NSDictionary*)alertItem
 {
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
@@ -350,7 +350,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     }
 }
 
--(void) setPlayer2:(NSDictionary*)alertItem
+-(void) configPlayer2:(NSDictionary*)alertItem
 {
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
@@ -416,7 +416,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     }
 }
 
--(void) setPlayer3:(NSDictionary*)alertItem
+-(void) configPlayer3:(NSDictionary*)alertItem
 {
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
