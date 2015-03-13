@@ -13,5 +13,5 @@
 @property (nonatomic, assign) id<pickSoundDelegate> delegate;
 @end
 @protocol pickSoundDelegate <NSObject>
--(void)saveSound:(NSString*)sound :(NSString*)soundName;;
+-(void)saveSound:(NSString*)sound;
 @end

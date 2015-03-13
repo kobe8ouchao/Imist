@@ -42,7 +42,7 @@
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents * componentsToday = [calendar components:(NSWeekdayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:today];
     
-    NSLog(@"componentsToday.weekday %i", componentsToday.weekday);
+    NSLog(@"componentsToday.weekday %li", (long)componentsToday.weekday);
     return componentsToday.weekday;
 }
 
@@ -322,9 +322,11 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
     //
     
-    NSInteger weekday = [comps weekday];
+    NSInteger weekday = [comps weekday] - 1;
+    if (weekday == 0) {
+        weekday = 7;
+    }
     NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
-    BOOL isAlert = NO;
     NSInteger fireDateApart = 0;
     NSDate *fireDate = [[NSDate alloc]init];
     if([repeatdays count]){
@@ -372,7 +374,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 {
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
-        self.player1 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
+        self.player2 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
     }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
         NSString *urlString = [[NSBundle mainBundle]pathForResource:
                                soundurl ofType:@"mp3"];
@@ -438,7 +440,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 {
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
-        self.player1 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
+        self.player3 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
     }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
         NSString *urlString = [[NSBundle mainBundle]pathForResource:
                                soundurl ofType:@"mp3"];

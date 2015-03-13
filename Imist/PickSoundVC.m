@@ -235,7 +235,8 @@
         return;
     }
     if ([self.delegate respondsToSelector:@selector(saveSound:)]) {
-        [self.delegate saveSound:self.selectedSound :self.selectedSoundName];
+        NSString *soundName = [NSString stringWithFormat:@"%@|%@",self.selectedSound ,self.selectedSoundName];
+        [self.delegate saveSound:soundName];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
