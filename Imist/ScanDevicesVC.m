@@ -234,6 +234,7 @@
                         self.appDelegate.defaultBTServer.selectPeripheralInfo = pi;
                         [defaults setObject:encodedObject forKey:pi.uuid];
                         [defaults synchronize];
+                        [self restoreSelPiUserset:pi.mode];
                     }
                     
                     //[cell setState:1];
@@ -439,29 +440,67 @@
     PeriperalInfo *selectPi =  self.appDelegate.defaultBTServer.selectPeripheralInfo;
 
     if([selectPi.mode isEqualToString:@"2 Hours"]){
-        selectPi.imist = [selectPi.userset2Hour valueForKey:@"mist"];
-        selectPi.ledlight = [selectPi.userset2Hour valueForKey:@"brightness"];
-        selectPi.ledauto = [selectPi.userset2Hour valueForKey:@"auto"];
-        selectPi.ledcolor = [selectPi.userset2Hour valueForKey:@"color"];
+        if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour count]){
+            selectPi.imist = [selectPi.userset2Hour valueForKey:@"mist"];
+            selectPi.ledlight = [selectPi.userset2Hour valueForKey:@"brightness"];
+            selectPi.ledauto = [selectPi.userset2Hour valueForKey:@"auto"];
+            selectPi.ledcolor = [selectPi.userset2Hour valueForKey:@"color"];
+        }
+        else{
+            selectPi.imist = [NSNumber numberWithInteger:50];
+            selectPi.ledlight = [NSNumber numberWithInteger:46];
+            selectPi.ledcolor = [NSNumber numberWithInteger:100];
+            selectPi.ledauto = [NSNumber numberWithInteger:0];
+        }
         
     }
     else if([selectPi.mode isEqualToString:@"4 Hours"]){
-        selectPi.imist = [selectPi.userset4Hour valueForKey:@"mist"];
-        selectPi.ledlight = [selectPi.userset4Hour valueForKey:@"brightness"];
-        selectPi.ledauto = [selectPi.userset4Hour valueForKey:@"auto"];
-        selectPi.ledcolor = [selectPi.userset4Hour valueForKey:@"color"];
+        if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour count]){
+            selectPi.imist = [selectPi.userset4Hour valueForKey:@"mist"];
+            selectPi.ledlight = [selectPi.userset4Hour valueForKey:@"brightness"];
+            selectPi.ledauto = [selectPi.userset4Hour valueForKey:@"auto"];
+            selectPi.ledcolor = [selectPi.userset4Hour valueForKey:@"color"];
+        }
+        else{
+            selectPi.imist = [NSNumber numberWithInteger:50];
+            selectPi.ledlight = [NSNumber numberWithInteger:46];
+            selectPi.ledcolor = [NSNumber numberWithInteger:100];
+            selectPi.ledauto = [NSNumber numberWithInteger:0];
+        }
     }
     else if([selectPi.mode isEqualToString:@"8 Hours"]){
-        selectPi.imist = [selectPi.userset8Hour valueForKey:@"mist"];
-        selectPi.ledlight = [selectPi.userset8Hour valueForKey:@"brightness"];
-        selectPi.ledauto = [selectPi.userset8Hour valueForKey:@"auto"];
-        selectPi.ledcolor = [selectPi.userset8Hour valueForKey:@"color"];
+        if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour count]){
+            selectPi.imist = [selectPi.userset8Hour valueForKey:@"mist"];
+            selectPi.ledlight = [selectPi.userset8Hour valueForKey:@"brightness"];
+            selectPi.ledauto = [selectPi.userset8Hour valueForKey:@"auto"];
+            selectPi.ledcolor = [selectPi.userset8Hour valueForKey:@"color"];
+            }
+        else{
+            selectPi.imist = [NSNumber numberWithInteger:50];
+            selectPi.ledlight = [NSNumber numberWithInteger:46];
+            selectPi.ledcolor = [NSNumber numberWithInteger:100];
+            selectPi.ledauto = [NSNumber numberWithInteger:0];
+        }
     }
     else if([selectPi.mode isEqualToString:@"16 Hours"]){
-        selectPi.imist = [selectPi.userset16Hour valueForKey:@"mist"];
-        selectPi.ledlight = [selectPi.userset16Hour valueForKey:@"brightness"];
-        selectPi.ledauto = [selectPi.userset16Hour valueForKey:@"auto"];
-        selectPi.ledcolor = [selectPi.userset16Hour valueForKey:@"color"];
+        if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour count]){
+            selectPi.imist = [selectPi.userset16Hour valueForKey:@"mist"];
+            selectPi.ledlight = [selectPi.userset16Hour valueForKey:@"brightness"];
+            selectPi.ledauto = [selectPi.userset16Hour valueForKey:@"auto"];
+            selectPi.ledcolor = [selectPi.userset16Hour valueForKey:@"color"];
+        }
+        else{
+            selectPi.imist = [NSNumber numberWithInteger:50];
+            selectPi.ledlight = [NSNumber numberWithInteger:46];
+            selectPi.ledcolor = [NSNumber numberWithInteger:100];
+            selectPi.ledauto = [NSNumber numberWithInteger:0];
+        }
+    }
+    else{
+        selectPi.imist = [NSNumber numberWithInteger:50];
+        selectPi.ledlight = [NSNumber numberWithInteger:46];
+        selectPi.ledcolor = [NSNumber numberWithInteger:100];
+        selectPi.ledauto = [NSNumber numberWithInteger:0];
     }
 }
 

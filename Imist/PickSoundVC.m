@@ -18,6 +18,7 @@
 @property (nonatomic,strong) NSMutableArray *soundlist;
 @property (nonatomic,strong) NSMutableArray *musiclist;
 @property (nonatomic,strong) NSString *selectedSound;
+@property (nonatomic,strong) NSString *selectedSoundName;
 @property (nonatomic,strong) AVAudioPlayer *player;
 @end
 
@@ -105,6 +106,7 @@
             self.selectedSound = @"";
         } else {
             self.selectedSound = [self.defautlist objectAtIndex:indexPath.row];
+            self.selectedSoundName = self.selectedSound;
         }
         
     }else if(1 == indexPath.section){
@@ -116,6 +118,7 @@
             self.selectedSound = @"";
         } else {
             self.selectedSound = [[musicDict objectForKey:@"url"] absoluteString];
+            self.selectedSoundName = self.selectedSound;
         }
     }else{
         SystemSoundID soundID;
@@ -232,7 +235,7 @@
         return;
     }
     if ([self.delegate respondsToSelector:@selector(saveSound:)]) {
-        [self.delegate saveSound:self.selectedSound];
+        [self.delegate saveSound:self.selectedSound :self.selectedSoundName];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

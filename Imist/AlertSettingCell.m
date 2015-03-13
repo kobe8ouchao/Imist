@@ -23,7 +23,7 @@
         bg.image = [UIImage imageNamed:@"bg_scancell_green.png"];
         bg.backgroundColor = [UIColor clearColor];
         [self addSubview:bg];
-        UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(20, 11, 100 ,18)];
+        UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(20, 11, 80 ,18)];
         [lable setFont:[UIFont boldSystemFontOfSize:18]];
         lable.tag = 1;
         lable.textAlignment = NSTextAlignmentLeft;
@@ -31,7 +31,7 @@
         lable.textColor = [UIColor whiteColor];
         [bg addSubview:lable];
         
-        UILabel *alarmName = [[UILabel alloc] initWithFrame:CGRectMake(40, 11, 200 ,18)];
+        UILabel *alarmName = [[UILabel alloc] initWithFrame:CGRectMake(100, 11, 120 ,18)];
         [alarmName setFont:[UIFont boldSystemFontOfSize:18]];
         alarmName.tag = 2;
         alarmName.textAlignment = NSTextAlignmentLeft;
