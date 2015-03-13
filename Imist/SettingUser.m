@@ -48,8 +48,11 @@
     [self.view addSubview:modeBtn];
     
     self.imistValue = [self.appDelegate.defaultBTServer.selectPeripheralInfo.imist integerValue];
+    self.lastImistValue = self.imistValue;
     self.brightnessValue = [self.appDelegate.defaultBTServer.selectPeripheralInfo.ledlight integerValue];
+    self.lastBrightnessValue = self.brightnessValue;
     self.colorValue = [self.appDelegate.defaultBTServer.selectPeripheralInfo.ledcolor integerValue];
+    self.lastColorValue = self.colorValue;
     self.ledAutoEnable = [self.appDelegate.defaultBTServer.selectPeripheralInfo.ledauto integerValue];
     
     [self setUpBar:CGRectMake(20, 60, self.view.frame.size.width - 40 ,80) withTitle:@"mist" withMin:0 withMax:50 withTag:1 withValue:self.imistValue];
@@ -305,6 +308,9 @@
         }
 
     }
+    self.lastImistValue = self.imistValue;
+    self.lastBrightnessValue = self.brightnessValue;
+    self.lastColorValue = self.colorValue;
     slider1.value = self.imistValue;
     slider2.value = self.brightnessValue;
     slider.value = self.colorValue;
@@ -509,19 +515,19 @@
     NSNumber *ledAutoObj = [NSNumber numberWithInteger:self.ledAutoEnable ];
     if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]){
         query = 9;
-        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour setValue:ledAutoObj forKey:@"brightness"];
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour setValue:ledAutoObj forKey:@"auto"];
     }
     else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"4 Hours"]){
         query = 10;
-        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour setValue:ledAutoObj forKey:@"brightness"];
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour setValue:ledAutoObj forKey:@"auto"];
     }
     else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"8 Hours"]){
         query = 11;
-        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour setValue:ledAutoObj forKey:@"brightness"];
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour setValue:ledAutoObj forKey:@"auto"];
     }
     else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"16 Hours"]){
         query = 12;
-        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour setValue:ledAutoObj forKey:@"brightness"];
+        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour setValue:ledAutoObj forKey:@"auto"];
     }
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];

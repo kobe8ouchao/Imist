@@ -117,30 +117,30 @@
     if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 1) {
         NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer1:self.player1];
+            [self setPlayer1:alertItem];
         }
     } else if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 2) {
         NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer1:self.player1];
+            [self setPlayer1:alertItem];
         }
         alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:1];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer1:self.player2];
+            [self setPlayer2:alertItem];
         }
 
     }else if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 3) {
         NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer1:self.player1];
+            [self setPlayer1:alertItem];
         }
         alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer1:self.player2];
+            [self setPlayer2:alertItem];
         }
         alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer1:self.player3];
+            [self setPlayer3:alertItem];
         }
     }
 
@@ -372,7 +372,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 {
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
-        self.player1 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
+        self.player2 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
     }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
         NSString *urlString = [[NSBundle mainBundle]pathForResource:
                                soundurl ofType:@"mp3"];
@@ -438,7 +438,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 {
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
-        self.player1 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
+        self.player3 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
     }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
         NSString *urlString = [[NSBundle mainBundle]pathForResource:
                                soundurl ofType:@"mp3"];

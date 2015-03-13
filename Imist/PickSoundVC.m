@@ -118,7 +118,7 @@
             self.selectedSound = @"";
         } else {
             self.selectedSound = [[musicDict objectForKey:@"url"] absoluteString];
-            self.selectedSoundName = self.selectedSound;
+            self.selectedSoundName = [musicDict objectForKey:@"title"];
         }
     }else{
         SystemSoundID soundID;
@@ -234,7 +234,7 @@
         [ProgressHUD showError:@"Please pick a sound for alarm!"];
         return;
     }
-    if ([self.delegate respondsToSelector:@selector(saveSound:)]) {
+    if ([self.delegate respondsToSelector:@selector(saveSound::)]) {
         [self.delegate saveSound:self.selectedSound :self.selectedSoundName];
         [self.navigationController popViewControllerAnimated:YES];
     }
