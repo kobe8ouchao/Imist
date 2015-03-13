@@ -15,7 +15,7 @@
 #import "Manager.h"
 
 @interface AppDelegate ()
-@property(nonatomic, strong)NSTimer *playerTM;
+@property(nonatomic, strong) NSTimer *playerTM;
 @property (nonatomic,strong) AVAudioPlayer *player1;
 @property (nonatomic,strong) AVAudioPlayer *player2;
 @property (nonatomic,strong) AVAudioPlayer *player3;
@@ -118,6 +118,7 @@
         NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
             [self configPlayer1:alertItem];
+
         }
     } else if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 2) {
         NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
@@ -141,6 +142,7 @@
         alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
             [self configPlayer3:alertItem];
+
         }
     }
 

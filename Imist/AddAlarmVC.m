@@ -340,7 +340,7 @@
     }
     else{
         NSArray *daymask = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",nil];
-        NSArray *weekday = [NSArray arrayWithObjects:@"Mon",@"Tue",@"Wed",@"Thu",@"Fri",@"Sat",@"Sun",nil];
+        NSArray *weekday = [NSArray arrayWithObjects:@"Sun",@"Mon",@"Tue",@"Wed",@"Thu",@"Fri",@"Sat",nil];
         NSMutableArray *repeatDay = [[NSMutableArray alloc]init];
         NSArray *arrSelDay = [self.days componentsSeparatedByString:@"|"];
         for (NSString *d in daymask) {

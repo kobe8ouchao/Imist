@@ -118,7 +118,7 @@
             self.selectedSound = @"";
         } else {
             self.selectedSound = [[musicDict objectForKey:@"url"] absoluteString];
-            self.selectedSoundName = self.selectedSound;
+            self.selectedSoundName = [musicDict objectForKey:@"title"];
         }
     }else{
         SystemSoundID soundID;
@@ -240,5 +240,4 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
-
 @end
