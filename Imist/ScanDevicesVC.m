@@ -205,6 +205,7 @@
         tabBarController.title = pi.name;
         [self.navigationController pushViewController:tabBarController animated:YES];
     }else if([pi.state isEqualToString:@"disConnected"]) {
+        [self.appDelegate.defaultBTServer stopScan];
         [ProgressHUD show:@"connecting ..."];
         [self.appDelegate.defaultBTServer connect:self.appDelegate.defaultBTServer.discoveredPeripherals[indexPath.row] withFinishCB:^(CBPeripheral *peripheral, BOOL status, NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{

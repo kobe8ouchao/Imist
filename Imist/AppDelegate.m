@@ -15,7 +15,7 @@
 #import "Manager.h"
 
 @interface AppDelegate ()
-@property(nonatomic, strong)NSTimer *playerTM;
+@property(nonatomic, strong) NSTimer *playerTM;
 @property (nonatomic,strong) AVAudioPlayer *player1;
 @property (nonatomic,strong) AVAudioPlayer *player2;
 @property (nonatomic,strong) AVAudioPlayer *player3;
@@ -117,30 +117,30 @@
     if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 1) {
         NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer1:alertItem];
+            [self setPlayerAlarm1:alertItem];
         }
     } else if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 2) {
         NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer1:alertItem];
+            [self setPlayerAlarm1:alertItem];
         }
         alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:1];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer2:alertItem];
+            [self setPlayerAlarm2:alertItem];
         }
 
     }else if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 3) {
         NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer1:alertItem];
+            [self setPlayerAlarm1:alertItem];
         }
         alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer2:alertItem];
+            [self setPlayerAlarm2:alertItem];
         }
         alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self setPlayer3:alertItem];
+            [self setPlayerAlarm3:alertItem];
         }
     }
 
@@ -297,7 +297,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     
 }
 
--(void) setPlayer1:(NSDictionary*)alertItem
+-(void) setPlayerAlarm1:(NSDictionary*)alertItem
 {
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
@@ -368,7 +368,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     }
 }
 
--(void) setPlayer2:(NSDictionary*)alertItem
+-(void) setPlayerAlarm2:(NSDictionary*)alertItem
 {
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
@@ -434,7 +434,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     }
 }
 
--(void) setPlayer3:(NSDictionary*)alertItem
+-(void) setPlayerAlarm3:(NSDictionary*)alertItem
 {
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {

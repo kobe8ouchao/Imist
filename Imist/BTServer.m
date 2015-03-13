@@ -312,7 +312,8 @@ static BTServer* _defaultBTServer = nil;
     self.selectPeripheral = peripheral;
     self.selectPeripheral.delegate = self;
     serviceState = KING;
-    [self.selectPeripheral discoverServices:nil];
+    NSArray *sUUIDArray = [NSArray arrayWithObjects:[CBUUID UUIDWithString:UUIDPrimaryService], nil];
+    [self.selectPeripheral discoverServices:sUUIDArray];
 }
 
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
@@ -386,7 +387,13 @@ static BTServer* _defaultBTServer = nil;
             NSLog(@"Service found with UUID: %@", service.UUID);
             if ([service.UUID isEqual:[CBUUID UUIDWithString:UUIDPrimaryService]]) {
                 NSLog(@"Imist SERVICE FOUND");
-                [peripheral discoverCharacteristics:nil forService:service];
+                NSArray *cUUIDArray = [NSArray arrayWithObjects:
+                                       [CBUUID UUIDWithString:CODE_TX_CHARACTERISTIC],
+                                       [CBUUID UUIDWithString:CODE_RX_CHARACTERISTIC],
+                                       [CBUUID UUIDWithString:WRITE_CHARACTERISTIC],
+                                       [CBUUID UUIDWithString:NOTIFY_CHARACTERISTIC],
+                                       nil];
+                [peripheral discoverCharacteristics:cUUIDArray forService:service];
                 break;
             }
         }
