@@ -340,7 +340,7 @@
 
 -(void)changeName:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Change Imist Name" message:nil delegate:nil cancelButtonTitle:InterNation(@"cancel") otherButtonTitles:InterNation(@"confirm") ,nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Rename machine" message:nil delegate:nil cancelButtonTitle:InterNation(@"cancel") otherButtonTitles:InterNation(@"confirm") ,nil];
     alert.tag = 222;
     alert.delegate = self;
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;

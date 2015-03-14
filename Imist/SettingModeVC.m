@@ -518,9 +518,10 @@ typedef enum{
     [data appendBytes:&color2 length:1];
     NSUInteger color3 = 0x0;
     [data appendBytes:&color3 length:1];
-    
+    if(self.appDelegate.defaultBTServer.selectPeripheral.state == CBPeripheralStateConnected){
     self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
     [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+    }
     
 }
 
@@ -612,13 +613,15 @@ typedef enum{
     [data appendBytes:&color1 length:1];
     [data appendBytes:&color2 length:1];
     [data appendBytes:&color3 length:1];
-
+    if(self.appDelegate.defaultBTServer.selectPeripheral.state == CBPeripheralStateConnected){
     self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
     [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+    }
     
 }
 
 -(void) stopCurMode{
+    if(self.appDelegate.defaultBTServer.selectPeripheral.state == CBPeripheralStateConnected){
     NSMutableData* data = [NSMutableData data];
     
     NSUInteger query = 0x01;
@@ -647,10 +650,12 @@ typedef enum{
             [btn setBackgroundImage:[UIImage imageNamed:@"bg_btn_gray.png"] forState:UIControlStateNormal];
         }
     });
+    }
 }
 
 - (void)getWaterStatus{
     
+    if(self.appDelegate.defaultBTServer.selectPeripheral.state == CBPeripheralStateConnected){
     NSMutableData* data = [NSMutableData data];
     
     NSUInteger query = 0xa1;
@@ -669,6 +674,7 @@ typedef enum{
     self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = GET_WATER_STATUS;
     
     [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated{

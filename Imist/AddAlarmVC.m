@@ -92,10 +92,11 @@
     [self.view addSubview:self.wakeSettingTable];
     
     if (!self.alarmName) {
-        self.alarmName = @"";
+        self.alarmName = @"Wake Up";
     }
     if (!self.sound) {
-        self.sound = @"";
+        self.sound = @"Bicker";
+        self.soundName = @"Bicker";
     }
     if (!self.days) {
         self.days = @"1|2|3|4|5|6|7";

@@ -237,7 +237,7 @@ static BTServer* _defaultBTServer = nil;
 
 - (NSArray *)retrievePeripheralsWithIdentifiers:(NSArray *)identifiers {
     NSArray *result = [myCenter retrievePeripheralsWithIdentifiers:identifiers];
-    [self centralManager:myCenter didRetrievePeripherals:result];
+    //[self centralManager:myCenter didRetrievePeripherals:result];
     return result;
 }
 
@@ -299,7 +299,7 @@ static BTServer* _defaultBTServer = nil;
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI
 {
     NSLog(@"discover peripheral: %@; advertisementData: %@; RSSI: %@", peripheral, advertisementData, RSSI);
-    if ([peripheral.name containsString:@"Imist"]) {
+    if ([peripheral.name containsString:@"Imist"] || [peripheral.name containsString:@"IMIST"]) {
         [self addPeripheral:peripheral advertisementData:advertisementData RSSI:RSSI];
     }
     
@@ -335,6 +335,24 @@ static BTServer* _defaultBTServer = nil;
         if([(id)self.delegate respondsToSelector:@selector(didDisconnect)]){
             [self.delegate didDisconnect];
         }
+    }
+    
+    UIApplication *app=[UIApplication sharedApplication];
+    if (app.applicationState == UIApplicationStateBackground) {
+        UIUserNotificationSettings *notifySettings=[[UIApplication sharedApplication] currentUserNotificationSettings];
+        if ((notifySettings.types & UIUserNotificationTypeAlert)!=0) {
+            UILocalNotification *notification=[UILocalNotification new];
+            notification.alertBody=@"Diffuser Disconnected";
+            [app presentLocalNotificationNow:notification];
+        }
+    }
+    else{
+        
+    }
+    
+    if ([self.selectPeripheral.identifier.UUIDString isEqualToString:peripheral.identifier.UUIDString]) {
+        NSLog(@"Retrying");
+        [self connect:self.selectPeripheralInfo];
     }
 }
 

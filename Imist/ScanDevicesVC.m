@@ -164,6 +164,7 @@
 }
 -(void)didDisconnect
 {
+    NSLog(@"disconncted%@", self.appDelegate.window.rootViewController.description);
     PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:selectRow];
     pi.state = @"disConnected";
     NSIndexPath * selectIndexPath = [NSIndexPath indexPathForRow:selectRow inSection:0];
