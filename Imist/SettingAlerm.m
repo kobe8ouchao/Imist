@@ -67,7 +67,7 @@
 -(void)addAction:(id)sender
 {
     if ([self.appDelegate.defaultBTServer.selectPeripheralInfo.alert count] == 3) {
-        [ProgressHUD showError:@"Only set three alarms"];
+        [ProgressHUD showError:@"Only set three wakeup"];
     }else {
         AddAlarmVC* addv = [[AddAlarmVC alloc] init];
         [self.navigationController pushViewController:addv animated:YES];
@@ -124,7 +124,7 @@
 }
 
 -(void)AlertView{
-    UIAlertView *aview = [[UIAlertView alloc]initWithTitle:@"Delete Alarm?" message:@"Do you want to delete this alarm?" delegate:self cancelButtonTitle:@"Confirm" otherButtonTitles:@"Cancel", nil];
+    UIAlertView *aview = [[UIAlertView alloc]initWithTitle:@"Delete Wakeup?" message:@"Do you want to delete this wakeup?" delegate:self cancelButtonTitle:@"Confirm" otherButtonTitles:@"Cancel", nil];
     aview.delegate = self;
     [aview show];
 }

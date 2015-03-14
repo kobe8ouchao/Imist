@@ -82,6 +82,7 @@
     {
         [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
     }
+    
 //    UILocalNotification *localNotif = [[UILocalNotification alloc] init];
 //    [localNotif setFireDate:[[NSDate date] dateByAddingTimeInterval:5]];
 //    localNotif.timeZone = [NSTimeZone defaultTimeZone];
@@ -500,7 +501,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                     notification.fireDate=fireDate;//距现在多久后触发代理方法
                     notification.timeZone=[NSTimeZone defaultTimeZone];
                     notification.soundName = soundurl;
-                    notification.alertBody = [NSString stringWithFormat:@"IMIST ALARM!"];
+                    notification.alertBody = [NSString stringWithFormat:@"IMIST Wakeup!"];
                     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
                 }
             }
@@ -591,7 +592,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                 NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
                                                           interval:7*24*3600
                                                             target:self
-                                                          selector:@selector(playAlarm1)
+                                                          selector:@selector(playAlarm2)
                                                           userInfo:nil
                                                            repeats:YES];
                 
@@ -607,7 +608,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                     notification.fireDate=fireDate;//距现在多久后触发代理方法
                     notification.timeZone=[NSTimeZone defaultTimeZone];
                     notification.soundName = soundurl;
-                    notification.alertBody = [NSString stringWithFormat:@"IMIST ALARM!"];
+                    notification.alertBody = [NSString stringWithFormat:@"IMIST Wakeup!"];
                     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
                 }
             }
@@ -697,7 +698,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                 NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
                                                           interval:7*24*3600
                                                             target:self
-                                                          selector:@selector(playAlarm1)
+                                                          selector:@selector(playAlarm3)
                                                           userInfo:nil
                                                            repeats:YES];
                 
@@ -712,7 +713,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                     notification.fireDate=fireDate;//距现在多久后触发代理方法
                     notification.timeZone=[NSTimeZone defaultTimeZone];
                     notification.soundName = soundurl;
-                    notification.alertBody = [NSString stringWithFormat:@"IMIST ALARM!"];
+                    notification.alertBody = [NSString stringWithFormat:@"IMIST Wakeup!"];
                     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
                 }
             }
@@ -726,5 +727,9 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         //fix me
 
     }}
+
+- (void)peripheralDidDisconnect{
+    
+}
 
 @end

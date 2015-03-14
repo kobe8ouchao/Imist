@@ -231,7 +231,7 @@
 -(void)save
 {
     if (!self.selectedSound || [selectedSound isEqualToString:@""]) {
-        [ProgressHUD showError:@"Please pick a sound for alarm!"];
+        [ProgressHUD showError:@"Please pick a sound for wakeup!"];
         return;
     }
     if ([self.delegate respondsToSelector:@selector(saveSound:)]) {

@@ -57,6 +57,15 @@
 
     [self.view addSubview:[self contentView]];
     [self.view addSubview:[self tabBar]];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(peripheralDidDisconnect:)
+                                                 name:@"PERIPHERAL_DISCONNECT"
+                                               object:nil];
+}
+
+- (void) peripheralDidDisconnect:(NSNotification*)notification{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -352,7 +361,7 @@
 {
     AppDelegate *application = (AppDelegate*)[UIApplication sharedApplication].delegate;
     if ([application.defaultBTServer.selectPeripheralInfo.alert count] == 3) {
-        [ProgressHUD showError:@"Only set three alarms"];
+        [ProgressHUD showError:@"Only set three wakeup time!"];
     }else {
         AddAlarmVC* addv = [[AddAlarmVC alloc] init];
         [self.navigationController pushViewController:addv animated:YES];

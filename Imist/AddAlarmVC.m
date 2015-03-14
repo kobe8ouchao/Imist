@@ -32,7 +32,7 @@
 @synthesize all,hours,minis,pickerview,selectedHour,selectedMinis,ampm,editAlert;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Set Alarm";
+    self.title = @"Set Wakeup";
     UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
     self.navigationItem.rightBarButtonItem = saveItem;
     
@@ -92,7 +92,7 @@
     [self.view addSubview:self.wakeSettingTable];
     
     if (!self.alarmName) {
-        self.alarmName = @"Wake Up";
+        self.alarmName = @"Wakeup";
     }
     if (!self.sound) {
         self.sound = @"Bicker";
@@ -182,7 +182,7 @@
 
 -(void)changeAlarmName
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Change Alarm Name" message:nil delegate:nil cancelButtonTitle:InterNation(@"cancel") otherButtonTitles:InterNation(@"confirm") ,nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Rename diffuser" message:nil delegate:nil cancelButtonTitle:InterNation(@"cancel") otherButtonTitles:InterNation(@"confirm") ,nil];
     alert.tag = 222;
     alert.delegate = self;
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;

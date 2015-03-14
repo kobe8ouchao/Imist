@@ -347,7 +347,7 @@ static BTServer* _defaultBTServer = nil;
         }
     }
     else{
-        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"PERIPHERAL_DISCONNECT" object:nil];
     }
     
     if ([self.selectPeripheral.identifier.UUIDString isEqualToString:peripheral.identifier.UUIDString]) {
