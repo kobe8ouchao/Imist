@@ -444,6 +444,18 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 
 -(void) configPlayer2:(NSDictionary*)alertItem
 {
+    for(NSTimer *timer in self.alarm2Timers){
+        if(timer){
+            if([timer isValid]){
+                [timer invalidate];
+            }
+        }
+    }
+    
+    [self.alarm2Timers removeAllObjects];
+    
+    NSLog(@"alarm1Timers %ld",(unsigned long)[self.alarm2Timers count]);
+    
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
         self.player2 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
@@ -461,40 +473,57 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     NSString *repeat = [alertItem objectForKey:@"repeat"];
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
-    NSInteger weekday = [comps weekday];
-    NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
-    BOOL isAlert = NO;
-    for (NSString *d in repeatdays) {
-        if ([d integerValue] == weekday) {
-            isAlert = YES;
-            break;
-        }
+    NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
+    NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
+    [timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+    NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
+    //
+    
+    NSInteger weekday = [comps weekday] - 1;
+    if (weekday == 0) {
+        weekday = 7;
     }
-    if (isAlert) {
-        NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
-        NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
-        [timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
-        NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
-        NSTimeInterval distanceBetweenDates = [date timeIntervalSinceDate:[NSDate date]];
-        if (distanceBetweenDates >= 0) {
-            NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:distanceBetweenDates];
+    NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
+    NSInteger fireDateApart = 0;
+    NSDate *fireDate = [NSDate date];
+    if([repeatdays count]){
+        NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+        for (NSString *d in repeatdays) {
+            if ([d integerValue] < weekday) {
+                fireDateApart = 7-weekday+[d integerValue] - 1;
+                fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
+            }
+            else if([d integerValue] > weekday){
+                fireDateApart = [d integerValue] - weekday - 1;
+                fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
+            }
+            else{
+                NSDate *d = [[NSDate date] earlierDate: date];
+                if([d isEqualToDate:date]){
+                    fireDateApart = 7;
+                    NSTimeInterval distanceBetweenDates = [[NSDate date] timeIntervalSinceDate:date];
+                    fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600+distanceBetweenDates sinceDate:date];
+                }
+                else{
+                    fireDate = date;
+                }
+            }
+            
             if (self.player2) {
                 NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
-                                                          interval:10
+                                                          interval:7*24*3600
                                                             target:self
                                                           selector:@selector(playAlarm2)
                                                           userInfo:nil
-                                                           repeats:NO];
+                                                           repeats:YES];
                 
-                NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
                 [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
-                [runLoop run];
-            }else {
-                
+                [self.alarm2Timers addObject:timer];
+            } else{
                 UILocalNotification *notification=[[UILocalNotification alloc] init];
                 if (notification!=nil)
                 {
-                    notification.repeatInterval=0;
+                    notification.repeatInterval=NSWeekCalendarUnit;
                     notification.fireDate=fireDate;//距现在多久后触发代理方法
                     notification.timeZone=[NSTimeZone defaultTimeZone];
                     notification.soundName = soundurl;
@@ -502,14 +531,31 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
                 }
             }
-            
+        }
+        if (self.player2) {
+            [runLoop run];
         }
         
+    }
+    else{
+        //fix me
     }
 }
 
 -(void) configPlayer3:(NSDictionary*)alertItem
 {
+    for(NSTimer *timer in self.alarm3Timers){
+        if(timer){
+            if([timer isValid]){
+                [timer invalidate];
+            }
+        }
+    }
+    
+    [self.alarm3Timers removeAllObjects];
+    
+    NSLog(@"alarm1Timers %ld",(unsigned long)[self.alarm3Timers count]);
+    
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
         self.player3 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
@@ -527,40 +573,57 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     NSString *repeat = [alertItem objectForKey:@"repeat"];
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
-    NSInteger weekday = [comps weekday];
-    NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
-    BOOL isAlert = NO;
-    for (NSString *d in repeatdays) {
-        if ([d integerValue] == weekday) {
-            isAlert = YES;
-            break;
-        }
+    NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
+    NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
+    [timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+    NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
+    //
+    
+    NSInteger weekday = [comps weekday] - 1;
+    if (weekday == 0) {
+        weekday = 7;
     }
-    if (isAlert) {
-        NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
-        NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
-        [timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
-        NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
-        NSTimeInterval distanceBetweenDates = [date timeIntervalSinceDate:[NSDate date]];
-        if (distanceBetweenDates >= 0) {
-            NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:distanceBetweenDates];
+    NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
+    NSInteger fireDateApart = 0;
+    NSDate *fireDate = [NSDate date];
+    if([repeatdays count]){
+        NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+        for (NSString *d in repeatdays) {
+            if ([d integerValue] < weekday) {
+                fireDateApart = 7-weekday+[d integerValue] - 1;
+                fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
+            }
+            else if([d integerValue] > weekday){
+                fireDateApart = [d integerValue] - weekday - 1;
+                fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
+            }
+            else{
+                NSDate *d = [[NSDate date] earlierDate: date];
+                if([d isEqualToDate:date]){
+                    fireDateApart = 7;
+                    NSTimeInterval distanceBetweenDates = [[NSDate date] timeIntervalSinceDate:date];
+                    fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600+distanceBetweenDates sinceDate:date];
+                }
+                else{
+                    fireDate = date;
+                }
+            }
+            
             if (self.player3) {
                 NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
-                                                          interval:10
+                                                          interval:7*24*3600
                                                             target:self
                                                           selector:@selector(playAlarm3)
                                                           userInfo:nil
-                                                           repeats:NO];
+                                                           repeats:YES];
                 
-                NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
                 [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
-                [runLoop run];
-            }else {
-                
+                [self.alarm3Timers addObject:timer];
+            } else{
                 UILocalNotification *notification=[[UILocalNotification alloc] init];
                 if (notification!=nil)
                 {
-                    notification.repeatInterval=0;
+                    notification.repeatInterval=NSWeekCalendarUnit;
                     notification.fireDate=fireDate;//距现在多久后触发代理方法
                     notification.timeZone=[NSTimeZone defaultTimeZone];
                     notification.soundName = soundurl;
@@ -568,11 +631,15 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
                 }
             }
-            
+        }
+        if (self.player3) {
+            [runLoop run];
         }
         
     }
-}
+    else{
+        //fix me
+    }}
 
 
 @end
