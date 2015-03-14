@@ -72,6 +72,7 @@ typedef enum{
 -(void)writeValue:(NSData*) data withCharacter:(CBCharacteristic*)characteristic;
 -(NSData*)converCMD:(NSData*)cmd;
 -(CBCharacteristic *) findCharacteristicFromUUID:(CBUUID *)UUID;
+- (NSArray *)retrievePeripheralsWithIdentifiers:(NSArray *)identifiers;
 //state
 -(NSInteger)getConnectState;
 -(NSInteger)getServiceState;

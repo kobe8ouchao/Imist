@@ -235,6 +235,12 @@ static BTServer* _defaultBTServer = nil;
     [self.selectPeripheral writeValue:data forCharacteristic:characteristic type:CBCharacteristicWriteWithResponse];
 }
 
+- (NSArray *)retrievePeripheralsWithIdentifiers:(NSArray *)identifiers {
+    NSArray *result = [myCenter retrievePeripheralsWithIdentifiers:identifiers];
+    [self centralManager:myCenter didRetrievePeripherals:result];
+    return result;
+}
+
 #pragma mark CBCentralManagerDelegate
 -(void)addPeripheralInfo:(PeriperalInfo *)peripheralInfo
 {
