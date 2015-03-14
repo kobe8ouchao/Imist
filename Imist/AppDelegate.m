@@ -427,7 +427,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     
     [self.alarm1Timers removeAllObjects];
     
-    NSLog(@"alarm1Timers %ld",[self.alarm1Timers count]);
+    NSLog(@"alarm1Timers %ld",(unsigned long)[self.alarm1Timers count]);
 
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
@@ -458,16 +458,16 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     }
     NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
     NSInteger fireDateApart = 0;
-    NSDate *fireDate = [[NSDate alloc]init];
+    NSDate *fireDate = [NSDate date];
     if([repeatdays count]){
         NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
         for (NSString *d in repeatdays) {
             if ([d integerValue] < weekday) {
-                fireDateApart = 7-weekday+[d integerValue];
+                fireDateApart = 7-weekday+[d integerValue] - 1;
                 fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
             }
             else if([d integerValue] > weekday){
-                fireDateApart = [d integerValue] - weekday;
+                fireDateApart = [d integerValue] - weekday - 1;
                 fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
             }
             else{
@@ -492,9 +492,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                 
                 [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
                 [self.alarm1Timers addObject:timer];
-            }
-            
-            else{
+            } else{
                 UILocalNotification *notification=[[UILocalNotification alloc] init];
                 if (notification!=nil)
                 {
@@ -529,7 +527,9 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     
     [self.alarm2Timers removeAllObjects];
     
-    NSLog(@"alarm1Timers %ld",[self.alarm2Timers count]);
+
+    NSLog(@"alarm1Timers %ld",(unsigned long)[self.alarm2Timers count]);
+
     
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
@@ -560,16 +560,19 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     }
     NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
     NSInteger fireDateApart = 0;
-    NSDate *fireDate = [[NSDate alloc]init];
+
+    NSDate *fireDate = [NSDate date];
+
     if([repeatdays count]){
         NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
         for (NSString *d in repeatdays) {
             if ([d integerValue] < weekday) {
-                fireDateApart = 7-weekday+[d integerValue];
+
+                fireDateApart = 7-weekday+[d integerValue] - 1;
                 fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
             }
             else if([d integerValue] > weekday){
-                fireDateApart = [d integerValue] - weekday;
+                fireDateApart = [d integerValue] - weekday - 1;
                 fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
             }
             else{
@@ -594,9 +597,9 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                 
                 [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
                 [self.alarm2Timers addObject:timer];
-            }
-            
-            else{
+
+            } else{
+
                 UILocalNotification *notification=[[UILocalNotification alloc] init];
                 if (notification!=nil)
                 {
@@ -631,7 +634,9 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     
     [self.alarm3Timers removeAllObjects];
     
-    NSLog(@"alarm3Timers %ld",[self.alarm3Timers count]);
+
+    NSLog(@"alarm1Timers %ld",(unsigned long)[self.alarm3Timers count]);
+
     
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
@@ -662,16 +667,18 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     }
     NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
     NSInteger fireDateApart = 0;
-    NSDate *fireDate = [[NSDate alloc]init];
+
+    NSDate *fireDate = [NSDate date];
+
     if([repeatdays count]){
         NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
         for (NSString *d in repeatdays) {
             if ([d integerValue] < weekday) {
-                fireDateApart = 7-weekday+[d integerValue];
+                fireDateApart = 7-weekday+[d integerValue] - 1;
                 fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
             }
             else if([d integerValue] > weekday){
-                fireDateApart = [d integerValue] - weekday;
+                fireDateApart = [d integerValue] - weekday - 1;
                 fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
             }
             else{
@@ -696,9 +703,8 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                 
                 [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
                 [self.alarm3Timers addObject:timer];
-            }
-            
-            else{
+
+            } else{
                 UILocalNotification *notification=[[UILocalNotification alloc] init];
                 if (notification!=nil)
                 {
@@ -718,7 +724,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     }
     else{
         //fix me
-    }
-}
+
+    }}
 
 @end
