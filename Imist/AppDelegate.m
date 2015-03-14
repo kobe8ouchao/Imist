@@ -330,15 +330,16 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     }
     NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
     NSInteger fireDateApart = 0;
-    NSDate *fireDate = [[NSDate alloc]init];
+    NSDate *fireDate = [NSDate date];
     if([repeatdays count]){
+        NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
         for (NSString *d in repeatdays) {
             if ([d integerValue] < weekday) {
-                fireDateApart = 7-weekday+[d integerValue];
+                fireDateApart = 7-weekday+[d integerValue] - 1;
                 fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
             }
             else if([d integerValue] > weekday){
-                fireDateApart = [d integerValue] - weekday;
+                fireDateApart = [d integerValue] - weekday - 1;
                 fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
             }
             else{
@@ -360,12 +361,11 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                                                           selector:@selector(playAlarm1)
                                                           userInfo:nil
                                                            repeats:YES];
-                
-                NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
                 [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
-                [runLoop run];
             }
         }
+        
+        [runLoop runUntilDate:fireDate];
     }
     else{
         //fix me
