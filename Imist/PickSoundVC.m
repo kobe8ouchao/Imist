@@ -17,8 +17,6 @@
 @property (nonatomic,strong) NSMutableArray *defautlist;
 @property (nonatomic,strong) NSMutableArray *soundlist;
 @property (nonatomic,strong) NSMutableArray *musiclist;
-@property (nonatomic,strong) NSString *selectedSound;
-@property (nonatomic,strong) NSString *selectedSoundName;
 @property (nonatomic,strong) AVAudioPlayer *player;
 @end
 
@@ -72,14 +70,14 @@
 {
     if(1 == section){
         return @"Music sound";
-    }else {
+    }else if(0 == section){
         return @"Imist sound";
-    }
+    }else return @"None";
     
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
 {
-    return 2;
+    return 3;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 44.0f;
@@ -89,8 +87,10 @@
 {
     if(0 == section){
         return [self.defautlist count];
-    }else {
+    }else if(1 == section){
         return [self.musiclist count];
+    }else{
+        return 1;
     }
     
 }
@@ -121,15 +121,17 @@
             self.selectedSoundName = [musicDict objectForKey:@"title"];
         }
     }else{
-        SystemSoundID soundID;
-        AudioServicesCreateSystemSoundID((__bridge_retained CFURLRef)[self.soundlist objectAtIndex:indexPath.row],&soundID);
-        AudioServicesPlaySystemSound(soundID);
-        if ( self.selectedSound && [self.selectedSound isEqualToString:[[self.soundlist objectAtIndex:indexPath.row] lastPathComponent]])
-        {
-            self.selectedSound = @"";
-        } else {
-            self.selectedSound = [[self.soundlist objectAtIndex:indexPath.row] lastPathComponent];
-        }
+//        SystemSoundID soundID;
+//        AudioServicesCreateSystemSoundID((__bridge_retained CFURLRef)[self.soundlist objectAtIndex:indexPath.row],&soundID);
+//        AudioServicesPlaySystemSound(soundID);
+//        if ( self.selectedSound && [self.selectedSound isEqualToString:[[self.soundlist objectAtIndex:indexPath.row] lastPathComponent]])
+//        {
+//            self.selectedSound = @"";
+//        } else {
+//            self.selectedSound = [[self.soundlist objectAtIndex:indexPath.row] lastPathComponent];
+//        }
+        self.selectedSound = @"";
+        self.selectedSoundName = @"";
 
     }
     [self.soundTable reloadData];
@@ -164,13 +166,20 @@
         }
         cell.textLabel.text = [musicDict valueForKey:@"title"];
     }else {
-        cell.textLabel.text = [[self.soundlist objectAtIndex:indexPath.row] lastPathComponent];
-        if ([self.selectedSound isEqualToString:[[self.soundlist objectAtIndex:indexPath.row] lastPathComponent]])
-        {
+//        cell.textLabel.text = [[self.soundlist objectAtIndex:indexPath.row] lastPathComponent];
+//        if ([self.selectedSound isEqualToString:[[self.soundlist objectAtIndex:indexPath.row] lastPathComponent]])
+//        {
+//            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+//        }
+//        else
+//        {
+//            cell.accessoryType = UITableViewCellAccessoryNone;
+//        }
+        cell.textLabel.text = @"None";
+        if ( [self.selectedSound isEqualToString:@""]){
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
-        else
-        {
+        else{
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
     }
@@ -231,8 +240,8 @@
 -(void)save
 {
     if (!self.selectedSound || [selectedSound isEqualToString:@""]) {
-        [ProgressHUD showError:@"Please pick a sound for wakeup!"];
-        return;
+        //[ProgressHUD showError:@"Please pick a sound for wakeup!"];
+        //return;
     }
     if ([self.delegate respondsToSelector:@selector(saveSound:)]) {
         NSString *soundName = [NSString stringWithFormat:@"%@|%@",self.selectedSound ,self.selectedSoundName];

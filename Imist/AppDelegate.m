@@ -483,7 +483,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                 }
             }
             
-            if (self.player1) {
+            //if (self.player1) {
                 NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
                                                           interval:7*24*3600
                                                             target:self
@@ -493,22 +493,25 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                 
                 [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
                 [self.alarm1Timers addObject:timer];
-            } else{
+            //} else{
                 UILocalNotification *notification=[[UILocalNotification alloc] init];
                 if (notification!=nil)
                 {
                     notification.repeatInterval=NSWeekCalendarUnit;
                     notification.fireDate=fireDate;//距现在多久后触发代理方法
                     notification.timeZone=[NSTimeZone defaultTimeZone];
-                    notification.soundName = soundurl;
+                    if(self.player1)
+                        notification.soundName = nil;
+                    else
+                    notification.soundName = UILocalNotificationDefaultSoundName;
                     notification.alertBody = [NSString stringWithFormat:@"IMIST Wakeup!"];
                     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
                 }
-            }
+            //}
         }
-        if (self.player1) {
+        //if (self.player1) {
             [runLoop run];
-        }
+        //}
 
     }
     else{
@@ -588,7 +591,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                 }
             }
             
-            if (self.player2) {
+            //if (self.player2) {
                 NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
                                                           interval:7*24*3600
                                                             target:self
@@ -599,7 +602,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                 [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
                 [self.alarm2Timers addObject:timer];
 
-            } else{
+            //} else{
 
                 UILocalNotification *notification=[[UILocalNotification alloc] init];
                 if (notification!=nil)
@@ -607,15 +610,18 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                     notification.repeatInterval=NSWeekCalendarUnit;
                     notification.fireDate=fireDate;//距现在多久后触发代理方法
                     notification.timeZone=[NSTimeZone defaultTimeZone];
-                    notification.soundName = soundurl;
+                    if(self.player2)
+                        notification.soundName = nil;
+                    else
+                    notification.soundName = UILocalNotificationDefaultSoundName;
                     notification.alertBody = [NSString stringWithFormat:@"IMIST Wakeup!"];
                     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
                 }
-            }
+            //}
         }
-        if (self.player2) {
+        //if (self.player2) {
             [runLoop run];
-        }
+        //}
         
     }
     else{
@@ -694,7 +700,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                 }
             }
             
-            if (self.player3) {
+            //if (self.player3) {
                 NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
                                                           interval:7*24*3600
                                                             target:self
@@ -705,22 +711,25 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                 [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
                 [self.alarm3Timers addObject:timer];
 
-            } else{
+            //} else{
                 UILocalNotification *notification=[[UILocalNotification alloc] init];
                 if (notification!=nil)
                 {
                     notification.repeatInterval=NSWeekCalendarUnit;
                     notification.fireDate=fireDate;//距现在多久后触发代理方法
                     notification.timeZone=[NSTimeZone defaultTimeZone];
-                    notification.soundName = soundurl;
+                    if(self.player3)
+                        notification.soundName = nil;
+                    else
+                    notification.soundName = UILocalNotificationDefaultSoundName;
                     notification.alertBody = [NSString stringWithFormat:@"IMIST Wakeup!"];
                     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
                 }
-            }
+            //}
         }
-        if (self.player3) {
+        //if (self.player3) {
             [runLoop run];
-        }
+        //}
         
     }
     else{

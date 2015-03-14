@@ -135,7 +135,10 @@
             break;
         case 2:
             cell.textLabel.text = @"Sound";
-            cell.detailTextLabel.text = self.soundName;
+            if([self.soundName isEqualToString:@""])
+                cell.detailTextLabel.text = @"None";
+            else
+                cell.detailTextLabel.text = self.soundName;
             break;
         default:
             break;
@@ -171,6 +174,8 @@
         {
             PickSoundVC *pickSound = [[PickSoundVC alloc] init];
             pickSound.delegate = self;
+            pickSound.selectedSound = self.sound;
+            pickSound.selectedSoundName = self.soundName;
             [self.navigationController pushViewController:pickSound animated:YES];
             break;
         }

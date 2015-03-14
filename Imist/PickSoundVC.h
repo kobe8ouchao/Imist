@@ -10,6 +10,8 @@
 @protocol pickSoundDelegate;
 @interface PickSoundVC : BaseViewController {
 }
+@property (nonatomic,strong) NSString *selectedSound;
+@property (nonatomic,strong) NSString *selectedSoundName;
 @property (nonatomic, assign) id<pickSoundDelegate> delegate;
 @end
 @protocol pickSoundDelegate <NSObject>
