@@ -71,6 +71,11 @@
     self.refreshControl = refreshControl;
     self.appDelegate.defaultBTServer.delegate = self;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(peripheralDidDisconnect:)
+                                                 name:@"PERIPHERAL_DISCONNECT"
+                                               object:nil];
+    
     
 }
 
@@ -505,6 +510,14 @@
         selectPi.ledcolor = [NSNumber numberWithInteger:100];
         selectPi.ledauto = [NSNumber numberWithInteger:0];
     }
+}
+
+- (void) peripheralDidDisconnect:(NSNotification*)notification{
+    __block typeof(self) currentBlockSel_f = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [currentBlockSel_f.deviceTable reloadData];
+    });
+    
 }
 
 @end

@@ -65,7 +65,11 @@
 }
 
 - (void) peripheralDidDisconnect:(NSNotification*)notification{
-    [self.navigationController popViewControllerAnimated:YES];
+    __block typeof(self) currentBlockSel_f = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [currentBlockSel_f.navigationController popViewControllerAnimated:YES];
+    });
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
