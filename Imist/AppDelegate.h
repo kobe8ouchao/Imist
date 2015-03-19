@@ -18,5 +18,9 @@
 - (UIViewController *)scanDevicesController;
 - (UINavigationController *)navi;
 - (UINavigationController*) Nav;
+
+-(void) configPlayer1:(NSDictionary*)alertItem;
+-(void) configPlayer2:(NSDictionary*)alertItem;
+-(void) configPlayer3:(NSDictionary*)alertItem;
 @end
 

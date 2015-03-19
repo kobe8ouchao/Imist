@@ -22,6 +22,7 @@
         UIImageView *bg = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, self.frame.size.width - 20, self.frame.size.height)];
         bg.image = [UIImage imageNamed:@"bg_scancell_green.png"];
         bg.backgroundColor = [UIColor clearColor];
+        bg.tag = 4;
         [self addSubview:bg];
         UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(20, 11, 80 ,18)];
         [lable setFont:[UIFont boldSystemFontOfSize:18]];
@@ -46,7 +47,7 @@
 //        [bg addSubview:weekday];
         
         UISwitch *showBuzzerSwich = [[UISwitch alloc] initWithFrame:CGRectMake(bg.frame.size.width - 40 - 20,(bg.frame.size.height - 40)/2 + 4,40.0,40.0)];
-        
+        showBuzzerSwich.tintColor=[UIColor whiteColor];
         showBuzzerSwich.onTintColor=[UIColor colorWith256Red:192 green:238 blue:32];
         [showBuzzerSwich addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
         showBuzzerSwich.tag = 3;
@@ -82,6 +83,12 @@
     }else {
         showBuzzerSwich.on = NO;
     }
+    UIImageView *bg = (UIImageView *)[self viewWithTag:4];
+    if (self.isOpen) {
+        bg.image = [UIImage imageNamed:@"bg_scancell_green.png"];
+    }else {
+        bg.image = [UIImage imageNamed:@"bg_scancell_gray.png"];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -91,11 +98,14 @@
 }
 
 -(void)switchAction:(UISwitch*)showBuzzerSwich{
+    UIImageView *bg = (UIImageView *)[self viewWithTag:4];
     if(showBuzzerSwich.on){
         self.isOpen = YES;
+        bg.image = [UIImage imageNamed:@"bg_scancell_green.png"];
     }
     else{
         self.isOpen = NO;
+        bg.image = [UIImage imageNamed:@"bg_scancell_gray.png"];
     }
     if ([self.delegate respondsToSelector:@selector(switchChange: enable:)]) {
         [self.delegate switchChange:self.index.row enable:self.isOpen];

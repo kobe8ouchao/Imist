@@ -38,7 +38,7 @@
         [self addSubview:vname];
         
         UIButton *connectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [connectBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_blue.png"] forState:UIControlStateNormal];
+        [connectBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_disconnect.png"] forState:UIControlStateNormal];
         [connectBtn setTitle:@"Connect" forState:UIControlStateNormal];
         connectBtn.tag = 3;
         [connectBtn setBackgroundColor:[UIColor clearColor]];
@@ -74,6 +74,7 @@
     if (1 == state) {
         dispatch_async(dispatch_get_main_queue(), ^{
         bg.image = [UIImage imageNamed:@"bg_scancell_green.png"];
+        [connectBtn setTitleColor:[UIColor colorWith256Red:132 green:195 blue:38]forState:UIControlStateNormal];
         });
     }else if(0 == state){
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -82,10 +83,12 @@
     }else if(2 == state){
         dispatch_async(dispatch_get_main_queue(), ^{
         bg.image = [UIImage imageNamed:@"bg_scancell_red.png"];
+        [connectBtn setTitleColor:[UIColor colorWith256Red:218 green:37 blue:29]forState:UIControlStateNormal];
         });
     }else if(3 == state) {
         dispatch_async(dispatch_get_main_queue(), ^{
         bg.image = [UIImage imageNamed:@"bg_scancell_blue.png"];
+        [connectBtn setTitleColor:[UIColor colorWith256Red:0 green:147 blue:221]forState:UIControlStateNormal];
         });
     }
     

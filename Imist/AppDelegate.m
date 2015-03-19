@@ -144,11 +144,11 @@
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
             [self configPlayer1:alertItem];
         }
-        alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+        alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:1];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
             [self configPlayer2:alertItem];
         }
-        alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+        alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:2];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
             [self configPlayer3:alertItem];
 
@@ -197,7 +197,9 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     static UIBackgroundTaskIdentifier bgTaskId;
     UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
     if (self.player1) {
-        [self.player1 prepareToPlay];
+        NSLog(@"playing player1");
+        BOOL status = [self.player1 prepareToPlay];
+        NSLog(@"preparePlayer1 state %@",[NSNumber numberWithBool:status]);
         if([self.player1 play]){
             newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
         }
@@ -271,7 +273,9 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     static UIBackgroundTaskIdentifier bgTaskId;
     UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
     if (self.player2) {
-        [self.player2 prepareToPlay];
+        NSLog(@"playing player2");
+        BOOL status = [self.player2 prepareToPlay];
+        NSLog(@"preparePlayer2 state %@",[NSNumber numberWithBool:status]);
         if([self.player2 play]){
             newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
         }
@@ -346,7 +350,10 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     static UIBackgroundTaskIdentifier bgTaskId;
     UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
     if (self.player3) {
+        BOOL status = [self.player3 prepareToPlay];
+        NSLog(@"preparePlayer3 state %@",[NSNumber numberWithBool:status]);
         [self.player3 prepareToPlay];
+        NSLog(@"playing player3");
         if([self.player3 play]){
             newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
         }
@@ -418,6 +425,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 
 -(void) configPlayer1:(NSDictionary*)alertItem
 {
+    NSLog(@"alarm1Timers %ld",(unsigned long)[self.alarm1Timers count]);
     for(NSTimer *timer in self.alarm1Timers){
         if(timer){
             if([timer isValid]){
@@ -428,7 +436,6 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     
     [self.alarm1Timers removeAllObjects];
     
-    NSLog(@"alarm1Timers %ld",(unsigned long)[self.alarm1Timers count]);
 
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
@@ -453,10 +460,8 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
     //
     
-    NSInteger weekday = [comps weekday] - 1;
-    if (weekday == 0) {
-        weekday = 7;
-    }
+    NSInteger weekday = [comps weekday];
+
     NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
     NSInteger fireDateApart = 0;
     NSDate *fireDate = [NSDate date];
@@ -464,11 +469,11 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
         for (NSString *d in repeatdays) {
             if ([d integerValue] < weekday) {
-                fireDateApart = 7-weekday+[d integerValue] - 1;
+                fireDateApart = 7-weekday+[d integerValue];
                 fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
             }
             else if([d integerValue] > weekday){
-                fireDateApart = [d integerValue] - weekday - 1;
+                fireDateApart = [d integerValue] - weekday;
                 fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
             }
             else{
@@ -510,6 +515,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
             //}
         }
         //if (self.player1) {
+            if([self.defaultBTServer.selectPeripheralInfo.alert count]==1)
             [runLoop run];
         //}
 
@@ -521,6 +527,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 
 -(void) configPlayer2:(NSDictionary*)alertItem
 {
+    NSLog(@"alarm2Timers %ld",(unsigned long)[self.alarm2Timers count]);
     for(NSTimer *timer in self.alarm2Timers){
         if(timer){
             if([timer isValid]){
@@ -530,9 +537,6 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     }
     
     [self.alarm2Timers removeAllObjects];
-    
-
-    NSLog(@"alarm1Timers %ld",(unsigned long)[self.alarm2Timers count]);
 
     
     NSString *soundurl = [alertItem objectForKey:@"sound"];
@@ -558,10 +562,8 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
     //
     
-    NSInteger weekday = [comps weekday] - 1;
-    if (weekday == 0) {
-        weekday = 7;
-    }
+    NSInteger weekday = [comps weekday];
+
     NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
     NSInteger fireDateApart = 0;
 
@@ -572,11 +574,11 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         for (NSString *d in repeatdays) {
             if ([d integerValue] < weekday) {
 
-                fireDateApart = 7-weekday+[d integerValue] - 1;
+                fireDateApart = 7-weekday+[d integerValue];
                 fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
             }
             else if([d integerValue] > weekday){
-                fireDateApart = [d integerValue] - weekday - 1;
+                fireDateApart = [d integerValue] - weekday;
                 fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
             }
             else{
@@ -620,6 +622,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
             //}
         }
         //if (self.player2) {
+        if([self.defaultBTServer.selectPeripheralInfo.alert count]==2)
             [runLoop run];
         //}
         
@@ -631,6 +634,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 
 -(void) configPlayer3:(NSDictionary*)alertItem
 {
+    NSLog(@"alarm3Timers %ld",(unsigned long)[self.alarm3Timers count]);
     for(NSTimer *timer in self.alarm3Timers){
         if(timer){
             if([timer isValid]){
@@ -641,8 +645,6 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     
     [self.alarm3Timers removeAllObjects];
     
-
-    NSLog(@"alarm1Timers %ld",(unsigned long)[self.alarm3Timers count]);
 
     
     NSString *soundurl = [alertItem objectForKey:@"sound"];
@@ -668,10 +670,8 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
     //
     
-    NSInteger weekday = [comps weekday] - 1;
-    if (weekday == 0) {
-        weekday = 7;
-    }
+    NSInteger weekday = [comps weekday];
+
     NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
     NSInteger fireDateApart = 0;
 
@@ -681,11 +681,11 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
         for (NSString *d in repeatdays) {
             if ([d integerValue] < weekday) {
-                fireDateApart = 7-weekday+[d integerValue] - 1;
+                fireDateApart = 7-weekday+[d integerValue];
                 fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
             }
             else if([d integerValue] > weekday){
-                fireDateApart = [d integerValue] - weekday - 1;
+                fireDateApart = [d integerValue] - weekday;
                 fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
             }
             else{
@@ -728,6 +728,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
             //}
         }
         //if (self.player3) {
+        if([self.defaultBTServer.selectPeripheralInfo.alert count]==3)
             [runLoop run];
         //}
         

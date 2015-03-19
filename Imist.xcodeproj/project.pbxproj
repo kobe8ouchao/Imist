@@ -15,6 +15,7 @@
 		A56C26671AA5E46400285B64 /* third_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A56C26661AA5E46400285B64 /* third_normal@2x.png */; };
 		A578AB711AA35B4000CC0AA5 /* launchScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A578AB701AA35B4000CC0AA5 /* launchScreen@2x.png */; };
 		A578AB731AA35DE500CC0AA5 /* aboutScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A578AB721AA35DE500CC0AA5 /* aboutScreen@2x.png */; };
+		A57D2FED1ABA5A9A00FC1264 /* bg_btn_disconnect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A57D2FEC1ABA5A9A00FC1264 /* bg_btn_disconnect@2x.png */; };
 		A5EFE1E41A88A052008775B7 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5EFE1E31A88A052008775B7 /* icon@2x.png */; };
 		A5EFE1E61A88A347008775B7 /* ico_sidemenu_about@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5EFE1E51A88A347008775B7 /* ico_sidemenu_about@2x.png */; };
 		C33643FA1A7888810047AAE5 /* ProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C33643F71A7888810047AAE5 /* ProgressHUD.bundle */; };
@@ -106,7 +107,7 @@
 		C3D7CA3E1A84760B00FBE9CB /* ico_minus2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3D7CA3C1A84760B00FBE9CB /* ico_minus2@2x.png */; };
 		C3D7CA3F1A84760B00FBE9CB /* ico_plus2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3D7CA3D1A84760B00FBE9CB /* ico_plus2@2x.png */; };
 		C3D7CA411A847FCA00FBE9CB /* app40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3D7CA401A847FCA00FBE9CB /* app40@2x.png */; };
-		C3D7CA431A84B73300FBE9CB /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3D7CA421A84B73300FBE9CB /* AVKit.framework */; };
+		C3D7CA431A84B73300FBE9CB /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3D7CA421A84B73300FBE9CB /* AVKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		C3DFE8F11A6CB36E0044F52E /* SettingAlerm.m in Sources */ = {isa = PBXBuildFile; fileRef = C3DFE8F01A6CB36E0044F52E /* SettingAlerm.m */; };
 		C3DFE9071A6CB6F20044F52E /* first_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3DFE8F31A6CB6F10044F52E /* first_normal@2x.png */; };
 		C3DFE9091A6CB6F20044F52E /* first_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C3DFE8F51A6CB6F10044F52E /* first_selected@2x.png */; };
@@ -160,6 +161,7 @@
 		A56C26661AA5E46400285B64 /* third_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "third_normal@2x.png"; sourceTree = "<group>"; };
 		A578AB701AA35B4000CC0AA5 /* launchScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launchScreen@2x.png"; sourceTree = "<group>"; };
 		A578AB721AA35DE500CC0AA5 /* aboutScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aboutScreen@2x.png"; sourceTree = "<group>"; };
+		A57D2FEC1ABA5A9A00FC1264 /* bg_btn_disconnect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_btn_disconnect@2x.png"; sourceTree = "<group>"; };
 		A5EFE1E31A88A052008775B7 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		A5EFE1E51A88A347008775B7 /* ico_sidemenu_about@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ico_sidemenu_about@2x.png"; sourceTree = "<group>"; };
 		C33643F71A7888810047AAE5 /* ProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ProgressHUD.bundle; sourceTree = "<group>"; };
@@ -418,6 +420,7 @@
 		C38819961A523F8C004A98CA /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				A57D2FEC1ABA5A9A00FC1264 /* bg_btn_disconnect@2x.png */,
 				A56C26661AA5E46400285B64 /* third_normal@2x.png */,
 				A56C26641AA5E45700285B64 /* second_normal@2x.png */,
 				A56C265E1AA5E20600285B64 /* first_selected@2x.png */,
@@ -718,6 +721,7 @@
 				TargetAttributes = {
 					C3A8A06C1A4EB94D004C9ADE = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = 2MP3RU9269;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -825,6 +829,7 @@
 				A5EFE1E41A88A052008775B7 /* icon@2x.png in Resources */,
 				C33F4E131A7BE46F009A497A /* tutorial_eng_2.png in Resources */,
 				C33F4E111A7BE46F009A497A /* tutorial_eng_0.png in Resources */,
+				A57D2FED1ABA5A9A00FC1264 /* bg_btn_disconnect@2x.png in Resources */,
 				A56C26671AA5E46400285B64 /* third_normal@2x.png in Resources */,
 				C33F4E211A7DFC10009A497A /* tutorial_eng3_4.png in Resources */,
 				C33F4E2A1A7E07ED009A497A /* app42@2x.png in Resources */,
@@ -1013,12 +1018,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Imist/Imist-Prefix.pch";
 				INFOPLIST_FILE = Imist/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -1027,12 +1035,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Imist/Imist-Prefix.pch";
 				INFOPLIST_FILE = Imist/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

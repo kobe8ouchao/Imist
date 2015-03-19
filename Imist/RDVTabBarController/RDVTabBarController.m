@@ -374,8 +374,9 @@
 
 -(void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    UITextField *tf=[alertView textFieldAtIndex:0];
     if (alertView.tag==222) {
+    UITextField *tf=[alertView textFieldAtIndex:0];
+    
         if (alertView.cancelButtonIndex != buttonIndex) {
             self.title = tf.text;
             AppDelegate *application = (AppDelegate*)[UIApplication sharedApplication].delegate;

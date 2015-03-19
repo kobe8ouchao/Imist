@@ -311,6 +311,41 @@
     NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
     [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
     [defaults synchronize];
+    
+    
+    /*if(self.appDelegate.defaultBTServer.selectPeripheralInfo && [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert count] == 1) {
+        NSDictionary *alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self.appDelegate configPlayer1:alertItem];
+            
+        }
+    } else if(self.appDelegate.defaultBTServer.selectPeripheralInfo && [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert count] == 2) {
+        NSDictionary *alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self.appDelegate configPlayer1:alertItem];
+        }
+        alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:1];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self.appDelegate configPlayer2:alertItem];
+        }
+        
+    }else if(self.appDelegate.defaultBTServer.selectPeripheralInfo && [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert count] == 3) {
+        NSDictionary *alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self.appDelegate configPlayer1:alertItem];
+        }
+        alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:1];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self.appDelegate configPlayer2:alertItem];
+        }
+        alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:2];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self.appDelegate configPlayer3:alertItem];
+            
+        }
+    }*/
+
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
