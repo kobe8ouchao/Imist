@@ -38,6 +38,13 @@
 @property (strong,nonatomic)NSMutableDictionary *userset4Hour;
 @property (strong,nonatomic)NSMutableDictionary *userset8Hour;
 @property (strong,nonatomic)NSMutableDictionary *userset16Hour;
+@property (nonatomic, assign) BOOL doNotShowHint_UserMode;
+@property (nonatomic, assign) BOOL doNotShowHint_Relaxation;
+@property (nonatomic, assign) BOOL doNotShowHint_Sleep;
+@property (nonatomic, assign) BOOL doNotShowHint_Energization;
+@property (nonatomic, assign) BOOL doNotShowHint_Soothing;
+@property (nonatomic, assign) BOOL doNotShowHint_Concentration;
+@property (nonatomic, assign) BOOL doNotShowHint_Sensuality;
 typedef enum{
     GET_WATER_STATUS,
     GET_WORK_MODE,

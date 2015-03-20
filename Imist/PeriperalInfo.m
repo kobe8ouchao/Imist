@@ -20,6 +20,13 @@
     [encoder encodeObject:self.userset4Hour forKey:@"4Hour"];
     [encoder encodeObject:self.userset8Hour forKey:@"8Hour"];
     [encoder encodeObject:self.userset16Hour forKey:@"16Hour"];
+    [encoder encodeBool:self.doNotShowHint_UserMode forKey:@"UserMode"];
+    [encoder encodeBool:self.doNotShowHint_Relaxation forKey:@"Relaxation"];
+    [encoder encodeBool:self.doNotShowHint_Sleep forKey:@"Sleep"];
+    [encoder encodeBool:self.doNotShowHint_Energization forKey:@"Energization"];
+    [encoder encodeBool:self.doNotShowHint_Soothing forKey:@"Soothing"];
+    [encoder encodeBool:self.doNotShowHint_Concentration forKey:@"Concentration"];
+    [encoder encodeBool:self.doNotShowHint_Sensuality forKey:@"Sensuality"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder
@@ -34,6 +41,13 @@
         self.userset4Hour = [decoder decodeObjectForKey:@"4Hour"];
         self.userset8Hour = [decoder decodeObjectForKey:@"8Hour"];
         self.userset16Hour = [decoder decodeObjectForKey:@"16Hour"];
+        self.doNotShowHint_UserMode = [decoder decodeBoolForKey:@"UserMode"];
+        self.doNotShowHint_Relaxation = [decoder decodeBoolForKey:@"Relaxation"];
+        self.doNotShowHint_Sleep = [decoder decodeBoolForKey:@"Sleep"];
+        self.doNotShowHint_Energization = [decoder decodeBoolForKey:@"Energization"];
+        self.doNotShowHint_Soothing = [decoder decodeBoolForKey:@"Soothing"];
+        self.doNotShowHint_Concentration = [decoder decodeBoolForKey:@"Concentration"];
+        self.doNotShowHint_Sensuality = [decoder decodeBoolForKey:@"Sensuality"];
     }
     return self;
 }

@@ -16,6 +16,8 @@
 		A578AB711AA35B4000CC0AA5 /* launchScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A578AB701AA35B4000CC0AA5 /* launchScreen@2x.png */; };
 		A578AB731AA35DE500CC0AA5 /* aboutScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A578AB721AA35DE500CC0AA5 /* aboutScreen@2x.png */; };
 		A57D2FED1ABA5A9A00FC1264 /* bg_btn_disconnect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A57D2FEC1ABA5A9A00FC1264 /* bg_btn_disconnect@2x.png */; };
+		A57D2FF01ABC20A400FC1264 /* ShareVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A57D2FEF1ABC20A400FC1264 /* ShareVC.m */; };
+		A57D2FF31ABC4E6600FC1264 /* SettingMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = A57D2FF21ABC4E6600FC1264 /* SettingMenu.m */; };
 		A5EFE1E41A88A052008775B7 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5EFE1E31A88A052008775B7 /* icon@2x.png */; };
 		A5EFE1E61A88A347008775B7 /* ico_sidemenu_about@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5EFE1E51A88A347008775B7 /* ico_sidemenu_about@2x.png */; };
 		C33643FA1A7888810047AAE5 /* ProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C33643F71A7888810047AAE5 /* ProgressHUD.bundle */; };
@@ -162,6 +164,10 @@
 		A578AB701AA35B4000CC0AA5 /* launchScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launchScreen@2x.png"; sourceTree = "<group>"; };
 		A578AB721AA35DE500CC0AA5 /* aboutScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aboutScreen@2x.png"; sourceTree = "<group>"; };
 		A57D2FEC1ABA5A9A00FC1264 /* bg_btn_disconnect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_btn_disconnect@2x.png"; sourceTree = "<group>"; };
+		A57D2FEE1ABC20A400FC1264 /* ShareVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareVC.h; sourceTree = "<group>"; };
+		A57D2FEF1ABC20A400FC1264 /* ShareVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareVC.m; sourceTree = "<group>"; };
+		A57D2FF11ABC4E6600FC1264 /* SettingMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingMenu.h; sourceTree = "<group>"; };
+		A57D2FF21ABC4E6600FC1264 /* SettingMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingMenu.m; sourceTree = "<group>"; };
 		A5EFE1E31A88A052008775B7 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		A5EFE1E51A88A347008775B7 /* ico_sidemenu_about@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ico_sidemenu_about@2x.png"; sourceTree = "<group>"; };
 		C33643F71A7888810047AAE5 /* ProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ProgressHUD.bundle; sourceTree = "<group>"; };
@@ -618,6 +624,10 @@
 		C3A8A0C31A4EBF66004C9ADE /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				A57D2FF11ABC4E6600FC1264 /* SettingMenu.h */,
+				A57D2FF21ABC4E6600FC1264 /* SettingMenu.m */,
+				A57D2FEE1ABC20A400FC1264 /* ShareVC.h */,
+				A57D2FEF1ABC20A400FC1264 /* ShareVC.m */,
 				A54EC4B81AA97F2700EBD2DE /* Manager.h */,
 				A54EC4B91AA97F2700EBD2DE /* Manager.m */,
 				C38819A41A524D02004A98CA /* AboutVC.h */,
@@ -866,6 +876,7 @@
 				C38819911A5175EF004A98CA /* ScanDevicesVC.m in Sources */,
 				C34A285A1A6B83E30008367C /* SettingModeVC.m in Sources */,
 				C3A8A0C91A4EC57D004C9ADE /* UIColor+InnerBand.m in Sources */,
+				A57D2FF01ABC20A400FC1264 /* ShareVC.m in Sources */,
 				C3E365FC1A6B9AFC002170CA /* SettingUser.m in Sources */,
 				C388198C1A5175A5004A98CA /* MFSideMenuContainerViewController.m in Sources */,
 				C3A8A0CC1A4FD18D004C9ADE /* TutoralVC.m in Sources */,
@@ -880,6 +891,7 @@
 				C3A8A0761A4EB94D004C9ADE /* AppDelegate.m in Sources */,
 				C38819A61A524D02004A98CA /* AboutVC.m in Sources */,
 				A54EC4BA1AA97F2700EBD2DE /* Manager.m in Sources */,
+				A57D2FF31ABC4E6600FC1264 /* SettingMenu.m in Sources */,
 				C3422B471A56C4E90095B6AA /* EGORefreshTableHeaderView.m in Sources */,
 				C38819821A516DC7004A98CA /* PeriperalInfo.m in Sources */,
 				C3A8A0A11A4EBB9D004C9ADE /* BaseViewController.m in Sources */,

@@ -26,6 +26,7 @@
 #import <objc/runtime.h>
 #import "AppDelegate.h"
 #import "AddAlarmVC.H"
+#import "SettingMenu.h"
 #import "ProgressHUD.h"
 
 @interface UIViewController (RDVTabBarControllerItemInternal)
@@ -51,7 +52,7 @@
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [leftBtn setFrame:CGRectMake( 0, 0, 22, 22)];
     [leftBtn setImage:[UIImage imageNamed:@"setting.png"] forState:UIControlStateNormal];
-    [leftBtn addTarget:self action:@selector(changeName:) forControlEvents:UIControlEventTouchUpInside];
+    [leftBtn addTarget:self action:@selector(advancedSetting:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
     self.navigationItem.rightBarButtonItem = leftItem;
 
@@ -268,7 +269,7 @@
         UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [leftBtn setFrame:CGRectMake( 0, 0, 22, 22)];
         [leftBtn setImage:[UIImage imageNamed:@"setting.png"] forState:UIControlStateNormal];
-        [leftBtn addTarget:self action:@selector(changeName:) forControlEvents:UIControlEventTouchUpInside];
+        [leftBtn addTarget:self action:@selector(advancedSetting:) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
         self.navigationItem.rightBarButtonItem = leftItem;
     }
@@ -351,14 +352,12 @@
     [tabBar setItems:tabBarItems];
 }
 
--(void)changeName:(id)sender
+
+
+-(void)advancedSetting:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Rename machine" message:nil delegate:nil cancelButtonTitle:InterNation(@"cancel") otherButtonTitles:InterNation(@"confirm") ,nil];
-    alert.tag = 222;
-    alert.delegate = self;
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeDefault];
-    [alert show];
+    SettingMenuVC * advancedSetting = [[SettingMenuVC alloc] init];
+    [self.navigationController pushViewController:advancedSetting animated:YES];
 }
 
 -(void)actionAdd:(id)sender
@@ -372,23 +371,7 @@
     }
 }
 
--(void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView.tag==222) {
-    UITextField *tf=[alertView textFieldAtIndex:0];
-    
-        if (alertView.cancelButtonIndex != buttonIndex) {
-            self.title = tf.text;
-            AppDelegate *application = (AppDelegate*)[UIApplication sharedApplication].delegate;
-            application.defaultBTServer.selectPeripheralInfo.name = tf.text;
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:application.defaultBTServer.selectPeripheralInfo];
-            [defaults setObject:encodedObject forKey:application.defaultBTServer.selectPeripheralInfo.uuid];
-            [defaults synchronize];
-            
-        }
-    }
-}
+
 
 
 @end

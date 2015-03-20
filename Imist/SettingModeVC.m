@@ -12,13 +12,7 @@
 @interface SettingModeVC ()
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSMutableDictionary * essenceName;
-@property (nonatomic, assign) BOOL doNotShowHint_UserMode;
-@property (nonatomic, assign) BOOL doNotShowHint_Relaxation;
-@property (nonatomic, assign) BOOL doNotShowHint_Sleep;
-@property (nonatomic, assign) BOOL doNotShowHint_Energization;
-@property (nonatomic, assign) BOOL doNotShowHint_Soothing;
-@property (nonatomic, assign) BOOL doNotShowHint_Concentration;
-@property (nonatomic, assign) BOOL doNotShowHint_Sensuality;
+
 @property (nonatomic, strong) NSString* modeString;
 @end
 typedef enum{
@@ -728,40 +722,31 @@ typedef enum{
         return;
     }
     if([self.modeString isEqualToString:@"Relaxation"]){
-        self.doNotShowHint_Relaxation = yesNo;
-        [[NSUserDefaults standardUserDefaults] setBool:yesNo forKey:@"HintRelaxation"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.doNotShowHint_Relaxation = yesNo;
     }
     else if([self.modeString isEqualToString:@"Sleep"]){
-        self.doNotShowHint_Sleep = yesNo;
-        [[NSUserDefaults standardUserDefaults] setBool:yesNo forKey:@"HintSleep"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.doNotShowHint_Sleep = yesNo;
     }
     else if([self.modeString isEqualToString:@"Energization"]){
-        self.doNotShowHint_Energization = yesNo;
-        [[NSUserDefaults standardUserDefaults] setBool:yesNo forKey:@"HintEnergization"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.doNotShowHint_Energization = yesNo;
     }
     else if([self.modeString isEqualToString:@"Soothing"]){
-        self.doNotShowHint_Soothing = yesNo;
-        [[NSUserDefaults standardUserDefaults] setBool:yesNo forKey:@"HintSoothing"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.doNotShowHint_Soothing = yesNo;
     }
     else if([self.modeString isEqualToString:@"Concentration"]){
-        self.doNotShowHint_Concentration = yesNo;
-        [[NSUserDefaults standardUserDefaults] setBool:yesNo forKey:@"HintConcentration"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.doNotShowHint_Concentration = yesNo;
     }
     else if([self.modeString isEqualToString:@"Sensuality"]){
-        self.doNotShowHint_Sensuality = yesNo;
-        [[NSUserDefaults standardUserDefaults] setBool:yesNo forKey:@"HintSensuality"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.doNotShowHint_Sensuality = yesNo;
     }
     else{
-        self.doNotShowHint_UserMode = yesNo;
-        [[NSUserDefaults standardUserDefaults] setBool:yesNo forKey:@"HintUserMode"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.doNotShowHint_UserMode = yesNo;
     }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
+    [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
+    [defaults synchronize];
+
 }
 
 - (BOOL)getDoNotShowHint{
@@ -770,32 +755,32 @@ typedef enum{
         yesNo = NO;
     }
     else if([self.modeString isEqualToString:@"Relaxation"]){
-//        self.doNotShowHint_Relaxation;
-        yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintRelaxation"] boolValue];
+        yesNo = self.appDelegate.defaultBTServer.selectPeripheralInfo.doNotShowHint_Relaxation;
+        //yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintRelaxation"] boolValue];
     }
     else if([self.modeString isEqualToString:@"Sleep"]){
-        yesNo = self.doNotShowHint_Sleep;
-        yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintSleep"] boolValue];
+        yesNo = self.appDelegate.defaultBTServer.selectPeripheralInfo.doNotShowHint_Sleep;
+        //yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintSleep"] boolValue];
     }
     else if([self.modeString isEqualToString:@"Energization"]){
-        yesNo = self.doNotShowHint_Energization;
-        yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintEnergization"] boolValue];
+        yesNo = self.appDelegate.defaultBTServer.selectPeripheralInfo.doNotShowHint_Energization;
+        //yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintEnergization"] boolValue];
     }
     else if([self.modeString isEqualToString:@"Soothing"]){
-        yesNo = self.doNotShowHint_Soothing;
-        yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintSoothing"] boolValue];
+        yesNo = self.appDelegate.defaultBTServer.selectPeripheralInfo.doNotShowHint_Soothing;
+        //yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintSoothing"] boolValue];
     }
     else if([self.modeString isEqualToString:@"Concentration"]){
-        yesNo = self.doNotShowHint_Concentration;
-        yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintConcentration"] boolValue];
+        yesNo = self.appDelegate.defaultBTServer.selectPeripheralInfo.doNotShowHint_Concentration;
+        //yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintConcentration"] boolValue];
     }
     else if([self.modeString isEqualToString:@"Sensuality"]){
-        yesNo = self.doNotShowHint_Sensuality;
-        yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintSensuality"] boolValue];
+        yesNo = self.appDelegate.defaultBTServer.selectPeripheralInfo.doNotShowHint_Sensuality;
+        //yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintSensuality"] boolValue];
     }
     else {
-        yesNo = self.doNotShowHint_UserMode;
-        yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintUserMode"] boolValue];
+        yesNo = self.appDelegate.defaultBTServer.selectPeripheralInfo.doNotShowHint_UserMode;
+        //yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintUserMode"] boolValue];
     }
     return yesNo;
 }

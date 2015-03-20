@@ -10,6 +10,7 @@
 #import "ScanDevicesVC.h"
 #import "SideMenuCell.h"
 #import "TutoralVC.h"
+#import "ShareVC.h"
 
 @interface SideMenuViewController () <UITableViewDelegate, UITableViewDataSource>{
     UITableView *_table;
@@ -102,6 +103,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     AboutVC *aboutVC;
     TutoralVC *tutoralVC;
+    ShareVC *shareVC;
     UINavigationController *navigationController = self.menuContainerViewController.centerViewController;
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSArray *controllers;
@@ -121,6 +123,12 @@
         case 1: {
             tutoralVC = [[TutoralVC alloc] init];
             NSArray *controllers = [NSArray arrayWithObject:tutoralVC];
+            navigationController.viewControllers = controllers;
+            break;
+        }
+        case 3: {
+            shareVC = [[ShareVC alloc] init];
+            NSArray *controllers = [NSArray arrayWithObject:shareVC];
             navigationController.viewControllers = controllers;
             break;
         }
