@@ -408,8 +408,9 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
     NSInteger fireDateApart = 0;
     NSDate *fireDate = [NSDate date];
-    if([repeatdays count]){
-        NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+    if([repeatdays count]&& repeat.length>0){
+        
         for (NSString *d in repeatdays) {
             if ([d integerValue] < weekday) {
                 fireDateApart = 7-weekday+[d integerValue];
@@ -464,7 +465,24 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 
     }
     else{
-        //fix me
+        NSDate *d = [[NSDate date] earlierDate: date];
+        if([d isEqualToDate:date]){
+            
+        }
+        else{
+            fireDate = date;
+            NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
+                                                      interval:7*24*3600
+                                                        target:self
+                                                      selector:@selector(playAlarm1)
+                                                      userInfo:nil
+                                                       repeats:NO];
+            
+            [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
+            [self.alarm1Timers addObject:timer];
+            if([self.defaultBTServer.selectPeripheralInfo.alert count]==1)
+                [runLoop run];
+        }
     }
 }
 
@@ -518,8 +536,9 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 
     NSDate *fireDate = [NSDate date];
 
-    if([repeatdays count]){
-        NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+    if([repeatdays count] && repeat.length>0){
+        
         for (NSString *d in repeatdays) {
             if ([d integerValue] < weekday) {
 
@@ -577,7 +596,24 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         
     }
     else{
-        //fix me
+        NSDate *d = [[NSDate date] earlierDate: date];
+        if([d isEqualToDate:date]){
+            
+        }
+        else{
+            fireDate = date;
+            NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
+                                                      interval:7*24*3600
+                                                        target:self
+                                                      selector:@selector(playAlarm2)
+                                                      userInfo:nil
+                                                       repeats:NO];
+            
+            [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
+            [self.alarm2Timers addObject:timer];
+            if([self.defaultBTServer.selectPeripheralInfo.alert count]==2)
+                [runLoop run];
+        }
     }
 }
 
@@ -630,9 +666,8 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     NSInteger fireDateApart = 0;
 
     NSDate *fireDate = [NSDate date];
-
-    if([repeatdays count]){
-        NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+    if([repeatdays count]&& repeat.length>0){
         for (NSString *d in repeatdays) {
             if ([d integerValue] < weekday) {
                 fireDateApart = 7-weekday+[d integerValue];
@@ -688,7 +723,24 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         
     }
     else{
-        //fix me
+        NSDate *d = [[NSDate date] earlierDate: date];
+        if([d isEqualToDate:date]){
+            
+        }
+        else{
+            fireDate = date;
+            NSTimer *timer = [[NSTimer alloc] initWithFireDate:fireDate
+                                                      interval:7*24*3600
+                                                        target:self
+                                                      selector:@selector(playAlarm3)
+                                                      userInfo:nil
+                                                       repeats:NO];
+            
+            [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
+            [self.alarm3Timers addObject:timer];
+            if([self.defaultBTServer.selectPeripheralInfo.alert count]==3)
+                [runLoop run];
+        }
 
     }}
 
@@ -715,7 +767,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     
     NSDate *fireDate = [NSDate date];
     
-    if([repeatdays count]){
+    if([repeatdays count] && repeat.length){
         for (NSString *d in repeatdays) {
             if ([d integerValue] < weekday) {
                 fireDateApart = 7-weekday+[d integerValue];
@@ -754,8 +806,25 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         
     }
     else{
-        //fix me
-        
+        NSDate *d = [[NSDate date] earlierDate: date];
+        if([d isEqualToDate:date]){
+            
+        }
+        else{
+            fireDate = date;
+            UILocalNotification *notification=[[UILocalNotification alloc] init];
+            if (notification!=nil)
+            {
+                notification.repeatInterval=0;
+                notification.fireDate=fireDate;//距现在多久后触发代理方法
+                notification.timeZone=[NSTimeZone defaultTimeZone];
+                notification.soundName = UILocalNotificationDefaultSoundName;
+                notification.alertBody = [NSString stringWithFormat:@"IMIST Wakeup!"];
+                //NSDictionary *dict =[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:alertIndex],@"nfkey",nil];
+                //[notification setUserInfo:dict];
+                [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+            }
+        }
     }}
 
 
