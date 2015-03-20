@@ -15,7 +15,7 @@
 #import "Manager.h"
 #import "ProgressHUD.h"
 
-@interface AppDelegate ()<UIPickerViewDelegate>
+@interface AppDelegate ()<UIPickerViewDelegate,AVAudioPlayerDelegate>
 @property(nonatomic, strong) NSTimer *playerTM;
 @property (nonatomic,strong) NSMutableArray *alarm1Timers;
 @property (nonatomic,strong) NSMutableArray *alarm2Timers;
@@ -189,6 +189,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     UIApplicationState state = application.applicationState;
     NSLog(@"%@,%ld",notification,state);
     if (state == UIApplicationStateActive) {
+        [self wakeup];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Diffuser Wakeup"
                                                         message:notification.alertBody
                                                        delegate:self
@@ -204,13 +205,41 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     return nav.topViewController.navigationController;
 }
 
+-(void) setLastMode
+{
+    if([self.defaultBTServer.selectPeripheralInfo.state isEqualToString:@"connected"]){
+        Manager *sharedManager = [Manager sharedManager];
+        NSMutableData* data = [NSMutableData data];
+        NSUInteger query = [sharedManager getCurModeCmd:self.defaultBTServer.selectPeripheralInfo.mode];
+
+        [data appendBytes:&query length:1];
+        NSUInteger imist = [self.defaultBTServer.selectPeripheralInfo.imist integerValue];
+        [data appendBytes:&imist length:1];
+        NSUInteger led = [self.defaultBTServer.selectPeripheralInfo.ledlight integerValue];
+        if(self.defaultBTServer.selectPeripheralInfo.ledauto)
+            led = 0x65;
+        [data appendBytes:&led length:1];
+        
+        NSUInteger color1 = [sharedManager getColorR:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+        [data appendBytes:&color1 length:1];
+        NSUInteger color2 = [sharedManager getColorG:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+        [data appendBytes:&color2 length:1];
+        NSUInteger color3 = [sharedManager getColorB:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+        [data appendBytes:&color3 length:1];
+        
+        self.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
+        [self.defaultBTServer writeValue:[self.defaultBTServer converCMD:data] withCharacter:[self.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+    }
+}
+
 -(void) wakeup
 {
 
     if([self.defaultBTServer.selectPeripheralInfo.state isEqualToString:@"connected"]){
         Manager *sharedManager = [Manager sharedManager];
         NSMutableData* data = [NSMutableData data];
-        NSUInteger query = [sharedManager getCurModeCmd:self.defaultBTServer.selectPeripheralInfo.mode];
+        //NSUInteger query = [sharedManager getCurModeCmd:self.defaultBTServer.selectPeripheralInfo.mode];
+        NSInteger query = 13;
         [data appendBytes:&query length:1];
         NSUInteger imist = [self.defaultBTServer.selectPeripheralInfo.imist integerValue];
         [data appendBytes:&imist length:1];
@@ -350,6 +379,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
         self.player1 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
+        self.player1.delegate = self;
     }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
         NSString *urlString = [[NSBundle mainBundle]pathForResource:
                                soundurl ofType:@"mp3"];
@@ -357,6 +387,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         self.player1 = [[AVAudioPlayer alloc]
                         initWithContentsOfURL:url
                         error:nil];
+        self.player1.delegate = self;
     }
     
     //        self.player.delegate = self;
@@ -454,6 +485,8 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
         self.player2 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
+        self.player2.delegate = self;
+
     }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
         NSString *urlString = [[NSBundle mainBundle]pathForResource:
                                soundurl ofType:@"mp3"];
@@ -461,6 +494,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         self.player2 = [[AVAudioPlayer alloc]
                         initWithContentsOfURL:url
                         error:nil];
+        self.player2.delegate = self;
     }
     
     //        self.player.delegate = self;
@@ -564,6 +598,8 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
         self.player3 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
+        self.player3.delegate = self;
+
     }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
         NSString *urlString = [[NSBundle mainBundle]pathForResource:
                                soundurl ofType:@"mp3"];
@@ -571,6 +607,8 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         self.player3 = [[AVAudioPlayer alloc]
                         initWithContentsOfURL:url
                         error:nil];
+        self.player3.delegate = self;
+
     }
     
     //        self.player.delegate = self;
@@ -728,10 +766,49 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
             NSLog(@"%ld",buttonIndex);
             break;
         case 1:
-             [self wakeup];
+            [self setLastMode];
         default:
             break;
     }
+}
+
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+    NSLog(@"播放结束");
+    [self setLastMode];
+}
+
+- (void) remoteControlReceivedWithEvent: (UIEvent *) receivedEvent {
+    if (receivedEvent.type == UIEventTypeRemoteControl) {
+        
+        switch (receivedEvent.subtype) {
+                
+            case UIEventSubtypeRemoteControlTogglePlayPause:
+                if (self.player1) {
+                    [self.player1 stop];
+                    self.player1 = nil;
+                }
+                if (self.player2) {
+                    [self.player2 stop];
+                    self.player2 = nil;
+                }
+                if (self.player3) {
+                    [self.player3 stop];
+                    self.player3 = nil;
+                }
+                [self setLastMode];
+                break;
+                
+            case UIEventSubtypeRemoteControlPreviousTrack:
+                break;
+                
+            case UIEventSubtypeRemoteControlNextTrack:
+                break;
+                
+            default:
+                break;  
+        }  
+    }  
 }
 
 @end
