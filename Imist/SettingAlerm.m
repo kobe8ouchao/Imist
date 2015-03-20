@@ -151,12 +151,21 @@
     NSNumber* ifenable;
 
     ifenable = [NSNumber numberWithBool:yesNo];
-
+    
     [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert[index] setObject:ifenable forKey:@"isOpen"];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
     [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
     [defaults synchronize];
+    
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    
+    for(NSDictionary *alertItem in self.appDelegate.defaultBTServer.selectPeripheralInfo.alert)
+    {
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self.appDelegate scheduleNotification:alertItem];
+        }
+    }
 }
 
 @end

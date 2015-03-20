@@ -59,6 +59,26 @@
         self.alarmName = [self.editAlert objectForKey:@"alarmName"];
         self.soundName = [self.editAlert objectForKey:@"soundName"];
     }
+    else{
+        NSDate *now = [NSDate date];
+        //NSLog(@"now date is: %@", now);
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit;
+        NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:now];
+
+        NSUInteger hour = [dateComponent hour];
+        NSUInteger minute = [dateComponent minute];
+        
+        if (hour >= 12) {
+            [_pickerview selectRow:1 inComponent:0 animated:NO];
+            [_pickerview selectRow:(hour-12) inComponent:1 animated:NO];
+        }else {
+            [_pickerview selectRow:0 inComponent:0 animated:NO];
+            [_pickerview selectRow:hour inComponent:1 animated:NO];
+        }
+        [_pickerview selectRow:minute inComponent:2 animated:NO];
+
+    }
     self.pickerview = _pickerview;
     
     [self.view addSubview:self.pickerview];
@@ -313,37 +333,14 @@
     [defaults synchronize];
     
     
-    /*if(self.appDelegate.defaultBTServer.selectPeripheralInfo && [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert count] == 1) {
-        NSDictionary *alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+
+    for(NSDictionary *alertItem in self.appDelegate.defaultBTServer.selectPeripheralInfo.alert)
+    {
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self.appDelegate configPlayer1:alertItem];
-            
+            [self.appDelegate scheduleNotification:alertItem];
         }
-    } else if(self.appDelegate.defaultBTServer.selectPeripheralInfo && [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert count] == 2) {
-        NSDictionary *alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
-        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self.appDelegate configPlayer1:alertItem];
-        }
-        alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:1];
-        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self.appDelegate configPlayer2:alertItem];
-        }
-        
-    }else if(self.appDelegate.defaultBTServer.selectPeripheralInfo && [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert count] == 3) {
-        NSDictionary *alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
-        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self.appDelegate configPlayer1:alertItem];
-        }
-        alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:1];
-        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self.appDelegate configPlayer2:alertItem];
-        }
-        alertItem = [self.appDelegate.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:2];
-        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self.appDelegate configPlayer3:alertItem];
-            
-        }
-    }*/
+    }
 
     
     [self.navigationController popViewControllerAnimated:YES];
@@ -393,6 +390,8 @@
         self.repeatString = [repeatDay componentsJoinedByString:@" "];
     }
 }
+
+
 
 
 @end

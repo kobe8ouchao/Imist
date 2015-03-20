@@ -15,7 +15,7 @@
 #import "Manager.h"
 #import "ProgressHUD.h"
 
-@interface AppDelegate ()
+@interface AppDelegate ()<UIPickerViewDelegate>
 @property(nonatomic, strong) NSTimer *playerTM;
 @property (nonatomic,strong) NSMutableArray *alarm1Timers;
 @property (nonatomic,strong) NSMutableArray *alarm2Timers;
@@ -23,6 +23,7 @@
 @property (nonatomic,strong) AVAudioPlayer *player1;
 @property (nonatomic,strong) AVAudioPlayer *player2;
 @property (nonatomic,strong) AVAudioPlayer *player3;
+@property (nonatomic,strong) NSDateFormatter *timeFormat2;
 @end
 
 @implementation AppDelegate
@@ -63,6 +64,7 @@
     self.alarm3Timers = [[NSMutableArray alloc]init];
     
     [self currentWeekDay];
+    self.timeFormat2 = [[NSDateFormatter alloc] init]; //it is an expensive new,so put it here
 
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"isFirst"] == NULL && ![[[NSUserDefaults standardUserDefaults] objectForKey:@"isFirst"] boolValue]) { // First
         TutoralVC *tutorvc=[[TutoralVC alloc] init];
@@ -184,7 +186,17 @@
 
 - (void)application:(UIApplication *)application
 didReceiveLocalNotification:(UILocalNotification *)notification {
-    NSLog(@"aaaaa");
+    UIApplicationState state = application.applicationState;
+    NSLog(@"%@,%ld",notification,state);
+    if (state == UIApplicationStateActive) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Diffuser Wakeup"
+                                                        message:notification.alertBody
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"OK",nil];
+        alert.delegate = self;
+        [alert show];
+    }
 }
 
 -(UINavigationController*)Nav{
@@ -192,99 +204,9 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     return nav.topViewController.navigationController;
 }
 
--(void) playAlarm1
+-(void) wakeup
 {
-    static UIBackgroundTaskIdentifier bgTaskId;
-    UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
-    if (self.player1) {
-        NSLog(@"playing player1");
-        BOOL status = [self.player1 prepareToPlay];
-        NSLog(@"preparePlayer1 state %@",[NSNumber numberWithBool:status]);
-        if([self.player1 play]){
-            newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
-        }
-        if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
-            [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
-        bgTaskId = newTaskId;
-    }else {
-        
-    }
-    if([self.defaultBTServer.selectPeripheralInfo.state isEqualToString:@"connected"]){
-        Manager *sharedManager = [Manager sharedManager];
-        NSMutableData* data = [NSMutableData data];
-        NSUInteger query = [sharedManager getCurModeCmd:self.defaultBTServer.selectPeripheralInfo.mode];
-        [data appendBytes:&query length:1];
-        NSUInteger imist = [self.defaultBTServer.selectPeripheralInfo.imist integerValue];
-        [data appendBytes:&imist length:1];
-        NSUInteger led = [self.defaultBTServer.selectPeripheralInfo.ledlight integerValue];
-        if(self.defaultBTServer.selectPeripheralInfo.ledauto)
-            led = 0x65;
-        [data appendBytes:&led length:1];
-        
-        NSUInteger color1 = [sharedManager getColorR:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
-        [data appendBytes:&color1 length:1];
-        NSUInteger color2 = [sharedManager getColorG:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
-        [data appendBytes:&color2 length:1];
-        NSUInteger color3 = [sharedManager getColorB:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
-        [data appendBytes:&color3 length:1];
-        
-        self.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
-        [self.defaultBTServer writeValue:[self.defaultBTServer converCMD:data] withCharacter:[self.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
-    }
-    else{
-        NSArray *identifiers = [NSArray arrayWithObjects: self.defaultBTServer.selectPeripheralInfo.peripheral.identifier,nil];
-        NSArray *result = [self.defaultBTServer retrievePeripheralsWithIdentifiers:identifiers];
-        if([result count]){
-            [ProgressHUD show:@"connecting ..."];
-            [self.defaultBTServer connect:self.defaultBTServer.selectPeripheralInfo withFinishCB:^(CBPeripheral *peripheral, BOOL status, NSError *error) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [ProgressHUD dismiss];
-                    if (status) {
-                        self.defaultBTServer.selectPeripheralInfo.state = @"connected";
-                       
-                        //[cell setState:1];
-                        [ProgressHUD showSuccess:@"connected success!"];
-                        NSMutableData* data = [NSMutableData data];
-                        NSUInteger query = 0xa1;
-                        [data appendBytes:&query length:1];
-                        NSUInteger imist = 0x00;
-                        [data appendBytes:&imist length:1];
-                        NSUInteger led = 0x00;
-                        [data appendBytes:&led length:1];
-                        NSUInteger color1 = 0x00;
-                        [data appendBytes:&color1 length:1];
-                        NSUInteger color2 = 0x00;
-                        [data appendBytes:&color2 length:1];
-                        NSUInteger color3 = 0x00;
-                        [data appendBytes:&color3 length:1];
-                        
-                        self.defaultBTServer.selectPeripheralInfo.curCmd = GET_WATER_STATUS;
-                        [self.defaultBTServer writeValue:[self.defaultBTServer converCMD:data] withCharacter:[self.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
-                    }
-                });
-            }];
 
-        }
-    }
-}
-
--(void) playAlarm2
-{
-    static UIBackgroundTaskIdentifier bgTaskId;
-    UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
-    if (self.player2) {
-        NSLog(@"playing player2");
-        BOOL status = [self.player2 prepareToPlay];
-        NSLog(@"preparePlayer2 state %@",[NSNumber numberWithBool:status]);
-        if([self.player2 play]){
-            newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
-        }
-        if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
-            [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
-        bgTaskId = newTaskId;
-    }else {
-        
-    }
     if([self.defaultBTServer.selectPeripheralInfo.state isEqualToString:@"connected"]){
         Manager *sharedManager = [Manager sharedManager];
         NSMutableData* data = [NSMutableData data];
@@ -342,6 +264,50 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
             
         }
     }
+}
+
+-(void) playAlarm1
+{
+    static UIBackgroundTaskIdentifier bgTaskId;
+    UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
+    if (self.player1) {
+        NSLog(@"playing player1");
+        BOOL status = [self.player1 prepareToPlay];
+        NSLog(@"preparePlayer1 state %@",[NSNumber numberWithBool:status]);
+        if([self.player1 play]){
+            newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
+        }
+        if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
+            [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
+        bgTaskId = newTaskId;
+    }else {
+        
+    }
+    //UIApplicationState state = application.applicationState;
+    //    NSLog(@"%@,%d",notification,state);
+    //if (state == UIApplicationStateActive) {
+    [self wakeup];
+}
+
+-(void) playAlarm2
+{
+    static UIBackgroundTaskIdentifier bgTaskId;
+    UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
+    if (self.player2) {
+        NSLog(@"playing player2");
+        BOOL status = [self.player2 prepareToPlay];
+        NSLog(@"preparePlayer2 state %@",[NSNumber numberWithBool:status]);
+        if([self.player2 play]){
+            newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
+        }
+        if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
+            [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
+        bgTaskId = newTaskId;
+    }else {
+        
+    }
+    
+    [self wakeup];
 }
 
 
@@ -363,63 +329,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     }else {
         
     }
-    if([self.defaultBTServer.selectPeripheralInfo.state isEqualToString:@"connected"]){
-        Manager *sharedManager = [Manager sharedManager];
-        NSMutableData* data = [NSMutableData data];
-        NSUInteger query = [sharedManager getCurModeCmd:self.defaultBTServer.selectPeripheralInfo.mode];
-        [data appendBytes:&query length:1];
-        NSUInteger imist = [self.defaultBTServer.selectPeripheralInfo.imist integerValue];
-        [data appendBytes:&imist length:1];
-        NSUInteger led = [self.defaultBTServer.selectPeripheralInfo.ledlight integerValue];
-        if(self.defaultBTServer.selectPeripheralInfo.ledauto)
-            led = 0x65;
-        [data appendBytes:&led length:1];
-        
-        NSUInteger color1 = [sharedManager getColorR:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
-        [data appendBytes:&color1 length:1];
-        NSUInteger color2 = [sharedManager getColorG:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
-        [data appendBytes:&color2 length:1];
-        NSUInteger color3 = [sharedManager getColorB:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
-        [data appendBytes:&color3 length:1];
-        
-        self.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
-        [self.defaultBTServer writeValue:[self.defaultBTServer converCMD:data] withCharacter:[self.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
-    }
-    else{
-        NSArray *identifiers = [NSArray arrayWithObjects: self.defaultBTServer.selectPeripheralInfo.peripheral.identifier,nil];
-        NSArray *result = [self.defaultBTServer retrievePeripheralsWithIdentifiers:identifiers];
-        if([result count]){
-            [ProgressHUD show:@"connecting ..."];
-            [self.defaultBTServer connect:self.defaultBTServer.selectPeripheralInfo withFinishCB:^(CBPeripheral *peripheral, BOOL status, NSError *error) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [ProgressHUD dismiss];
-                    if (status) {
-                        self.defaultBTServer.selectPeripheralInfo.state = @"connected";
-                        
-                        //[cell setState:1];
-                        [ProgressHUD showSuccess:@"connected success!"];
-                        NSMutableData* data = [NSMutableData data];
-                        NSUInteger query = 0xa1;
-                        [data appendBytes:&query length:1];
-                        NSUInteger imist = 0x00;
-                        [data appendBytes:&imist length:1];
-                        NSUInteger led = 0x00;
-                        [data appendBytes:&led length:1];
-                        NSUInteger color1 = 0x00;
-                        [data appendBytes:&color1 length:1];
-                        NSUInteger color2 = 0x00;
-                        [data appendBytes:&color2 length:1];
-                        NSUInteger color3 = 0x00;
-                        [data appendBytes:&color3 length:1];
-                        
-                        self.defaultBTServer.selectPeripheralInfo.curCmd = GET_WATER_STATUS;
-                        [self.defaultBTServer writeValue:[self.defaultBTServer converCMD:data] withCharacter:[self.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
-                    }
-                });
-            }];
-            
-        }
-    }
+    [self wakeup];
 }
 
 
@@ -454,10 +364,12 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     NSString *repeat = [alertItem objectForKey:@"repeat"];
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
-    NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
-    NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
-    [timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
-    NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
+    //NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
+    //NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
+    [self.timeFormat2 setDateFormat:@"yyyy-MM-dd"];
+    NSString *nowday = [self.timeFormat2 stringFromDate:[NSDate date]];
+    [self.timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+    NSDate *date = [self.timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
     //
     
     NSInteger weekday = [comps weekday];
@@ -499,7 +411,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                 [runLoop addTimer:timer forMode:NSDefaultRunLoopMode];
                 [self.alarm1Timers addObject:timer];
             //} else{
-                UILocalNotification *notification=[[UILocalNotification alloc] init];
+                /*UILocalNotification *notification=[[UILocalNotification alloc] init];
                 if (notification!=nil)
                 {
                     notification.repeatInterval=NSWeekCalendarUnit;
@@ -511,7 +423,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                     notification.soundName = UILocalNotificationDefaultSoundName;
                     notification.alertBody = [NSString stringWithFormat:@"IMIST Wakeup!"];
                     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-                }
+                }*/
             //}
         }
         //if (self.player1) {
@@ -556,10 +468,13 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     NSString *repeat = [alertItem objectForKey:@"repeat"];
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
-    NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
-    NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
-    [timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
-    NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
+    //NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
+    //NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
+    [self.timeFormat2 setDateFormat:@"yyyy-MM-dd"];
+    NSString *nowday = [self.timeFormat2 stringFromDate:[NSDate date]];
+
+    [self.timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+    NSDate *date = [self.timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
     //
     
     NSInteger weekday = [comps weekday];
@@ -606,7 +521,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 
             //} else{
 
-                UILocalNotification *notification=[[UILocalNotification alloc] init];
+               /* UILocalNotification *notification=[[UILocalNotification alloc] init];
                 if (notification!=nil)
                 {
                     notification.repeatInterval=NSWeekCalendarUnit;
@@ -618,7 +533,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                     notification.soundName = UILocalNotificationDefaultSoundName;
                     notification.alertBody = [NSString stringWithFormat:@"IMIST Wakeup!"];
                     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-                }
+                }*/
             //}
         }
         //if (self.player2) {
@@ -646,7 +561,6 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     [self.alarm3Timers removeAllObjects];
     
 
-    
     NSString *soundurl = [alertItem objectForKey:@"sound"];
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
         self.player3 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
@@ -664,10 +578,12 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     NSString *repeat = [alertItem objectForKey:@"repeat"];
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
-    NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
-    NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
-    [timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
-    NSDate *date = [timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
+    //NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
+    //NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
+    [self.timeFormat2 setDateFormat:@"yyyy-MM-dd"];
+    NSString *nowday = [self.timeFormat2 stringFromDate:[NSDate date]];
+    [self.timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+    NSDate *date = [self.timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
     //
     
     NSInteger weekday = [comps weekday];
@@ -712,7 +628,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                 [self.alarm3Timers addObject:timer];
 
             //} else{
-                UILocalNotification *notification=[[UILocalNotification alloc] init];
+                /*UILocalNotification *notification=[[UILocalNotification alloc] init];
                 if (notification!=nil)
                 {
                     notification.repeatInterval=NSWeekCalendarUnit;
@@ -724,7 +640,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                     notification.soundName = UILocalNotificationDefaultSoundName;
                     notification.alertBody = [NSString stringWithFormat:@"IMIST Wakeup!"];
                     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-                }
+                }*/
             //}
         }
         //if (self.player3) {
@@ -738,8 +654,84 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 
     }}
 
-- (void)peripheralDidDisconnect{
+-(void) scheduleNotification:(NSDictionary*)alertItem
+{
     
+    //        self.player.delegate = self;
+    NSString *time = [alertItem objectForKey:@"time"];
+    NSString *repeat = [alertItem objectForKey:@"repeat"];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
+    //NSDateFormatter *timeFormat2 = [[NSDateFormatter alloc] init];
+    //NSString *nowday = [[NSDate date] formattedDatePattern:@"yyyy-MM-dd"];
+    [self.timeFormat2 setDateFormat:@"yyyy-MM-dd"];
+    NSString *nowday = [self.timeFormat2 stringFromDate:[NSDate date]];
+    [self.timeFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+    NSDate *date = [self.timeFormat2 dateFromString:[NSString stringWithFormat:@"%@ %@",nowday,time]];
+    //
+    
+    NSInteger weekday = [comps weekday];
+    
+    NSArray *repeatdays = [repeat componentsSeparatedByString:@"|"];
+    NSInteger fireDateApart = 0;
+    
+    NSDate *fireDate = [NSDate date];
+    
+    if([repeatdays count]){
+        for (NSString *d in repeatdays) {
+            if ([d integerValue] < weekday) {
+                fireDateApart = 7-weekday+[d integerValue];
+                fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
+            }
+            else if([d integerValue] > weekday){
+                fireDateApart = [d integerValue] - weekday;
+                fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600 sinceDate:date];
+            }
+            else{
+                NSDate *d = [[NSDate date] earlierDate: date];
+                if([d isEqualToDate:date]){
+                    fireDateApart = 7;
+                    NSTimeInterval distanceBetweenDates = [[NSDate date] timeIntervalSinceDate:date];
+                    fireDate = [NSDate dateWithTimeInterval:fireDateApart*24*3600+distanceBetweenDates sinceDate:date];
+                }
+                else{
+                    fireDate = date;
+                }
+            }
+            
+            
+            UILocalNotification *notification=[[UILocalNotification alloc] init];
+            if (notification!=nil)
+            {
+                notification.repeatInterval=NSWeekCalendarUnit;
+                notification.fireDate=fireDate;//距现在多久后触发代理方法
+                notification.timeZone=[NSTimeZone defaultTimeZone];
+                notification.soundName = UILocalNotificationDefaultSoundName;
+                notification.alertBody = [NSString stringWithFormat:@"IMIST Wakeup!"];
+                //NSDictionary *dict =[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:alertIndex],@"nfkey",nil];
+                //[notification setUserInfo:dict];
+                [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+            }
+        }
+        
+    }
+    else{
+        //fix me
+        
+    }}
+
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    switch (buttonIndex) {
+        case 0:
+            NSLog(@"%ld",buttonIndex);
+            break;
+        case 1:
+             [self wakeup];
+        default:
+            break;
+    }
 }
 
 @end
