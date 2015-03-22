@@ -231,6 +231,13 @@
                         pi.userset16Hour = selectPi.userset16Hour;
                         pi.mode = selectPi.mode;
                         pi.alert = selectPi.alert;
+                        pi.doNotShowHint_UserMode = selectPi.doNotShowHint_UserMode;
+                        pi.doNotShowHint_Relaxation = selectPi.doNotShowHint_Relaxation;
+                        pi.doNotShowHint_Sleep = selectPi.doNotShowHint_Sleep;
+                        pi.doNotShowHint_Energization = selectPi.doNotShowHint_Sleep;
+                        pi.doNotShowHint_Soothing = selectPi.doNotShowHint_Sleep;
+                        pi.doNotShowHint_Concentration = selectPi.doNotShowHint_Sleep;
+                        pi.doNotShowHint_Sensuality = selectPi.doNotShowHint_Sleep;
                         self.appDelegate.defaultBTServer.selectPeripheralInfo = pi;
                         [self restoreSelPiUserset:pi.mode];
                     }else {
@@ -239,6 +246,13 @@
                         pi.userset4Hour = [[NSMutableDictionary alloc] init];
                         pi.userset8Hour = [[NSMutableDictionary alloc] init];
                         pi.userset16Hour = [[NSMutableDictionary alloc] init];
+                        pi.doNotShowHint_UserMode = NO;
+                        pi.doNotShowHint_Relaxation = NO;
+                        pi.doNotShowHint_Sleep = NO;
+                        pi.doNotShowHint_Energization = NO;
+                        pi.doNotShowHint_Soothing = NO;
+                        pi.doNotShowHint_Concentration = NO;
+                        pi.doNotShowHint_Sensuality = NO;
                         self.appDelegate.defaultBTServer.selectPeripheralInfo = pi;
                         [defaults setObject:encodedObject forKey:pi.uuid];
                         [defaults synchronize];

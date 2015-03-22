@@ -298,7 +298,7 @@ static BTServer* _defaultBTServer = nil;
 
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI
 {
-    NSLog(@"discover peripheral: %@; advertisementData: %@; RSSI: %@", peripheral, advertisementData, RSSI);
+    //NSLog(@"discover peripheral: %@; advertisementData: %@; RSSI: %@", peripheral, advertisementData, RSSI);
     if(([peripheral.name rangeOfString:@"Imist"].length > 0) || ([peripheral.name rangeOfString:@"IMIST"].length > 0)){
     //if ([peripheral.name containsString:@"Imist"] || [peripheral.name containsString:@"IMIST"]) {
         [self addPeripheral:peripheral advertisementData:advertisementData RSSI:RSSI];

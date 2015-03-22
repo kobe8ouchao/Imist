@@ -301,8 +301,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
     if (self.player1) {
         NSLog(@"playing player1");
-        BOOL status = [self.player1 prepareToPlay];
-        NSLog(@"preparePlayer1 state %@",[NSNumber numberWithBool:status]);
+       
         if([self.player1 play]){
             newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
         }
@@ -380,6 +379,8 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
         self.player1 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
         self.player1.delegate = self;
+        BOOL status = [self.player1 prepareToPlay];
+        NSLog(@"preparePlayer1 state %@",[NSNumber numberWithBool:status]);
     }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
         NSString *urlString = [[NSBundle mainBundle]pathForResource:
                                soundurl ofType:@"mp3"];
@@ -388,6 +389,8 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                         initWithContentsOfURL:url
                         error:nil];
         self.player1.delegate = self;
+        BOOL status = [self.player1 prepareToPlay];
+        NSLog(@"preparePlayer1 state %@",[NSNumber numberWithBool:status]);
     }
     
     //        self.player.delegate = self;
@@ -504,6 +507,8 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
         self.player2 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
         self.player2.delegate = self;
+        BOOL status = [self.player2 prepareToPlay];
+        NSLog(@"preparePlayer2 state %@",[NSNumber numberWithBool:status]);
 
     }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
         NSString *urlString = [[NSBundle mainBundle]pathForResource:
@@ -513,6 +518,8 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                         initWithContentsOfURL:url
                         error:nil];
         self.player2.delegate = self;
+        BOOL status = [self.player2 prepareToPlay];
+        NSLog(@"preparePlayer2 state %@",[NSNumber numberWithBool:status]);
     }
     
     //        self.player.delegate = self;
@@ -635,7 +642,8 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     if([soundurl rangeOfString:@"ipod"].location != NSNotFound) {
         self.player3 = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:[alertItem objectForKey:@"sound"]] error:nil];
         self.player3.delegate = self;
-
+        BOOL status = [self.player3 prepareToPlay];
+        NSLog(@"preparePlayer3 state %@",[NSNumber numberWithBool:status]);
     }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
         NSString *urlString = [[NSBundle mainBundle]pathForResource:
                                soundurl ofType:@"mp3"];
@@ -644,7 +652,8 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                         initWithContentsOfURL:url
                         error:nil];
         self.player3.delegate = self;
-
+        BOOL status = [self.player3 prepareToPlay];
+        NSLog(@"preparePlayer3 state %@",[NSNumber numberWithBool:status]);
     }
     
     //        self.player.delegate = self;

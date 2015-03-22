@@ -342,21 +342,21 @@ static NSDictionary *colorB;
 - (NSInteger)getColorR:(NSInteger)color{
     NSInteger returncolor;
     returncolor = [[colorR objectForKey:[NSString stringWithFormat:@"%ld",(long)color]] integerValue] *2.55;
-    NSLog(@"R = %ld",returncolor);
+    //NSLog(@"R = %ld",returncolor);
     return returncolor;
 }
 
 - (NSInteger)getColorG:(NSInteger)color{
     NSInteger returncolor;
     returncolor = [[colorG objectForKey:[NSString stringWithFormat:@"%ld",(long)color]] integerValue] *2.55;
-    NSLog(@"G = %ld",returncolor);
+    //NSLog(@"G = %ld",returncolor);
     return returncolor;
 }
 
 - (NSInteger)getColorB:(NSInteger)color{
     NSInteger returncolor;
     returncolor = [[colorB objectForKey:[NSString stringWithFormat:@"%ld",(long)color]] integerValue] *2.55;
-    NSLog(@"B = %ld",returncolor);
+    //NSLog(@"B = %ld",returncolor);
     return returncolor;
 }
 

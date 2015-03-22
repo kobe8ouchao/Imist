@@ -782,6 +782,7 @@ typedef enum{
         yesNo = self.appDelegate.defaultBTServer.selectPeripheralInfo.doNotShowHint_UserMode;
         //yesNo = [[[NSUserDefaults standardUserDefaults] objectForKey:@"HintUserMode"] boolValue];
     }
+
     return yesNo;
 }
 

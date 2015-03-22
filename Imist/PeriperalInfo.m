@@ -48,6 +48,7 @@
         self.doNotShowHint_Soothing = [decoder decodeBoolForKey:@"Soothing"];
         self.doNotShowHint_Concentration = [decoder decodeBoolForKey:@"Concentration"];
         self.doNotShowHint_Sensuality = [decoder decodeBoolForKey:@"Sensuality"];
+        
     }
     return self;
 }

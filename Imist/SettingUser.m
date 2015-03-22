@@ -184,7 +184,6 @@
     [sureBtn setBackgroundImage:[UIImage imageNamed:@"user_set05.png"] forState:UIControlStateNormal];
     [noBtn setBackgroundImage:[UIImage imageNamed:@"user_set06.png"] forState:UIControlStateNormal];
     self.ledAutoEnable = 1;
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]){
         [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour setValue:[NSNumber numberWithInt:1] forKey:@"auto"];
     } else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"4 Hours"]) {
@@ -194,6 +193,7 @@
     }else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"16 Hours"]) {
         [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour setValue:[NSNumber numberWithInt:1] forKey:@"auto"];
     }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
     [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
     [defaults synchronize];

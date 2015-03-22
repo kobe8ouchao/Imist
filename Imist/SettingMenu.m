@@ -87,8 +87,8 @@
             
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             
-            //[defaults removeObjectForKey:application.defaultBTServer.selectPeripheralInfo.uuid];
-            [defaults synchronize];
+            [defaults removeObjectForKey:application.defaultBTServer.selectPeripheralInfo.uuid];
+            /*[defaults synchronize];
             [defaults removeObjectForKey:@"nameKey"];
             [defaults removeObjectForKey:@"waterKey"];
             [defaults removeObjectForKey:@"modeKey"];
@@ -103,7 +103,7 @@
             [defaults removeObjectForKey:@"Energization"];
             [defaults removeObjectForKey:@"Soothing"];
             [defaults removeObjectForKey:@"Concentration"];
-            [defaults removeObjectForKey:@"Sensuality"];
+            [defaults removeObjectForKey:@"Sensuality"];*/
             [defaults synchronize];
             
         }
