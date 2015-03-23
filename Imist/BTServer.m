@@ -351,10 +351,10 @@ static BTServer* _defaultBTServer = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"PERIPHERAL_DISCONNECT" object:nil];
     }
     
-    if ([self.selectPeripheral.identifier.UUIDString isEqualToString:peripheral.identifier.UUIDString]) {
-        NSLog(@"Retrying");
-        [self connect:self.selectPeripheralInfo];
-    }
+    //if ([self.selectPeripheral.identifier.UUIDString isEqualToString:peripheral.identifier.UUIDString]) {
+    //    NSLog(@"Retrying");
+    //    [self connect:self.selectPeripheralInfo];
+    //}
 }
 
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error

@@ -34,6 +34,8 @@
 @property (strong,nonatomic)NSNumber *imist;
 @property (strong,nonatomic)NSMutableArray *alert;
 @property (assign,nonatomic)NSInteger curCmd;
+@property (assign,nonatomic)NSInteger intentAction;
+@property (assign,nonatomic)NSInteger workingMode;
 @property (strong,nonatomic)NSMutableDictionary *userset2Hour;
 @property (strong,nonatomic)NSMutableDictionary *userset4Hour;
 @property (strong,nonatomic)NSMutableDictionary *userset8Hour;
@@ -45,9 +47,13 @@
 @property (nonatomic, assign) BOOL doNotShowHint_Soothing;
 @property (nonatomic, assign) BOOL doNotShowHint_Concentration;
 @property (nonatomic, assign) BOOL doNotShowHint_Sensuality;
+@property (nonatomic, assign) BOOL diffuserWorkingState;
 typedef enum{
+    IDLE,
     GET_WATER_STATUS,
     GET_WORK_MODE,
     SET_WORK_MODE,
-}currentCmd;
+    INIT_SET_WORK_MODE,
+    SHOW_HINT
+}Cmd;
 @end

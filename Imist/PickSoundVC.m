@@ -52,7 +52,7 @@
 
 - (void)playSound:(NSString*)name{
     
-   /* NSString *audioFilePath = [[NSBundle mainBundle] pathForResource:name ofType:@"mp3"];
+    NSString *audioFilePath = [[NSBundle mainBundle] pathForResource:name ofType:@"mp3"];
     NSURL *audioFileURL = [NSURL fileURLWithPath:audioFilePath];
     NSError *error = nil;
     self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:&error];
@@ -62,7 +62,7 @@
     if (self.player == nil)
         NSLog(@"Error playing sound. %@", [error description]);
     else
-        [self.player play];*/
+        [self.player play];
 }
 #pragma mark -- table delegate
 

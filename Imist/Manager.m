@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "Manager.h"
+#import "AppDelegate.h"
 
 @implementation Manager
 
@@ -396,6 +397,30 @@ static NSDictionary *colorB;
     
     return cmd;
     
+}
+
+- (void)getWaterStatus{
+    AppDelegate *application = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    if(application.defaultBTServer.selectPeripheral.state == CBPeripheralStateConnected){
+        NSMutableData* data = [NSMutableData data];
+        
+        NSUInteger query = 0xa1;
+        [data appendBytes:&query length:1];
+        NSUInteger imist = 0x0;
+        [data appendBytes:&imist length:1];
+        NSUInteger led = 0x0;
+        [data appendBytes:&led length:1];
+        NSUInteger color1 = 0x0;
+        [data appendBytes:&color1 length:1];
+        NSUInteger color2 = 0x0;
+        [data appendBytes:&color2 length:1];
+        NSUInteger color3 = 0x0;
+        [data appendBytes:&color3 length:1];
+        
+        application.defaultBTServer.selectPeripheralInfo.curCmd = GET_WATER_STATUS;
+        
+        [application.defaultBTServer writeValue:[application.defaultBTServer converCMD:data] withCharacter:[application.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+    }
 }
 
 

@@ -132,35 +132,32 @@
         {
             if (state == 0x00) {
                 self.appDelegate.defaultBTServer.selectPeripheralInfo.water = [NSNumber numberWithInt:1];
-                if(initWork == 0 && self.appDelegate.defaultBTServer.selectPeripheralInfo.mode){
-                    initWork = 1;
-                    Manager *sharedManager = [Manager sharedManager];
-                    NSMutableData* data = [NSMutableData data];
-                    NSUInteger query = [self getCurModeCmd:self.appDelegate.defaultBTServer.selectPeripheralInfo.mode];
-                    [data appendBytes:&query length:1];
-                    NSUInteger imist = [self.appDelegate.defaultBTServer.selectPeripheralInfo.imist integerValue];
-                    [data appendBytes:&imist length:1];
-                    NSUInteger led = [self.appDelegate.defaultBTServer.selectPeripheralInfo.ledlight integerValue];
-                    if(self.appDelegate.defaultBTServer.selectPeripheralInfo.ledauto)
-                        led = 0x65;
-                    [data appendBytes:&led length:1];
-                    
-                    NSUInteger color1 = [sharedManager getColorR:[self.appDelegate.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
-                    [data appendBytes:&color1 length:1];
-                    NSUInteger color2 = [sharedManager getColorG:[self.appDelegate.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
-                    [data appendBytes:&color2 length:1];
-                    NSUInteger color3 = [sharedManager getColorB:[self.appDelegate.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
-                    [data appendBytes:&color3 length:1];
-                    
-                    self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
-                    [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
-                }
-                
-            }else if (state == 0xAA){
-                self.appDelegate.defaultBTServer.selectPeripheralInfo.water = 0;
-            }else {
-                self.appDelegate.defaultBTServer.selectPeripheralInfo.water = [NSNumber numberWithInt:1];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"WATER_STATUS_UPDATED" object:nil];
             }
+            else if (state == 0xAA){
+                self.appDelegate.defaultBTServer.selectPeripheralInfo.water = 0;
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"WATER_STATUS_UPDATED" object:nil];
+            }
+            if(self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction == INIT_SET_WORK_MODE){
+                SettingUser *thirdViewController = [[SettingUser alloc] init];
+                thirdViewController.title = @"IMIST";//pi.name;
+                SettingModeVC *firstViewController = [[SettingModeVC alloc] init];
+                firstViewController.title = @"IMIST";//pi.name;
+                SettingAlerm *secondViewController = [[SettingAlerm alloc] init];
+                secondViewController.title = @"IMIST";//pi.name;
+                
+                RDVTabBarController *tabBarController = [[RDVTabBarController alloc] init];
+                [tabBarController setViewControllers:@[firstViewController, secondViewController,thirdViewController]];
+                [self customizeTabBarForController:tabBarController];
+                tabBarController.title = @"IMIST";//pi.name;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.navigationController pushViewController:tabBarController animated:YES];
+                });
+            }
+
+        }
+        else if(self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd == SET_WORK_MODE){
+            self.appDelegate.defaultBTServer.selectPeripheralInfo.workingMode = dataByte[2];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.deviceTable reloadData];
@@ -176,6 +173,8 @@
     ScanDeviceCell *cell = (ScanDeviceCell*)[self.deviceTable cellForRowAtIndexPath:selectIndexPath];
     [cell setState:0];
     initWork = 0;
+    self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction = IDLE;
+    self.appDelegate.defaultBTServer.selectPeripheralInfo.workingMode = 0;
     //    [ProgressHUD show:@"disconnect from peripheral"];
 }
 
@@ -234,10 +233,10 @@
                         pi.doNotShowHint_UserMode = selectPi.doNotShowHint_UserMode;
                         pi.doNotShowHint_Relaxation = selectPi.doNotShowHint_Relaxation;
                         pi.doNotShowHint_Sleep = selectPi.doNotShowHint_Sleep;
-                        pi.doNotShowHint_Energization = selectPi.doNotShowHint_Sleep;
-                        pi.doNotShowHint_Soothing = selectPi.doNotShowHint_Sleep;
-                        pi.doNotShowHint_Concentration = selectPi.doNotShowHint_Sleep;
-                        pi.doNotShowHint_Sensuality = selectPi.doNotShowHint_Sleep;
+                        pi.doNotShowHint_Energization = selectPi.doNotShowHint_Energization;
+                        pi.doNotShowHint_Soothing = selectPi.doNotShowHint_Soothing;
+                        pi.doNotShowHint_Concentration = selectPi.doNotShowHint_Concentration;
+                        pi.doNotShowHint_Sensuality = selectPi.doNotShowHint_Sensuality;
                         self.appDelegate.defaultBTServer.selectPeripheralInfo = pi;
                         [self restoreSelPiUserset:pi.mode];
                     }else {
@@ -274,6 +273,8 @@
                     [data appendBytes:&color2 length:1];
                     NSUInteger color3 = 0x00;
                     [data appendBytes:&color3 length:1];
+                    
+                    self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction = INIT_SET_WORK_MODE;
                     
                     self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = GET_WATER_STATUS;
                     [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
@@ -317,7 +318,7 @@
     [cell setStyle];
     if([pi.state isEqualToString: @"connected"]){
         if (pi == self.appDelegate.defaultBTServer.selectPeripheralInfo) {
-            if(pi.mode){
+            if(pi.workingMode>1){
                 if (pi.water == [NSNumber numberWithInt:1]) {
                     [cell setState:1];
                 }else {
