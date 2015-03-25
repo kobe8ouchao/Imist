@@ -23,6 +23,9 @@
 @property (nonatomic,strong) AVAudioPlayer *player1;
 @property (nonatomic,strong) AVAudioPlayer *player2;
 @property (nonatomic,strong) AVAudioPlayer *player3;
+@property (nonatomic,assign) BOOL interruptedOnPlayer1;
+@property (nonatomic,assign) BOOL interruptedOnPlayer2;
+@property (nonatomic,assign) BOOL interruptedOnPlayer3;
 @property (nonatomic,strong) NSDateFormatter *timeFormat2;
 @end
 
@@ -105,16 +108,163 @@
     //NSLog(@"%@",success?@"YES":@"NO");
     
     NSError *activationError = nil;
-    [audioSession setActive:YES error:&activationError];
+    [audioSession setActive:YES withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:&activationError];
     
     // Change the default output audio route
     UInt32 doChangeDefaultRoute = 1;
     AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(doChangeDefaultRoute), &doChangeDefaultRoute);
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleAudioSessionInterruption:)
+                                                 name:AVAudioSessionInterruptionNotification
+                                               object:audioSession];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleMediaServicesReset)
+                                                 name:AVAudioSessionMediaServicesWereResetNotification
+                                               object:audioSession];
+    
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
 
 
     return YES;
+}
+
+- (void)handleAudioSessionInterruption:(NSNotification*)notification {
+    
+    NSNumber *interruptionType = [[notification userInfo] objectForKey:AVAudioSessionInterruptionTypeKey];
+    NSNumber *interruptionOption = [[notification userInfo] objectForKey:AVAudioSessionInterruptionOptionKey];
+    
+    switch (interruptionType.unsignedIntegerValue) {
+        case AVAudioSessionInterruptionTypeBegan:{
+            if(self.player1){
+                [self.player1 pause];
+            }
+            if(self.player2){
+                [self.player2 pause];
+            }
+            if(self.player3){
+                [self.player3 pause];
+            }
+
+            // • Audio has stopped, already inactive
+            // • Change state of UI, etc., to reflect non-playing state
+        } break;
+        case AVAudioSessionInterruptionTypeEnded:{
+            // • Make session active
+            // • Update user interface
+            // • AVAudioSessionInterruptionOptionShouldResume option
+            if (interruptionOption.unsignedIntegerValue == AVAudioSessionInterruptionOptionShouldResume) {
+                // Here you should continue playback.
+                if(self.player1){
+                    [self.player1 prepareToPlay];
+                    [self.player1 play];
+                }
+                if(self.player2){
+                    [self.player2 prepareToPlay];
+                    [self.player2 play];
+                }
+                if(self.player3){
+                    [self.player3 prepareToPlay];
+                    [self.player3 play];
+                }
+            }
+            else{
+                if(self.player1){
+                    [self.player1 prepareToPlay];
+                }
+                if(self.player2){
+                    [self.player2 prepareToPlay];
+                }
+                if(self.player3){
+                    [self.player3 prepareToPlay];
+                }
+
+            }
+        } break;
+        default:
+            break;
+    }
+}
+
+- (void) audioPlayerBeginInterruption: (AVAudioPlayer *) player {
+    if (player.playing) {
+        [player pause];
+        if(self.player1)
+            self.interruptedOnPlayer1 = YES;
+        if(self.player2)
+            self.interruptedOnPlayer2 = YES;
+        if(self.player3)
+            self.interruptedOnPlayer3 = YES;
+        //[self updateUserInterface];
+    }
+}
+
+- (void) audioPlayerEndInterruption: (AVAudioPlayer *) player {
+    if (self.interruptedOnPlayer1) {
+        [self.player1 prepareToPlay];
+        [self.player1 play];
+        self.interruptedOnPlayer1 = NO;
+    }
+    if (self.interruptedOnPlayer2) {
+        [self.player2 prepareToPlay];
+        [self.player2 play];
+        self.interruptedOnPlayer2 = NO;
+    }
+
+    if (self.interruptedOnPlayer3) {
+        [self.player3 prepareToPlay];
+        [self.player3 play];
+        self.interruptedOnPlayer3 = NO;
+    }
+
+}
+
+- (void)handleMediaServicesReset {
+    if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 1) {
+        NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self configPlayer1:alertItem];
+            
+        }
+    } else if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 2) {
+        NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self configPlayer1:alertItem];
+        }
+        alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:1];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self configPlayer2:alertItem];
+        }
+        
+    }else if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 3) {
+        NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self configPlayer1:alertItem];
+        }
+        alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:1];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self configPlayer2:alertItem];
+        }
+        alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:2];
+        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
+            [self configPlayer3:alertItem];
+            
+        }
+    }
+    
+    NSError *sessionError = nil;
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    
+    BOOL success = [audioSession setCategory:AVAudioSessionCategoryPlayback error:&sessionError];
+    //NSLog(@"%@",success?@"YES":@"NO");
+    
+    NSError *activationError = nil;
+    [audioSession setActive:YES withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:&activationError];
+    
+    // Change the default output audio route
+    UInt32 doChangeDefaultRoute = 1;
+    AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(doChangeDefaultRoute), &doChangeDefaultRoute);
+
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -381,7 +531,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         self.player1.delegate = self;
         BOOL status = [self.player1 prepareToPlay];
         NSLog(@"preparePlayer1 state %@",[NSNumber numberWithBool:status]);
-    }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
+    }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Wave"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
         NSString *urlString = [[NSBundle mainBundle]pathForResource:
                                soundurl ofType:@"mp3"];
         NSURL *url = [NSURL fileURLWithPath:urlString];
@@ -510,7 +660,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         BOOL status = [self.player2 prepareToPlay];
         NSLog(@"preparePlayer2 state %@",[NSNumber numberWithBool:status]);
 
-    }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
+    }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Wave"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
         NSString *urlString = [[NSBundle mainBundle]pathForResource:
                                soundurl ofType:@"mp3"];
         NSURL *url = [NSURL fileURLWithPath:urlString];
@@ -644,7 +794,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         self.player3.delegate = self;
         BOOL status = [self.player3 prepareToPlay];
         NSLog(@"preparePlayer3 state %@",[NSNumber numberWithBool:status]);
-    }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
+    }else if([soundurl rangeOfString:@"Bicker"].location != NSNotFound || [soundurl rangeOfString:@"Chirp"].location != NSNotFound || [soundurl rangeOfString:@"Hill"].location != NSNotFound || [soundurl rangeOfString:@"Rain"].location != NSNotFound || [soundurl rangeOfString:@"Wave"].location != NSNotFound || [soundurl rangeOfString:@"Zen"].location != NSNotFound) {
         NSString *urlString = [[NSBundle mainBundle]pathForResource:
                                soundurl ofType:@"mp3"];
         NSURL *url = [NSURL fileURLWithPath:urlString];

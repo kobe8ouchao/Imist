@@ -115,8 +115,8 @@
         self.alarmName = @"Wakeup";
     }
     if (!self.sound) {
-        self.sound = @"Bicker";
-        self.soundName = @"Bicker";
+        self.sound = @"";
+        self.soundName = @"";
     }
     if (!self.days) {
         self.days = @"1|2|3|4|5|6|7";

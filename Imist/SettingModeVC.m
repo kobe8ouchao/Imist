@@ -682,23 +682,36 @@ typedef enum{
             }
         }
         else{
-            [self showMode:self.modeString waterStatus:NO_MODE];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showMode:self.modeString waterStatus:NO_MODE];
+            });
         }
     }
     else{
         if(self.appDelegate.defaultBTServer.selectPeripheralInfo.mode){
-            if(self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction == SET_WORK_MODE){
+            self.modeString = self.appDelegate.defaultBTServer.selectPeripheralInfo.mode;
+            /*if(self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction == SET_WORK_MODE){
+                dispatch_async(dispatch_get_main_queue(), ^{
                 [self showAddWaterAlert];
+                });
             }
             else if(self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction == SHOW_HINT){
+                dispatch_async(dispatch_get_main_queue(), ^{
                 [self showMode:self.modeString waterStatus:NO_WATER];
                 NSString * hintString = [self composeHint:[self.essenceName valueForKey:self.modeString]];
                 if(hintString)
                     [self showHint:hintString];
-            }
+                });
+            }*/
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showMode:self.modeString waterStatus:NO_WATER];
+                [self showAddWaterAlert];
+            });
         }
         else{
+            dispatch_async(dispatch_get_main_queue(), ^{
             [self showMode:self.modeString waterStatus:NO_MODE];
+            });
         }
     }
     self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction = IDLE;
