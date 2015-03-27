@@ -532,7 +532,7 @@ static BTServer* _defaultBTServer = nil;
     [data appendData:cmd];
     UInt8 bcc = 0;
     const char * arrData = [data bytes];
-    for(UInt8 i = 0; i<=[data length]; i++) {
+    for(UInt8 i = 0; i<[data length]; i++) {
        bcc =  arrData[i]^ bcc;
     }
     [data appendBytes:&bcc length:1];

@@ -468,10 +468,22 @@ typedef enum{
     if([modeString isEqualToString:@"2 Hours"]){
         cmd = 9;
         if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour count]){
-            mistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"mist"] integerValue];
-            brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"brightness"] integerValue];
-            colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"color"] integerValue];
-            ledauto = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"auto"] integerValue];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"mist"] ==nil)
+                mistValue = 50;
+            else
+                mistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"mist"] integerValue];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"brightness"] ==nil)
+                brightnessValue = 46;
+            else
+                brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"brightness"] integerValue];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"color"] ==nil)
+                colorValue = 100;
+            else
+                colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"color"] integerValue];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"auto"] ==nil)
+                ledauto = 0;
+            else
+                ledauto = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour valueForKey:@"auto"] integerValue];
         }
         else{
             mistValue = 50;
@@ -483,10 +495,22 @@ typedef enum{
     else if([modeString isEqualToString:@"4 Hours"]){
         cmd = 10;
         if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour count]){
-            mistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"mist"] integerValue];
-            brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"brightness"] integerValue];
-            colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"color"] integerValue];
-            ledauto = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"auto"] integerValue];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"mist"] ==nil)
+                mistValue = 50;
+            else
+                mistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"mist"] integerValue];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"brightness"] ==nil)
+                brightnessValue = 46;
+            else
+                brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"brightness"] integerValue];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"color"] ==nil)
+                colorValue = 100;
+            else
+                colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"color"] integerValue];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"auto"] ==nil)
+                ledauto = 0;
+            else
+                ledauto = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour valueForKey:@"auto"] integerValue];
         }
         else{
             mistValue = 50;
@@ -498,10 +522,22 @@ typedef enum{
     else if([modeString isEqualToString:@"8 Hours"]){
         cmd = 11;
         if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour count]){
-            mistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"mist"] integerValue];
-            brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"brightness"] integerValue];
-            colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"color"] integerValue];
-            ledauto = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"auto"] integerValue];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"mist"] ==nil)
+                mistValue = 50;
+            else
+                mistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"mist"] integerValue];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"brightness"] ==nil)
+                brightnessValue = 46;
+            else
+                brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"brightness"] integerValue];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"color"] ==nil)
+                colorValue = 100;
+            else
+                colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"color"] integerValue];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"auto"] ==nil)
+                ledauto = 0;
+            else
+                ledauto = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour valueForKey:@"auto"] integerValue];
         }
         else{
             mistValue = 50;
@@ -513,10 +549,22 @@ typedef enum{
     else if([modeString isEqualToString:@"16 Hours"]){
         cmd = 12;
         if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour count]){
-            mistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"mist"] integerValue];
-            brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"brightness"] integerValue];
-            colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"color"] integerValue];
-            ledauto = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"auto"] integerValue];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"mist"] ==nil)
+                mistValue = 50;
+            else
+                mistValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"mist"] integerValue];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"brightness"] ==nil)
+                brightnessValue = 46;
+            else
+                brightnessValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"brightness"] integerValue];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"color"] ==nil)
+                colorValue = 100;
+            else
+                colorValue = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"color"] integerValue];
+            if([self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"auto"] ==nil)
+                ledauto = 0;
+            else
+                ledauto = [[self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour valueForKey:@"auto"] integerValue];
         }
         else{
             mistValue = 50;
@@ -585,6 +633,7 @@ typedef enum{
 
 
 - (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     if(self.appDelegate.defaultBTServer.selectPeripheralInfo.mode){
         Manager *sharedManager = [Manager sharedManager];
         //[sharedManager getWaterStatus];
