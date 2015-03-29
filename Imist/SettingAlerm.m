@@ -21,8 +21,9 @@
 @synthesize title,alertTable;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if(!self.title) self.title = title;
-    self.navigationController.navigationBar.topItem.title = title;
+    //if(!self.title) self.title = title;
+    self.title = self.appDelegate.defaultBTServer.selectPeripheralInfo.name;
+    self.navigationController.navigationBar.topItem.title = self.title;
     self.view.backgroundColor=[UIColor whiteColor];    
     
     //init device tableview

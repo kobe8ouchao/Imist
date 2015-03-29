@@ -101,7 +101,7 @@
 //    
 //    [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
     // Set AVAudioSession
-    NSError *sessionError = nil;
+    /*NSError *sessionError = nil;
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     
     BOOL success = [audioSession setCategory:AVAudioSessionCategoryPlayback error:&sessionError];
@@ -121,11 +121,17 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleMediaServicesReset)
                                                  name:AVAudioSessionMediaServicesWereResetNotification
-                                               object:audioSession];
+                                               object:audioSession];*/
     
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    
 
 
+    return YES;
+}
+
+- (BOOL)canBecomeFirstResponder
+{
     return YES;
 }
 
@@ -136,7 +142,7 @@
     
     switch (interruptionType.unsignedIntegerValue) {
         case AVAudioSessionInterruptionTypeBegan:{
-            if(self.player1){
+            /*if(self.player1){
                 [self.player1 pause];
             }
             if(self.player2){
@@ -144,7 +150,7 @@
             }
             if(self.player3){
                 [self.player3 pause];
-            }
+            }*/
 
             // • Audio has stopped, already inactive
             // • Change state of UI, etc., to reflect non-playing state
@@ -155,21 +161,23 @@
             // • AVAudioSessionInterruptionOptionShouldResume option
             if (interruptionOption.unsignedIntegerValue == AVAudioSessionInterruptionOptionShouldResume) {
                 // Here you should continue playback.
-                if(self.player1){
-                    [self.player1 prepareToPlay];
+                if(player)
+                   [player play];
+                /*if(self.player1){
+                    //[self.player1 prepareToPlay];
                     [self.player1 play];
                 }
                 if(self.player2){
-                    [self.player2 prepareToPlay];
+                    //[self.player2 prepareToPlay];
                     [self.player2 play];
                 }
                 if(self.player3){
-                    [self.player3 prepareToPlay];
+                    //[self.player3 prepareToPlay];
                     [self.player3 play];
-                }
+                }*/
             }
             else{
-                if(self.player1){
+                /*if(self.player1){
                     [self.player1 prepareToPlay];
                 }
                 if(self.player2){
@@ -177,7 +185,7 @@
                 }
                 if(self.player3){
                     [self.player3 prepareToPlay];
-                }
+                }*/
 
             }
         } break;
@@ -220,37 +228,6 @@
 }
 
 - (void)handleMediaServicesReset {
-    if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 1) {
-        NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
-        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self configPlayer1:alertItem];
-            
-        }
-    } else if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 2) {
-        NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
-        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self configPlayer1:alertItem];
-        }
-        alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:1];
-        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self configPlayer2:alertItem];
-        }
-        
-    }else if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 3) {
-        NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
-        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self configPlayer1:alertItem];
-        }
-        alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:1];
-        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self configPlayer2:alertItem];
-        }
-        alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:2];
-        if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
-            [self configPlayer3:alertItem];
-            
-        }
-    }
     
     NSError *sessionError = nil;
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
@@ -263,7 +240,7 @@
     
     // Change the default output audio route
     UInt32 doChangeDefaultRoute = 1;
-    AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(doChangeDefaultRoute), &doChangeDefaultRoute);
+    AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(doChangeDefaultRoute), &doChangeDefaultRoute);
 
 }
 
@@ -275,6 +252,8 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+    [self playAudio];
+    //[self becomeFirstResponder];
     if(self.defaultBTServer.selectPeripheralInfo && [self.defaultBTServer.selectPeripheralInfo.alert count] == 1) {
         NSDictionary *alertItem = [self.defaultBTServer.selectPeripheralInfo.alert objectAtIndex:0];
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
@@ -306,7 +285,6 @@
 
         }
     }
-
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -443,6 +421,70 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
             
         }
     }
+}
+
+-(void) playAudio
+{
+    
+    UIApplication * app = [UIApplication sharedApplication];
+    NSString *version = [[UIDevice currentDevice] systemVersion];
+    
+    if([version floatValue] >= 6.0f)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAudioSessionInterruption:) name:AVAudioSessionInterruptionNotification object:nil];
+    }
+    
+    expirationHandler = ^{
+        [app endBackgroundTask:bgTask];
+        bgTask = UIBackgroundTaskInvalid;
+        //[timer invalidate];
+        [player stop];
+        NSLog(@"###############Background Task Expired.");
+        // [self playMusic];
+    };
+    bgTask = [app beginBackgroundTaskWithExpirationHandler:expirationHandler];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        const char bytes[] = {0x52, 0x49, 0x46, 0x46, 0x26, 0x0, 0x0, 0x0, 0x57, 0x41, 0x56, 0x45, 0x66, 0x6d, 0x74, 0x20, 0x10, 0x0, 0x0, 0x0, 0x1, 0x0, 0x1, 0x0, 0x44, 0xac, 0x0, 0x0, 0x88, 0x58, 0x1, 0x0, 0x2, 0x0, 0x10, 0x0, 0x64, 0x61, 0x74, 0x61, 0x2, 0x0, 0x0, 0x0, 0xfc, 0xff};
+        NSData* data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
+        NSString * docsDir = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+        
+        // Build the path to the database file
+        NSString * filePath = [[NSString alloc] initWithString:
+                               [docsDir stringByAppendingPathComponent: @"background.wav"]];
+        [data writeToFile:filePath atomically:YES];
+        NSURL *soundFileURL = [NSURL fileURLWithPath:filePath];
+
+        NSError * error;
+        if([version floatValue] >= 6.0f)
+        {
+            
+            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
+            [[AVAudioSession sharedInstance] setActive: YES error: &error];
+            
+        }
+        
+        player = [[AVAudioPlayer alloc] initWithContentsOfURL:soundFileURL error:&error];
+        player.volume = 0.01;
+        player.numberOfLoops = -1; //Infinite
+        [player prepareToPlay];
+        [player play];
+        //timer = [NSTimer scheduledTimerWithTimeInterval:2 target:nil selector:nil userInfo:nil repeats:YES];
+        
+    });
+}
+
+- (void) audioInterrupted:(NSNotification*)notification
+{
+    NSDictionary *interuptionDict = notification.userInfo;
+    NSNumber *interuptionType = [interuptionDict valueForKey:AVAudioSessionInterruptionTypeKey];
+    if([interuptionType intValue] == 1)
+    {
+        //[self initBackgroudTask];
+        [player play];
+    }
+    
 }
 
 -(void) playAlarm1

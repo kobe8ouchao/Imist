@@ -28,8 +28,10 @@
 @synthesize title;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if(!self.title) self.title = title;
+    //if(!self.title) self.title = title;
+    self.title = self.appDelegate.defaultBTServer.selectPeripheralInfo.name;
     self.navigationController.navigationBar.topItem.title = self.title;
+
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [leftBtn setFrame:CGRectMake( 0, 0, 44, 44)];
     [leftBtn setImage:[UIImage imageNamed:@"back-arrow.png"] forState:UIControlStateNormal];
@@ -455,16 +457,6 @@
     self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
     [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
     
-   
-    if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]){
-        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour setValue:imistObj forKey:@"mist"];
-    } else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"4 Hours"]) {
-        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour setValue:imistObj forKey:@"mist"];
-    }else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"8 Hours"]) {
-        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour setValue:imistObj forKey:@"mist"];
-    }else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"16 Hours"]) {
-        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour setValue:imistObj forKey:@"mist"];
-    }
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
     [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];

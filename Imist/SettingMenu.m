@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if(!self.title) self.title = @"Advanced Setting";
+    self.title = @"Advanced Setting";
 
     UIButton *changeNameBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [changeNameBtn setTitle:@"Rename IMIST" forState:UIControlStateNormal];
@@ -56,7 +56,7 @@
 
 -(void)factoryReset:(id)sender
 {
-    UIAlertView *factoryResetPop = [[UIAlertView alloc] initWithTitle:@"Reset" message:@"Do you want to reset the diffuser setting?" delegate:nil cancelButtonTitle:InterNation(@"cancel") otherButtonTitles:InterNation(@"confirm") ,nil];
+    UIAlertView *factoryResetPop = [[UIAlertView alloc] initWithTitle:@"Reset" message:@"Do you really want to reset this diffuser's setting?" delegate:nil cancelButtonTitle:InterNation(@"cancel") otherButtonTitles:InterNation(@"confirm") ,nil];
     factoryResetPop.tag = 221;
     factoryResetPop.delegate = self;
     factoryResetPop.alertViewStyle = UIAlertViewStyleDefault;
@@ -87,28 +87,41 @@
             
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             
-            [defaults removeObjectForKey:application.defaultBTServer.selectPeripheralInfo.uuid];
-            /*[defaults synchronize];
-            [defaults removeObjectForKey:@"nameKey"];
-            [defaults removeObjectForKey:@"waterKey"];
-            [defaults removeObjectForKey:@"modeKey"];
-            [defaults removeObjectForKey:@"alertKey"];
-            [defaults removeObjectForKey:@"2Hour"];
-            [defaults removeObjectForKey:@"4Hour"];
-            [defaults removeObjectForKey:@"8Hour"];
-            [defaults removeObjectForKey:@"16Hour"];
-            [defaults removeObjectForKey:@"UserMode"];
-            [defaults removeObjectForKey:@"Relaxation"];
-            [defaults removeObjectForKey:@"Sleep"];
-            [defaults removeObjectForKey:@"Energization"];
-            [defaults removeObjectForKey:@"Soothing"];
-            [defaults removeObjectForKey:@"Concentration"];
-            [defaults removeObjectForKey:@"Sensuality"];*/
+            //[defaults removeObjectForKey:application.defaultBTServer.selectPeripheralInfo.uuid];
+            //[defaults synchronize];
+            
+            NSNumber *mist = [NSNumber numberWithInt:50];
+            NSNumber *brightness = [NSNumber numberWithInt:46];
+            NSNumber *color = [NSNumber numberWithInt:100];
+            NSNumber *ledauto = [NSNumber numberWithInt:0];
+      
+            application.defaultBTServer.selectPeripheralInfo.userset2Hour = [NSMutableDictionary dictionaryWithObjectsAndKeys:mist,@"mist",brightness,@"brightness",color,@"color",ledauto,@"auto", nil];
+            application.defaultBTServer.selectPeripheralInfo.userset4Hour = [NSMutableDictionary dictionaryWithObjectsAndKeys:mist,@"mist",brightness,@"brightness",color,@"color",ledauto,@"auto", nil];
+            application.defaultBTServer.selectPeripheralInfo.userset8Hour = [NSMutableDictionary dictionaryWithObjectsAndKeys:mist,@"mist",brightness,@"brightness",color,@"color",ledauto,@"auto", nil];
+            application.defaultBTServer.selectPeripheralInfo.userset16Hour = [NSMutableDictionary dictionaryWithObjectsAndKeys:mist,@"mist",brightness,@"brightness",color,@"color",ledauto,@"auto", nil];
+            application.defaultBTServer.selectPeripheralInfo.doNotShowHint_UserMode = NO;
+            application.defaultBTServer.selectPeripheralInfo.doNotShowHint_Relaxation = NO;
+            application.defaultBTServer.selectPeripheralInfo.doNotShowHint_Sleep = NO;
+            application.defaultBTServer.selectPeripheralInfo.doNotShowHint_Energization = NO;
+            application.defaultBTServer.selectPeripheralInfo.doNotShowHint_Soothing = NO;
+            application.defaultBTServer.selectPeripheralInfo.doNotShowHint_Concentration = NO;
+            application.defaultBTServer.selectPeripheralInfo.doNotShowHint_Sensuality = NO;
+            application.defaultBTServer.selectPeripheralInfo.name = @"IMIST";
+            application.defaultBTServer.selectPeripheralInfo.mode = nil;
+            application.defaultBTServer.selectPeripheralInfo.imist = mist;
+            application.defaultBTServer.selectPeripheralInfo.ledlight = brightness;
+            application.defaultBTServer.selectPeripheralInfo.ledcolor = color;
+            application.defaultBTServer.selectPeripheralInfo.ledauto = ledauto;
+            NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
+            [defaults setObject:encodedObject forKey:application.defaultBTServer.selectPeripheralInfo.uuid];
             [defaults synchronize];
+            
             
         }
     }
 }
+
+
 
 #pragma mark - UIBarButtonItem Callbacks
 

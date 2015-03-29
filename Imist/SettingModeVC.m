@@ -25,7 +25,10 @@ typedef enum{
 @synthesize title,essenceName;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if(!self.title) self.title = title;
+    //if(!self.title) self.title = title;
+    self.title = self.appDelegate.defaultBTServer.selectPeripheralInfo.name;
+    self.navigationController.navigationBar.topItem.title = self.title;
+
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [leftBtn setFrame:CGRectMake( 0, 0, 44, 44)];
     [leftBtn setImage:[UIImage imageNamed:@"back-arrow.png"] forState:UIControlStateNormal];
@@ -292,6 +295,8 @@ typedef enum{
 
 - (void)setMode:(NSString*)modeString waterStatus:(NSInteger)status{
     NSInteger btnTag;
+    if(!modeString)
+        return;
     if([modeString isEqualToString:@"Relaxation"]){
         btnTag = 1;
     }
@@ -355,6 +360,8 @@ typedef enum{
 
 - (void)showMode:(NSString*)modeString waterStatus:(NSInteger)status{
     NSInteger btnTag;
+    if(!modeString)
+        return;
     if([modeString isEqualToString:@"Relaxation"]){
         btnTag = 1;
     }
@@ -634,11 +641,13 @@ typedef enum{
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    if(self.appDelegate.defaultBTServer.selectPeripheralInfo.mode){
+    /*if(self.appDelegate.defaultBTServer.selectPeripheralInfo.mode)
+    {
         Manager *sharedManager = [Manager sharedManager];
-        //[sharedManager getWaterStatus];
+        [sharedManager getWaterStatus];
         
-    }
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction = GET_WATER_STATUS;
+    }*/
 }
 
 - (void)setDoNotShowHint:(BOOL)yesNo{
@@ -733,6 +742,7 @@ typedef enum{
         else{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showMode:self.modeString waterStatus:NO_MODE];
+                self.modeString = nil;
             });
         }
     }
@@ -760,6 +770,7 @@ typedef enum{
         else{
             dispatch_async(dispatch_get_main_queue(), ^{
             [self showMode:self.modeString waterStatus:NO_MODE];
+            self.modeString = nil;
             });
         }
     }

@@ -335,12 +335,12 @@
     
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 
-    for(NSDictionary *alertItem in self.appDelegate.defaultBTServer.selectPeripheralInfo.alert)
+    /*for(NSDictionary *alertItem in self.appDelegate.defaultBTServer.selectPeripheralInfo.alert)
     {
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
             [self.appDelegate scheduleNotification:alertItem];
         }
-    }
+    }*/
 
     
     [self.navigationController popViewControllerAnimated:YES];

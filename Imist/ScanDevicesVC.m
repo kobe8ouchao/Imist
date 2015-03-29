@@ -135,21 +135,21 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"WATER_STATUS_UPDATED" object:nil];
             }
             else if (state == 0xAA){
-                self.appDelegate.defaultBTServer.selectPeripheralInfo.water = 0;
+                self.appDelegate.defaultBTServer.selectPeripheralInfo.water = [NSNumber numberWithInt:0];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"WATER_STATUS_UPDATED" object:nil];
             }
             if(self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction == INIT_SET_WORK_MODE){
                 SettingUser *thirdViewController = [[SettingUser alloc] init];
-                thirdViewController.title = @"IMIST";//pi.name;
+                thirdViewController.title = self.appDelegate.defaultBTServer.selectPeripheralInfo.name;
                 SettingModeVC *firstViewController = [[SettingModeVC alloc] init];
-                firstViewController.title = @"IMIST";//pi.name;
+                firstViewController.title = self.appDelegate.defaultBTServer.selectPeripheralInfo.name;
                 SettingAlerm *secondViewController = [[SettingAlerm alloc] init];
-                secondViewController.title = @"IMIST";//pi.name;
+                secondViewController.title = self.appDelegate.defaultBTServer.selectPeripheralInfo.name;
                 
                 RDVTabBarController *tabBarController = [[RDVTabBarController alloc] init];
                 [tabBarController setViewControllers:@[firstViewController, secondViewController,thirdViewController]];
                 [self customizeTabBarForController:tabBarController];
-                tabBarController.title = @"IMIST";//pi.name;
+                tabBarController.title = self.appDelegate.defaultBTServer.selectPeripheralInfo.name;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.navigationController pushViewController:tabBarController animated:YES];
                 });
@@ -158,6 +158,12 @@
         }
         else if(self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd == SET_WORK_MODE){
             self.appDelegate.defaultBTServer.selectPeripheralInfo.workingMode = dataByte[2];
+            //save mode
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
+            [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
+            [defaults synchronize];
+
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.deviceTable reloadData];
@@ -199,11 +205,11 @@
     if ([pi.state isEqualToString:@"connected"]) {
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
         SettingUser *thirdViewController = [[SettingUser alloc] init];
-        thirdViewController.title = @"IMIST";//pi.name;
+        thirdViewController.title = pi.name;
         SettingModeVC *firstViewController = [[SettingModeVC alloc] init];
-        firstViewController.title = @"IMIST";//pi.name;
+        firstViewController.title = pi.name;
         SettingAlerm *secondViewController = [[SettingAlerm alloc] init];
-        secondViewController.title = @"IMIST";//pi.name;
+        secondViewController.title = pi.name;
         
         RDVTabBarController *tabBarController = [[RDVTabBarController alloc] init];
         [tabBarController setViewControllers:@[firstViewController, secondViewController,thirdViewController]];
@@ -211,6 +217,11 @@
         tabBarController.title = pi.name;
         [self.navigationController pushViewController:tabBarController animated:YES];
     }else if([pi.state isEqualToString:@"disConnected"]) {
+        /*for(PeriperalInfo * pi in self.appDelegate.defaultBTServer.discoveredPeripherals)
+        {
+            if([pi.state isEqualToString:@"connected"])
+                return;
+        }*/
         [self.appDelegate.defaultBTServer stopScan];
         [ProgressHUD show:@"connecting ..."];
         [self.appDelegate.defaultBTServer connect:self.appDelegate.defaultBTServer.discoveredPeripherals[indexPath.row] withFinishCB:^(CBPeripheral *peripheral, BOOL status, NSError *error) {
@@ -252,10 +263,14 @@
                         pi.doNotShowHint_Soothing = NO;
                         pi.doNotShowHint_Concentration = NO;
                         pi.doNotShowHint_Sensuality = NO;
+                        pi.imist = [NSNumber numberWithInteger:50];
+                        pi.ledlight = [NSNumber numberWithInteger:46];
+                        pi.ledcolor = [NSNumber numberWithInteger:100];
+                        pi.ledauto = [NSNumber numberWithInteger:0];
                         self.appDelegate.defaultBTServer.selectPeripheralInfo = pi;
                         [defaults setObject:encodedObject forKey:pi.uuid];
                         [defaults synchronize];
-                        [self restoreSelPiUserset:pi.mode];
+                        //[self restoreSelPiUserset:pi.mode];
                     }
                     
                     //[cell setState:1];

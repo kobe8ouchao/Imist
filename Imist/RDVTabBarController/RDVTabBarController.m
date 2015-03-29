@@ -49,6 +49,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    AppDelegate *application = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    self.title = application.defaultBTServer.selectPeripheralInfo.name;
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [leftBtn setFrame:CGRectMake( 0, 0, 22, 22)];
     [leftBtn setImage:[UIImage imageNamed:@"setting.png"] forState:UIControlStateNormal];
@@ -75,7 +77,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+    AppDelegate *application = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    self.title = application.defaultBTServer.selectPeripheralInfo.name;
     [self setSelectedIndex:[self selectedIndex]];
     
     [self setTabBarHidden:self.isTabBarHidden animated:NO];
