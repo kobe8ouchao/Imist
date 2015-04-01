@@ -25,6 +25,7 @@
     NSInteger readState;
     
     eventBlock connectBlock;
+    UInt8 seed[5];
 
 //    CBPeripheral *m_Peripheral;
 
@@ -86,6 +87,7 @@ static BTServer* _defaultBTServer = nil;
     
     NSLog(@"init bt server ........");
     _responeData = [[NSMutableData alloc] init];
+    _respPassword = [[NSMutableData alloc] init];
 }
 -(void)finishBLE
 {
@@ -286,6 +288,11 @@ static BTServer* _defaultBTServer = nil;
         pi.localName = [advertisementData objectForKey:CBAdvertisementDataLocalNameKey];
         NSArray *array = [advertisementData objectForKey:CBAdvertisementDataServiceUUIDsKey];
         pi.serviceUUIDS = [array componentsJoinedByString:@"; "];
+        NSData *manuData = [advertisementData objectForKey:CBAdvertisementDataManufacturerDataKey];
+        if([manuData length]>=8){
+            NSRange macRange = {2,6};
+            pi.macAddr = [manuData subdataWithRange:macRange];
+        }
     }
 
     
@@ -351,10 +358,10 @@ static BTServer* _defaultBTServer = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"PERIPHERAL_DISCONNECT" object:nil];
     }
     
-    //if ([self.selectPeripheral.identifier.UUIDString isEqualToString:peripheral.identifier.UUIDString]) {
-    //    NSLog(@"Retrying");
-    //    [self connect:self.selectPeripheralInfo];
-    //}
+    if ([self.selectPeripheral.identifier.UUIDString isEqualToString:peripheral.identifier.UUIDString]) {
+        NSLog(@"Retrying");
+        [self connect:self.selectPeripheralInfo];
+    }
 }
 
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
@@ -442,6 +449,7 @@ static BTServer* _defaultBTServer = nil;
                 NSLog(@"discovered characteristic %@", characteristic.UUID);
                 if([characteristic.UUID isEqual:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]) {
                     NSLog(@"Found Write Characteristic %@", characteristic);
+                    [self sendRandomSeed];
                 }
                 if([characteristic.UUID isEqual:[CBUUID UUIDWithString:NOTIFY_CHARACTERISTIC]]) {
                     [self.selectPeripheral setNotifyValue:YES forCharacteristic:characteristic];
@@ -470,23 +478,33 @@ static BTServer* _defaultBTServer = nil;
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
+    
     if (error){
         readState = KFAILED;
         NSLog(@"Error updating value for characteristic %@ error: %@", characteristic.UUID, [error localizedDescription]);
         return;
     }
-    
     readState = KSUCCESS;
-    BOOL isEnd = [self isTail:characteristic.value];
-    [self.responeData appendData:characteristic.value];
-    if (isEnd) {
-        self.selectCharacteristic = characteristic;
-        if (self.delegate && [(id)self.delegate respondsToSelector:@selector(didReadvalue:)]) {
-           [self.delegate didReadvalue:self.responeData];
+    if([characteristic.UUID isEqual:[CBUUID UUIDWithString:NOTIFY_CHARACTERISTIC]]){
+        BOOL isEnd = [self isTail:characteristic.value];
+        [self.responeData appendData:characteristic.value];
+        if (isEnd) {
+            self.selectCharacteristic = characteristic;
+            if (self.delegate && [(id)self.delegate respondsToSelector:@selector(didReadvalue:)]) {
+                [self.delegate didReadvalue:self.responeData];
+            }
+            [self.responeData setLength:0];
         }
-        [self.responeData setLength:0];
     }
-    
+    else{
+        [self.respPassword appendData:characteristic.value];
+        if([self.respPassword length]>= 5){
+            if([self comparePassword:self.respPassword] == NO){
+                //[self disConnect];
+            }
+            [self.respPassword setLength:0];
+        }
+    }
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForDescriptor:(CBDescriptor *)descriptor error:(NSError *)error
@@ -518,6 +536,49 @@ static BTServer* _defaultBTServer = nil;
 
 - (void)peripheral:(CBPeripheral *)peripheral didModifyServices:(NSArray *)invalidatedServices
 {
+}
+
+- (void) sendRandomSeed
+{
+    
+    seed[0] =arc4random_uniform(250+1);
+    seed[1] =arc4random_uniform(250+1);
+    seed[2] =arc4random_uniform(250+1);
+    seed[3] =arc4random_uniform(250+1);
+    seed[4] =arc4random_uniform(250+1);
+
+    
+    NSData * seedNum = [NSData dataWithBytes:seed length:5];
+    [self writeValue:seedNum withCharacter:[self findCharacteristicFromUUID:[CBUUID UUIDWithString:CODE_TX_CHARACTERISTIC]]];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(200 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
+        [self readPassword];
+    });
+
+}
+
+- (void) readPassword
+{
+    [self readValue:[self findCharacteristicFromUUID:[CBUUID UUIDWithString:CODE_RX_CHARACTERISTIC]]];
+}
+
+- (BOOL) comparePassword:(NSData *) returnedPass
+{
+    UInt8 password_ret[5];
+    const UInt8 * Mac = [self.selectPeripheralInfo.macAddr bytes];
+
+    password_ret[0] = ((Mac[0] ^ seed[0]) / 11) ^ (seed[1] | seed[2]);
+    password_ret[1] = ((Mac[2] + Mac[3] + seed[3]) * 35) ^ (seed[4] - Mac[5]) ;
+    password_ret[2] = (password_ret[0] ^ Mac[3]);
+    password_ret[3] = (password_ret[1] ^ Mac[4]);
+    password_ret[4] = password_ret[0] + password_ret[1] + password_ret[2] + password_ret[3];
+    
+    UInt8 * mcuPass = [returnedPass bytes];
+    for(UInt8 i = 0; i<5; i++)
+    {
+        if(password_ret[i] != mcuPass[i])
+            return NO;
+    }
+    return YES;
 }
 
 -(NSData*)converCMD:(NSData*)cmd

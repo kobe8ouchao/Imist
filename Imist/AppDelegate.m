@@ -196,7 +196,7 @@
 
 - (void) audioPlayerBeginInterruption: (AVAudioPlayer *) player {
     if (player.playing) {
-        [player pause];
+        //[player pause];
         if(self.player1)
             self.interruptedOnPlayer1 = YES;
         if(self.player2)
@@ -306,6 +306,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     NSLog(@"%@",self.defaultBTServer.selectPeripheralInfo.mode);
+    [self stopAudio];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -321,8 +322,8 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Diffuser Wakeup"
                                                         message:notification.alertBody
                                                        delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"OK",nil];
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil,nil];
         alert.delegate = self;
         [alert show];
     }
@@ -360,33 +361,42 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     }
 }
 
--(void) wakeup
+-(void) sendWakeupCmd
+{
+    Manager *sharedManager = [Manager sharedManager];
+    NSMutableData* data = [NSMutableData data];
+    //NSUInteger query = [sharedManager getCurModeCmd:self.defaultBTServer.selectPeripheralInfo.mode];
+    NSInteger query = 13;
+    [data appendBytes:&query length:1];
+    NSUInteger imist = [self.defaultBTServer.selectPeripheralInfo.imist integerValue];
+    [data appendBytes:&imist length:1];
+    NSUInteger led = [self.defaultBTServer.selectPeripheralInfo.ledlight integerValue];
+    if(self.defaultBTServer.selectPeripheralInfo.ledauto)
+        led = 0x65;
+    [data appendBytes:&led length:1];
+    
+    NSUInteger color1 = [sharedManager getColorR:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+    [data appendBytes:&color1 length:1];
+    NSUInteger color2 = [sharedManager getColorG:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+    [data appendBytes:&color2 length:1];
+    NSUInteger color3 = [sharedManager getColorB:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
+    [data appendBytes:&color3 length:1];
+    
+    self.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
+    [self.defaultBTServer writeValue:[self.defaultBTServer converCMD:data] withCharacter:[self.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+}
+
+-(BOOL) wakeup
 {
 
     if([self.defaultBTServer.selectPeripheralInfo.state isEqualToString:@"connected"]){
-        Manager *sharedManager = [Manager sharedManager];
-        NSMutableData* data = [NSMutableData data];
-        //NSUInteger query = [sharedManager getCurModeCmd:self.defaultBTServer.selectPeripheralInfo.mode];
-        NSInteger query = 13;
-        [data appendBytes:&query length:1];
-        NSUInteger imist = [self.defaultBTServer.selectPeripheralInfo.imist integerValue];
-        [data appendBytes:&imist length:1];
-        NSUInteger led = [self.defaultBTServer.selectPeripheralInfo.ledlight integerValue];
-        if(self.defaultBTServer.selectPeripheralInfo.ledauto)
-            led = 0x65;
-        [data appendBytes:&led length:1];
-        
-        NSUInteger color1 = [sharedManager getColorR:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
-        [data appendBytes:&color1 length:1];
-        NSUInteger color2 = [sharedManager getColorG:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
-        [data appendBytes:&color2 length:1];
-        NSUInteger color3 = [sharedManager getColorB:[self.defaultBTServer.selectPeripheralInfo.ledcolor integerValue]];
-        [data appendBytes:&color3 length:1];
-        
-        self.defaultBTServer.selectPeripheralInfo.curCmd = SET_WORK_MODE;
-        [self.defaultBTServer writeValue:[self.defaultBTServer converCMD:data] withCharacter:[self.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+        [self sendWakeupCmd];
+        return 1;
     }
     else{
+        return 0;
+    }
+    /*else{
         NSArray *identifiers = [NSArray arrayWithObjects: self.defaultBTServer.selectPeripheralInfo.peripheral.identifier,nil];
         NSArray *result = [self.defaultBTServer retrievePeripheralsWithIdentifiers:identifiers];
         if([result count]){
@@ -397,30 +407,13 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                     if (status) {
                         self.defaultBTServer.selectPeripheralInfo.state = @"connected";
                         
-                        //[cell setState:1];
-                        [ProgressHUD showSuccess:@"connected success!"];
-                        NSMutableData* data = [NSMutableData data];
-                        NSUInteger query = 0xa1;
-                        [data appendBytes:&query length:1];
-                        NSUInteger imist = 0x00;
-                        [data appendBytes:&imist length:1];
-                        NSUInteger led = 0x00;
-                        [data appendBytes:&led length:1];
-                        NSUInteger color1 = 0x00;
-                        [data appendBytes:&color1 length:1];
-                        NSUInteger color2 = 0x00;
-                        [data appendBytes:&color2 length:1];
-                        NSUInteger color3 = 0x00;
-                        [data appendBytes:&color3 length:1];
-                        
-                        self.defaultBTServer.selectPeripheralInfo.curCmd = GET_WATER_STATUS;
-                        [self.defaultBTServer writeValue:[self.defaultBTServer converCMD:data] withCharacter:[self.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+                        [self sendWakeupCmd];
                     }
                 });
             }];
             
         }
-    }
+    }*/
 }
 
 -(void) playAudio
@@ -475,81 +468,116 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     });
 }
 
-- (void) audioInterrupted:(NSNotification*)notification
+-(void) stopAudio
 {
-    NSDictionary *interuptionDict = notification.userInfo;
-    NSNumber *interuptionType = [interuptionDict valueForKey:AVAudioSessionInterruptionTypeKey];
-    if([interuptionType intValue] == 1)
+    NSString *version = [[UIDevice currentDevice] systemVersion];
+    
+    if([version floatValue] >= 6.0f)
     {
-        //[self initBackgroudTask];
-        [player play];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:AVAudioSessionInterruptionNotification object:nil];
     }
     
+    if(player != nil && [player isPlaying])
+        [player stop];
+    player = nil;
+    
+    if(bgTask != UIBackgroundTaskInvalid)
+    {
+        [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+        bgTask=UIBackgroundTaskInvalid;
+    }
 }
+
+
 
 -(void) playAlarm1
 {
-    static UIBackgroundTaskIdentifier bgTaskId;
-    UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
-    if (self.player1) {
-        NSLog(@"playing player1");
-       
-        if([self.player1 play]){
-            newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
-        }
-        if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
-            [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
-        bgTaskId = newTaskId;
-    }else {
-        
+    if ([self.player3 isPlaying]) {
+        [self.player3 stop];
+        self.player3 = nil;
     }
-    //UIApplicationState state = application.applicationState;
+    if ([self.player2 isPlaying]) {
+        [self.player2 stop];
+        self.player2 = nil;
+    }
+
+        //UIApplicationState state = application.applicationState;
     //    NSLog(@"%@,%d",notification,state);
     //if (state == UIApplicationStateActive) {
-    [self wakeup];
+    if([self wakeup]){
+        static UIBackgroundTaskIdentifier bgTaskId;
+        UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
+        if (self.player1) {
+            NSLog(@"playing player1");
+            
+            if([self.player1 play]){
+                newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
+            }
+            if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
+                [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
+            bgTaskId = newTaskId;
+        }else {
+            
+        }
+    }
 }
 
 -(void) playAlarm2
 {
-    static UIBackgroundTaskIdentifier bgTaskId;
-    UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
-    if (self.player2) {
-        NSLog(@"playing player2");
-        BOOL status = [self.player2 prepareToPlay];
-        NSLog(@"preparePlayer2 state %@",[NSNumber numberWithBool:status]);
-        if([self.player2 play]){
-            newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
-        }
-        if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
-            [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
-        bgTaskId = newTaskId;
-    }else {
-        
+    if ([self.player1 isPlaying]) {
+        [self.player1 stop];
+        self.player1 = nil;
     }
-    
-    [self wakeup];
-}
+    if ([self.player3 isPlaying]) {
+        [self.player3 stop];
+        self.player3 = nil;
+    }
+
+    if([self wakeup]){
+        static UIBackgroundTaskIdentifier bgTaskId;
+        UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
+        if (self.player2) {
+            NSLog(@"playing player2");
+            
+            if([self.player2 play]){
+                newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
+            }
+            if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
+                [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
+            bgTaskId = newTaskId;
+        }else {
+            
+        }
+    }}
 
 
 -(void) playAlarm3
 {
-    static UIBackgroundTaskIdentifier bgTaskId;
-    UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
-    if (self.player3) {
-        BOOL status = [self.player3 prepareToPlay];
-        NSLog(@"preparePlayer3 state %@",[NSNumber numberWithBool:status]);
-        [self.player3 prepareToPlay];
-        NSLog(@"playing player3");
-        if([self.player3 play]){
-            newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
-        }
-        if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
-            [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
-        bgTaskId = newTaskId;
-    }else {
-        
+    if ([self.player1 isPlaying]) {
+        [self.player1 stop];
+        self.player1 = nil;
     }
-    [self wakeup];
+    if ([self.player2 isPlaying]) {
+        [self.player2 stop];
+        self.player2 = nil;
+    }
+
+    if([self wakeup]){
+        static UIBackgroundTaskIdentifier bgTaskId;
+        UIBackgroundTaskIdentifier newTaskId = UIBackgroundTaskInvalid;
+        if (self.player3) {
+            NSLog(@"playing player3");
+            
+            if([self.player3 play]){
+                newTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:NULL];
+            }
+            if (newTaskId != UIBackgroundTaskInvalid && bgTaskId != UIBackgroundTaskInvalid)
+                [[UIApplication sharedApplication] endBackgroundTask: bgTaskId];
+            bgTaskId = newTaskId;
+        }else {
+            
+        }
+    }
 }
 
 
@@ -1031,21 +1059,13 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    switch (buttonIndex) {
-        case 0:
-            NSLog(@"%ld",buttonIndex);
-            break;
-        case 1:
-            [self setLastMode];
-        default:
-            break;
-    }
+    //[self setLastMode];
 }
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
     NSLog(@"播放结束");
-    [self setLastMode];
+    //[self setLastMode];
 }
 
 - (void) remoteControlReceivedWithEvent: (UIEvent *) receivedEvent {
@@ -1066,7 +1086,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                     [self.player3 stop];
                     self.player3 = nil;
                 }
-                [self setLastMode];
+                //[self setLastMode];
                 break;
                 
             case UIEventSubtypeRemoteControlPreviousTrack:

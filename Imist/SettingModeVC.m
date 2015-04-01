@@ -59,8 +59,14 @@ typedef enum{
     {
         Manager *sharedManager = [Manager sharedManager];
         [sharedManager getWaterStatus];
+        if(self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction == INIT_SET_WORK_MODE)
+        {
+            self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction = SET_WORK_MODE;
+        }
+        else{
+            self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction = SHOW_WORK_MODE;
+        }
         
-        self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction = SET_WORK_MODE;
     }
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(waterStatusUpdated)
@@ -738,6 +744,12 @@ typedef enum{
                     });
                 }
             }
+            else if(self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction == SHOW_WORK_MODE)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self showMode:self.modeString waterStatus:HAS_WATER_AND_WORK];
+                });
+            }
         }
         else{
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -779,7 +791,7 @@ typedef enum{
 
 - (void)showAddWaterAlert
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please add water into water" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Please add water into water" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     alertView.tag = 21;
     [alertView show];
 }

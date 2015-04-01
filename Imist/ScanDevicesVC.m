@@ -41,7 +41,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // setup navigationBar
-    if(!self.title) self.title = @"CONNECT";
+    if(!self.title) self.title = @"Connect";
     
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [leftBtn setFrame:CGRectMake( 0, 0, 44, 44)];
@@ -119,7 +119,7 @@
         if (reloading) {
             reloading = NO;
         }
-        self.title = @"CONNECT";
+        self.title = @"Connect";
     });
 }
 -(void)didReadvalue:(NSData*)data
@@ -217,11 +217,11 @@
         tabBarController.title = pi.name;
         [self.navigationController pushViewController:tabBarController animated:YES];
     }else if([pi.state isEqualToString:@"disConnected"]) {
-        /*for(PeriperalInfo * pi in self.appDelegate.defaultBTServer.discoveredPeripherals)
+        for(PeriperalInfo * pi in self.appDelegate.defaultBTServer.discoveredPeripherals)
         {
             if([pi.state isEqualToString:@"connected"])
                 return;
-        }*/
+        }
         [self.appDelegate.defaultBTServer stopScan];
         [ProgressHUD show:@"connecting ..."];
         [self.appDelegate.defaultBTServer connect:self.appDelegate.defaultBTServer.discoveredPeripherals[indexPath.row] withFinishCB:^(CBPeripheral *peripheral, BOOL status, NSError *error) {

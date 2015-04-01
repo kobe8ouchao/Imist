@@ -17,6 +17,12 @@
 		A57D2FED1ABA5A9A00FC1264 /* bg_btn_disconnect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A57D2FEC1ABA5A9A00FC1264 /* bg_btn_disconnect@2x.png */; };
 		A57D2FF01ABC20A400FC1264 /* ShareVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A57D2FEF1ABC20A400FC1264 /* ShareVC.m */; };
 		A57D2FF31ABC4E6600FC1264 /* SettingMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = A57D2FF21ABC4E6600FC1264 /* SettingMenu.m */; };
+		A5BEA1291ACB814200765B00 /* minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5BEA1251ACB814200765B00 /* minus@2x.png */; };
+		A5BEA12A1ACB814200765B00 /* no@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5BEA1261ACB814200765B00 /* no@2x.png */; };
+		A5BEA12B1ACB814200765B00 /* plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5BEA1271ACB814200765B00 /* plus@2x.png */; };
+		A5BEA12C1ACB814200765B00 /* yes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5BEA1281ACB814200765B00 /* yes@2x.png */; };
+		A5BEA12E1ACB954500765B00 /* bg_cell_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5BEA12D1ACB954500765B00 /* bg_cell_white@2x.png */; };
+		A5C94C511ACA5F99009A6C6D /* bg_btn_red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C94C501ACA5F99009A6C6D /* bg_btn_red@2x.png */; };
 		A5D19AC01AC6DE8C000A8D29 /* aboutScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5D19ABF1AC6DE8C000A8D29 /* aboutScreen@2x.png */; };
 		A5D19AC41AC7F5C0000A8D29 /* icon_60pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5D19AC11AC7F5C0000A8D29 /* icon_60pt@2x.png */; };
 		A5D19AC51AC7F5C0000A8D29 /* launch_iphone6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5D19AC21AC7F5C0000A8D29 /* launch_iphone6@2x.png */; };
@@ -170,6 +176,12 @@
 		A57D2FEF1ABC20A400FC1264 /* ShareVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareVC.m; sourceTree = "<group>"; };
 		A57D2FF11ABC4E6600FC1264 /* SettingMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingMenu.h; sourceTree = "<group>"; };
 		A57D2FF21ABC4E6600FC1264 /* SettingMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingMenu.m; sourceTree = "<group>"; };
+		A5BEA1251ACB814200765B00 /* minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minus@2x.png"; sourceTree = "<group>"; };
+		A5BEA1261ACB814200765B00 /* no@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "no@2x.png"; sourceTree = "<group>"; };
+		A5BEA1271ACB814200765B00 /* plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus@2x.png"; sourceTree = "<group>"; };
+		A5BEA1281ACB814200765B00 /* yes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yes@2x.png"; sourceTree = "<group>"; };
+		A5BEA12D1ACB954500765B00 /* bg_cell_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_cell_white@2x.png"; sourceTree = "<group>"; };
+		A5C94C501ACA5F99009A6C6D /* bg_btn_red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_btn_red@2x.png"; sourceTree = "<group>"; };
 		A5D19ABF1AC6DE8C000A8D29 /* aboutScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aboutScreen@2x.png"; sourceTree = "<group>"; };
 		A5D19AC11AC7F5C0000A8D29 /* icon_60pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_60pt@2x.png"; sourceTree = "<group>"; };
 		A5D19AC21AC7F5C0000A8D29 /* launch_iphone6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launch_iphone6@2x.png"; sourceTree = "<group>"; };
@@ -432,6 +444,12 @@
 		C38819961A523F8C004A98CA /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				A5BEA12D1ACB954500765B00 /* bg_cell_white@2x.png */,
+				A5BEA1251ACB814200765B00 /* minus@2x.png */,
+				A5BEA1261ACB814200765B00 /* no@2x.png */,
+				A5BEA1271ACB814200765B00 /* plus@2x.png */,
+				A5BEA1281ACB814200765B00 /* yes@2x.png */,
+				A5C94C501ACA5F99009A6C6D /* bg_btn_red@2x.png */,
 				A5D19AC11AC7F5C0000A8D29 /* icon_60pt@2x.png */,
 				A5D19AC21AC7F5C0000A8D29 /* launch_iphone6@2x.png */,
 				A5D19AC31AC7F5C0000A8D29 /* launch_iphone6P@3x.png */,
@@ -797,6 +815,7 @@
 				C3D7CA411A847FCA00FBE9CB /* app40@2x.png in Resources */,
 				C33F4E241A7DFC10009A497A /* tutorial_eng6_4.png in Resources */,
 				C33F4E221A7DFC10009A497A /* tutorial_eng4_4.png in Resources */,
+				A5C94C511ACA5F99009A6C6D /* bg_btn_red@2x.png in Resources */,
 				C33644151A78ABAE0047AAE5 /* ico_navibtn_setting@2x.png in Resources */,
 				A5D19AC41AC7F5C0000A8D29 /* icon_60pt@2x.png in Resources */,
 				C33F4E071A7BCD41009A497A /* bg_btn_gray@2x.png in Resources */,
@@ -814,6 +833,7 @@
 				C3E7C1891A85DB4100C58294 /* Wave.mp3 in Resources */,
 				C388199C1A523FC0004A98CA /* back-arrow.png in Resources */,
 				C33F4E291A7E07ED009A497A /* app41@2x.png in Resources */,
+				A5BEA1291ACB814200765B00 /* minus@2x.png in Resources */,
 				C3E8D7091AA3110500301B6B /* user_set03@2x.png in Resources */,
 				C33F4E251A7DFC10009A497A /* tutorial_eng7_4.png in Resources */,
 				C33F4E1F1A7DFC10009A497A /* tutorial_eng1_4.png in Resources */,
@@ -827,12 +847,14 @@
 				C3DFE9071A6CB6F20044F52E /* first_normal@2x.png in Resources */,
 				C3D7CA3E1A84760B00FBE9CB /* ico_minus2@2x.png in Resources */,
 				C388199D1A523FC0004A98CA /* back-arrow@2x.png in Resources */,
+				A5BEA12A1ACB814200765B00 /* no@2x.png in Resources */,
 				C3C4466D1A875BCB006D3D76 /* setting@2x.png in Resources */,
 				C33F4E201A7DFC10009A497A /* tutorial_eng2_4.png in Resources */,
 				C336440F1A78AB5C0047AAE5 /* bg_btn_blue@2x.png in Resources */,
 				C3422B531A56C6020095B6AA /* rh_whirl@2x.png in Resources */,
 				C33F4E121A7BE46F009A497A /* tutorial_eng_1.png in Resources */,
 				C388199F1A523FC0004A98CA /* menu-icon.png in Resources */,
+				A5BEA12B1ACB814200765B00 /* plus@2x.png in Resources */,
 				C33F4E151A7BE46F009A497A /* tutorial_eng_4.png in Resources */,
 				C33F4E2B1A7E07ED009A497A /* app43@2x.png in Resources */,
 				C3E7C1871A85DB4100C58294 /* Hill stream.mp3 in Resources */,
@@ -842,6 +864,7 @@
 				C3E7C18A1A85DB4100C58294 /* Zen.mp3 in Resources */,
 				C33644021A78A20E0047AAE5 /* ico_sidemenu_share@2x.png in Resources */,
 				C33F4E171A7BE46F009A497A /* tutorial_eng.png in Resources */,
+				A5BEA12E1ACB954500765B00 /* bg_cell_white@2x.png in Resources */,
 				C3DFE9191A6CB6F20044F52E /* third_selected@2x.png in Resources */,
 				C33644091A78AA1F0047AAE5 /* bg_scancell_gray@2x.png in Resources */,
 				A56C26611AA5E20600285B64 /* first_selected@2x.png in Resources */,
@@ -854,6 +877,7 @@
 				C33F4E2A1A7E07ED009A497A /* app42@2x.png in Resources */,
 				C33F4E231A7DFC10009A497A /* tutorial_eng5_4.png in Resources */,
 				C388199E1A523FC0004A98CA /* Default-568h@2x.png in Resources */,
+				A5BEA12C1ACB814200765B00 /* yes@2x.png in Resources */,
 				A5D19AC01AC6DE8C000A8D29 /* aboutScreen@2x.png in Resources */,
 				A56C26651AA5E45700285B64 /* second_normal@2x.png in Resources */,
 				A56C26631AA5E20600285B64 /* third_selected@2x.png in Resources */,

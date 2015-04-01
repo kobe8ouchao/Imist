@@ -70,7 +70,7 @@
     [self.view addSubview:lable];
     
     UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    sureBtn.frame = CGRectMake(self.view.frame.size.width - 20 - 115, 310, 115, 44);
+    sureBtn.frame = CGRectMake(self.view.frame.size.width - 35 - 115, 310, 100, 44);
     if(1 == self.ledAutoEnable)
         [sureBtn setBackgroundImage:[UIImage imageNamed:@"user_set05.png"] forState:UIControlStateNormal];
     else
@@ -92,7 +92,7 @@
     [noBtn setTitle:@"" forState:UIControlStateNormal];
     noBtn.tag = 200;
     [noBtn setBackgroundColor:[UIColor clearColor]];
-    noBtn.frame = CGRectMake(20, 310, 115, 44);
+    noBtn.frame = CGRectMake(50, 310, 100, 44);
     [noBtn addTarget:self action:@selector(btnNo:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:noBtn];
     
@@ -134,8 +134,8 @@
     imgbg.backgroundColor = [UIColor clearColor];
     [bg addSubview:imgbg];
     
-    UIImageView *minus = [[UIImageView alloc] initWithFrame:CGRectMake(5, 24, 30 ,30)];
-    minus.image = [UIImage imageNamed:@"user_set04.png"];
+    UIImageView *minus = [[UIImageView alloc] initWithFrame:CGRectMake(10, 30, 20 ,20)];
+    minus.image = [UIImage imageNamed:@"minus.png"];
     minus.backgroundColor = [UIColor clearColor];
     [bg addSubview:minus];
     
@@ -154,8 +154,8 @@
     [slider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     [bg addSubview:slider];
     
-    UIImageView *plus = [[UIImageView alloc] initWithFrame:CGRectMake(bg.frame.size.width - 35, 24, 30 ,30)];
-    plus.image = [UIImage imageNamed:@"user_set03.png"];
+    UIImageView *plus = [[UIImageView alloc] initWithFrame:CGRectMake(bg.frame.size.width - 30, 30, 20 ,20)];
+    plus.image = [UIImage imageNamed:@"plus.png"];
     plus.backgroundColor = [UIColor clearColor];
     [bg addSubview:plus];
     
@@ -362,6 +362,11 @@
     self.lastImistValue = self.imistValue;
     self.lastBrightnessValue = self.brightnessValue;
     self.lastColorValue = self.colorValue;
+    Manager *sharedManager = [Manager sharedManager];
+    self.color1Value = [sharedManager getColorR:self.colorValue];
+    self.color2Value = [sharedManager getColorG:self.colorValue];
+    self.color3Value = [sharedManager getColorB:self.colorValue];
+    
     slider1.value = self.imistValue;
     slider2.value = self.brightnessValue;
     slider.value = self.colorValue;
@@ -557,24 +562,16 @@
     NSNumber *ledAutoObj = [NSNumber numberWithInteger:self.ledAutoEnable ];
     if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"2 Hours"]){
         query = 9;
-        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset2Hour setValue:ledAutoObj forKey:@"auto"];
     }
     else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"4 Hours"]){
         query = 10;
-        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset4Hour setValue:ledAutoObj forKey:@"auto"];
     }
     else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"8 Hours"]){
         query = 11;
-        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset8Hour setValue:ledAutoObj forKey:@"auto"];
     }
     else if([self.appDelegate.defaultBTServer.selectPeripheralInfo.mode isEqualToString:@"16 Hours"]){
         query = 12;
-        [self.appDelegate.defaultBTServer.selectPeripheralInfo.userset16Hour setValue:ledAutoObj forKey:@"auto"];
     }
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:self.appDelegate.defaultBTServer.selectPeripheralInfo];
-    [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
-    [defaults synchronize];
 
     [data appendBytes:&query length:1];
     NSUInteger imist = self.imistValue;

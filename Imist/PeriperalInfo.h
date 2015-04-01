@@ -48,12 +48,14 @@
 @property (nonatomic, assign) BOOL doNotShowHint_Concentration;
 @property (nonatomic, assign) BOOL doNotShowHint_Sensuality;
 @property (nonatomic, assign) BOOL diffuserWorkingState;
+@property (nonatomic, strong) NSData *macAddr;
 typedef enum{
     IDLE,
     GET_WATER_STATUS,
     GET_WORK_MODE,
     SET_WORK_MODE,
     INIT_SET_WORK_MODE,
-    SHOW_HINT
+    SHOW_HINT,
+    SHOW_WORK_MODE,
 }Cmd;
 @end

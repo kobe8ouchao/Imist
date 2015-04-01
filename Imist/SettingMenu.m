@@ -17,21 +17,40 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Advanced Setting";
+    self.title = @"";
 
+    UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake((self.view.frame.size.width-200)/2, 70, 200 ,18)];
+    [lable setFont:[UIFont boldSystemFontOfSize:18]];
+    lable.textAlignment = NSTextAlignmentCenter;
+    lable.text = @"Rename IMIST";
+    lable.textColor = [UIColor colorWith256Red:129 green:189 blue:82];
+    [self.view addSubview:lable];
+
+    
     UIButton *changeNameBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [changeNameBtn setTitle:@"Rename IMIST" forState:UIControlStateNormal];
+    [changeNameBtn setTitleColor:[UIColor colorWith256Red:132 green:195 blue:38]forState:UIControlStateNormal];
+    AppDelegate *application = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [changeNameBtn setTitle:application.defaultBTServer.selectPeripheralInfo.name forState:UIControlStateNormal];
     [changeNameBtn setBackgroundColor:[UIColor clearColor]];
-    [changeNameBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
-    changeNameBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, 100, 140, 44);
+    [changeNameBtn setBackgroundImage:[UIImage imageNamed:@"bg_cell_white"] forState:UIControlStateNormal];
+    changeNameBtn.frame = CGRectMake((self.view.frame.size.width - 300)/2, 100, 300, 44);
     [changeNameBtn addTarget:self action:@selector(changeName:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:changeNameBtn];
     
+    
+    UILabel *lable1 = [[UILabel alloc] initWithFrame:CGRectMake((self.view.frame.size.width-200)/2, 190, 200 ,18)];
+    [lable1 setFont:[UIFont boldSystemFontOfSize:18]];
+    lable1.textAlignment = NSTextAlignmentCenter;
+    lable1.text = @"Reset The Diffuser";
+    lable1.textColor = [UIColor colorWith256Red:129 green:189 blue:82];
+    [self.view addSubview:lable1];
+    
     UIButton *factoryResetBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [factoryResetBtn setTitleColor:[UIColor colorWith256Red:132 green:195 blue:38]forState:UIControlStateNormal];
     [factoryResetBtn setTitle:@"Factory Reset" forState:UIControlStateNormal];
     [factoryResetBtn setBackgroundColor:[UIColor clearColor]];
-    [factoryResetBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
-    factoryResetBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, 200, 140, 44);
+    [factoryResetBtn setBackgroundImage:[UIImage imageNamed:@"bg_cell_white"] forState:UIControlStateNormal];
+    factoryResetBtn.frame = CGRectMake((self.view.frame.size.width - 300)/2, 220, 300, 44);
     [factoryResetBtn addTarget:self action:@selector(factoryReset:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:factoryResetBtn];
 
@@ -46,17 +65,19 @@
 
 -(void)changeName:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Rename machine" message:nil delegate:nil cancelButtonTitle:InterNation(@"cancel") otherButtonTitles:InterNation(@"confirm") ,nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Rename IMIST" message:nil delegate:nil cancelButtonTitle:InterNation(@"cancel") otherButtonTitles:InterNation(@"confirm") ,nil];
     alert.tag = 222;
     alert.delegate = self;
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeDefault];
+    AppDelegate *application = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    [alert textFieldAtIndex:0].text = application.defaultBTServer.selectPeripheralInfo.name;
     [alert show];
 }
 
 -(void)factoryReset:(id)sender
 {
-    UIAlertView *factoryResetPop = [[UIAlertView alloc] initWithTitle:@"Reset" message:@"Do you really want to reset this diffuser's setting?" delegate:nil cancelButtonTitle:InterNation(@"cancel") otherButtonTitles:InterNation(@"confirm") ,nil];
+    UIAlertView *factoryResetPop = [[UIAlertView alloc] initWithTitle:@"Reset" message:@"Do you really want to reset the diffuser?" delegate:nil cancelButtonTitle:InterNation(@"cancel") otherButtonTitles:InterNation(@"confirm") ,nil];
     factoryResetPop.tag = 221;
     factoryResetPop.delegate = self;
     factoryResetPop.alertViewStyle = UIAlertViewStyleDefault;

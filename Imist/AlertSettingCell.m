@@ -32,7 +32,7 @@
         lable.textColor = [UIColor whiteColor];
         [bg addSubview:lable];
         
-        UILabel *alarmName = [[UILabel alloc] initWithFrame:CGRectMake(100, 11, 120 ,18)];
+        UILabel *alarmName = [[UILabel alloc] initWithFrame:CGRectMake(120, 11, 120 ,18)];
         [alarmName setFont:[UIFont boldSystemFontOfSize:18]];
         alarmName.tag = 2;
         alarmName.textAlignment = NSTextAlignmentLeft;
@@ -46,7 +46,7 @@
 //        weekday.textColor = [UIColor whiteColor];
 //        [bg addSubview:weekday];
         
-        UISwitch *showBuzzerSwich = [[UISwitch alloc] initWithFrame:CGRectMake(bg.frame.size.width - 40 - 20,(bg.frame.size.height - 40)/2 + 4,40.0,40.0)];
+        UISwitch *showBuzzerSwich = [[UISwitch alloc] initWithFrame:CGRectMake(bg.frame.size.width - 40 - 10,(bg.frame.size.height - 40)/2 + 4,40.0,40.0)];
         showBuzzerSwich.tintColor=[UIColor whiteColor];
         showBuzzerSwich.onTintColor=[UIColor colorWith256Red:192 green:238 blue:32];
         [showBuzzerSwich addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];

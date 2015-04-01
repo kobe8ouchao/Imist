@@ -37,7 +37,7 @@
     self.navigationItem.rightBarButtonItem = saveItem;
     
     self.all = [NSArray arrayWithObjects:@"AM",@"PM",nil];
-    self.hours = [NSArray arrayWithObjects:@"00",@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",nil];
+    self.hours = [NSArray arrayWithObjects:@"00",@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23",nil];
     self.minis = [NSArray arrayWithObjects:@"00",@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23",@"24",@"25",@"26",@"27",@"28",@"29",@"30",@"31",@"32",@"33",@"34",@"35",@"36",@"37",@"38",@"39",@"40",@"41",@"42",@"43",@"44",@"45",@"46",@"47",@"48",@"49",@"50",@"51",@"52",@"53",@"54",@"55",@"56",@"57",@"58",@"59",nil];
     UIPickerView * _pickerview = [[UIPickerView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 200)/2, 40, 200, 200)];
     _pickerview.delegate=self;
@@ -45,14 +45,15 @@
     if (self.editAlert) {
         NSString *strTime = [self.editAlert objectForKey:@"time"];
         NSArray *arrTime = [strTime componentsSeparatedByString:@":"];
-        if ([[arrTime objectAtIndex:0] integerValue] >= 12) {
+        /*if ([[arrTime objectAtIndex:0] integerValue] >= 12) {
             [_pickerview selectRow:1 inComponent:0 animated:NO];
             [_pickerview selectRow:[[arrTime objectAtIndex:0] integerValue] - 12 inComponent:1 animated:NO];
         }else {
             [_pickerview selectRow:0 inComponent:0 animated:NO];
             [_pickerview selectRow:[[arrTime objectAtIndex:0] integerValue] inComponent:1 animated:NO];
-        }
-        [_pickerview selectRow:[[arrTime objectAtIndex:1] integerValue] inComponent:2 animated:NO];
+        }*/
+        [_pickerview selectRow:[[arrTime objectAtIndex:0] integerValue] inComponent:0 animated:NO];
+        [_pickerview selectRow:[[arrTime objectAtIndex:1] integerValue] inComponent:1 animated:NO];
         self.days = [self.editAlert objectForKey:@"repeat"];
         self.sound = [self.editAlert objectForKey:@"sound"];
         self.isAlarmOpen = [self.editAlert objectForKey:@"isOpen"];
@@ -69,14 +70,15 @@
         NSUInteger hour = [dateComponent hour];
         NSUInteger minute = [dateComponent minute];
         
-        if (hour >= 12) {
+        /*if (hour >= 12) {
             [_pickerview selectRow:1 inComponent:0 animated:NO];
             [_pickerview selectRow:(hour-12) inComponent:1 animated:NO];
         }else {
             [_pickerview selectRow:0 inComponent:0 animated:NO];
             [_pickerview selectRow:hour inComponent:1 animated:NO];
-        }
-        [_pickerview selectRow:minute inComponent:2 animated:NO];
+        }*/
+        [_pickerview selectRow:hour inComponent:0 animated:NO];
+        [_pickerview selectRow:minute inComponent:1 animated:NO];
 
     }
     self.pickerview = _pickerview;
@@ -254,27 +256,38 @@
 /* return cor of pickerview*/
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    return 3;
+    return 2;
 }
 /*return row number*/
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    if (component == 0) {
+    /*if (component == 0) {
         return [self.all count];
     }else if(1 == component) {
         return [self.hours count];
     }else {
         return [self.minis count];
+    }*/
+    if (component == 0) {
+        return [self.hours count];
+    }else{
+        return [self.minis count];
     }
-    
 }
 
 /*return component row str*/
 -(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    if (component == 0) {
+    /*if (component == 0) {
         return [self.all objectAtIndex:row];
     }else if(1 == component) {
+        row = row % [self.hours count];
+        return [self.hours objectAtIndex:row];
+    }else {
+        row = row % [self.minis count];
+        return [self.minis objectAtIndex:row];
+    }*/
+    if(0 == component) {
         row = row % [self.hours count];
         return [self.hours objectAtIndex:row];
     }else {
@@ -290,11 +303,11 @@
 }
 
 -(void)pickerViewLoaded: (NSInteger)blah {
-    if (blah == 1) {
+    if (blah == 0) {
         NSUInteger max = [self.hours count];
         NSUInteger base10 = (max/2)-(max/2)%[self.hours count];
-        [self.pickerview selectRow:[self.pickerview selectedRowInComponent:blah]%12+base10 inComponent:0 animated:false];
-    }else if(blah == 2) {
+        [self.pickerview selectRow:[self.pickerview selectedRowInComponent:blah]%24+base10 inComponent:0 animated:false];
+    }else if(blah == 1) {
         NSUInteger max = [self.minis count];
         NSUInteger base10 = (max/2)-(max/2)%[self.minis count];
         [self.pickerview selectRow:[self.pickerview selectedRowInComponent:blah]%60+base10 inComponent:0 animated:false];
@@ -303,16 +316,16 @@
 
 -(void) save
 {
-    NSInteger row = [self.pickerview selectedRowInComponent:0];
-    NSInteger hrow = [self.pickerview selectedRowInComponent:1];
-    NSInteger mrow = [self.pickerview selectedRowInComponent:2];
-    self.ampm = [all objectAtIndex:row];
+    //NSInteger row = [self.pickerview selectedRowInComponent:0];
+    NSInteger hrow = [self.pickerview selectedRowInComponent:0];
+    NSInteger mrow = [self.pickerview selectedRowInComponent:1];
+    //self.ampm = [all objectAtIndex:row];
     self.selectedHour = [self.hours objectAtIndex:hrow];
     self.selectedMinis = [self.minis objectAtIndex:mrow];
-    if ([self.ampm isEqualToString:@"PM"]) {
+    /*if ([self.ampm isEqualToString:@"PM"]) {
         NSInteger hourss = [self.selectedHour integerValue] + 12;
         self.selectedHour = [NSString stringWithFormat:@"%ld",(long)hourss];
-    }
+    }*/
     NSString *times = [NSString stringWithFormat:@"%@:%@",self.selectedHour,self.selectedMinis];
     NSMutableDictionary * dictionary;
     
@@ -335,12 +348,12 @@
     
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 
-    /*for(NSDictionary *alertItem in self.appDelegate.defaultBTServer.selectPeripheralInfo.alert)
+    for(NSDictionary *alertItem in self.appDelegate.defaultBTServer.selectPeripheralInfo.alert)
     {
         if([[alertItem objectForKey:@"isOpen"] boolValue] == YES){
             [self.appDelegate scheduleNotification:alertItem];
         }
-    }*/
+    }
 
     
     [self.navigationController popViewControllerAnimated:YES];

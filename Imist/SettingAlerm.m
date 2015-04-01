@@ -112,6 +112,25 @@
     cell.delegate = self;
     cell.name = [alertItem objectForKey:@"alarmName"];
     cell.time = [alertItem objectForKey:@"time"];
+    
+    /*NSString *strTime = [alertItem objectForKey:@"time"];
+    NSArray *arrTime = [strTime componentsSeparatedByString:@":"];
+    
+    NSMutableString * time = [[NSMutableString alloc]init];
+    if ([[arrTime objectAtIndex:0] integerValue] >= 12) {
+        [time appendString:@"PM "];
+        [time appendString:[NSString stringWithFormat:@"%ld",[arrTime[0] integerValue]-12]];
+        [time appendString:@":"];
+        [time appendString:arrTime[1]];
+    }
+    else{
+        [time appendString:@"AM "];
+        [time appendString:[NSString stringWithFormat:@"%ld",[arrTime[0] integerValue]]];
+        [time appendString:@":"];
+        [time appendString:arrTime[1]];
+    }
+    cell.time = time;*/
+    
     cell.days = [alertItem objectForKey:@"repeat"];
     cell.isOpen = [[alertItem objectForKey:@"isOpen"] boolValue];
     [cell setStyle];

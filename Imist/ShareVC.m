@@ -9,7 +9,7 @@
 #import "ShareVC.h"
 #import "MFSideMenu.h"
 
-@interface ShareVC ()
+@interface ShareVC ()<UIAlertViewDelegate>
 
 @end
 
@@ -24,10 +24,10 @@
     [leftBtn addTarget:self action:@selector(leftSideMenuButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
     self.navigationItem.leftBarButtonItem = leftItem;
-    self.navigationController.navigationBar.translucent=YES;
+    self.navigationController.navigationBar.translucent=NO;
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
-    UIButton *facebookBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    /*UIButton *facebookBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [facebookBtn setTitle:@"Facebook" forState:UIControlStateNormal];
     [facebookBtn setBackgroundColor:[UIColor clearColor]];
     [facebookBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
@@ -57,7 +57,8 @@
     [shareBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];
     shareBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, 340, 140, 44);
     [shareBtn addTarget:self action:@selector(ShareButton:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:shareBtn];
+    [self.view addSubview:shareBtn];*/
+    [self shareContent];
 
 
     // Do any additional setup after loading the view, typically from a nib.
@@ -86,7 +87,7 @@
 }
 
 -(void)shareContent{
-    NSString * message = @"IMSIT is cool";
+    NSString * message = @"IMSIT is cool! Come to explore this Smart Arooma diffuser by downloading IMIST APP on the APP Store or getting in on Google Play.";
     NSURL *url = [NSURL URLWithString:@"http://www.ghcn.com/"];
     UIImage * image = [UIImage imageNamed:@"aboutScreen"];
     NSArray * shareItems = @[message, url, image];
@@ -101,6 +102,8 @@
             output = @"Post Successfull";
 
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Share to social" message:output delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        alert.tag = 222;
+        alert.delegate = self;
         [alert show];
 
     }];
@@ -111,7 +114,7 @@
     if([SLComposeViewController isAvailableForServiceType:serviceType]){
         SLComposeViewController *shareView = [SLComposeViewController composeViewControllerForServiceType:serviceType];
         
-        [shareView setInitialText:@"IMSIT is cool"];
+        [shareView setInitialText:@"IMSIT is cool! Come to explore this Smart Arooma diffuser by downloading IMIST APP on the APP Store or getting in on Google Play."];
         [shareView addURL:[NSURL URLWithString:@"http://www.ghcn.com/"]];
         [shareView addImage:[UIImage imageNamed:@"aboutScreen"]];
         [shareView setCompletionHandler:^(SLComposeViewControllerResult result) {
@@ -131,7 +134,12 @@
             if (result != SLComposeViewControllerResultCancelled)
             {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Share to social" message:output delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                alert.tag = 222;
+                alert.delegate = self;
                 [alert show];
+            }
+            else{
+                [self.navigationController popViewControllerAnimated:YES];
             }
         }];
 
@@ -146,10 +154,18 @@
                  delegate:self
                  cancelButtonTitle:@"OK"
                  otherButtonTitles:nil];
-        
+        alert.tag = 222;
+        alert.delegate = self;
         [alert show];
     }
     
+}
+
+-(void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag==222) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark - UIBarButtonItem Callbacks

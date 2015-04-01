@@ -58,7 +58,7 @@ typedef enum{
 
 //@property (strong,nonatomic)NSMutableArray *services;
 @property (nonatomic, retain) NSMutableData  *responeData;
-
+@property (nonatomic, retain) NSMutableData  *respPassword;
 //
 -(void)startScan;
 -(void)startScan:(NSInteger)forLastTime;
