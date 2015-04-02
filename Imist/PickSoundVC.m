@@ -17,7 +17,9 @@
 @property (nonatomic,strong) NSMutableArray *defautlist;
 @property (nonatomic,strong) NSMutableArray *soundlist;
 @property (nonatomic,strong) NSMutableArray *musiclist;
+@property (nonatomic,strong) NSMutableArray *selectedMusiclist;
 @property (nonatomic,strong) AVAudioPlayer *player;
+@property (nonatomic,strong) NSMutableDictionary *musicDictionary;
 @end
 
 @implementation PickSoundVC
@@ -69,9 +71,9 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if(1 == section){
-        return @"Music sound";
+        return @"SONGS";
     }else if(0 == section){
-        return @"Imist sound";
+        return @"IMIST SOUNDS";
     }else return @"None";
     
 }
@@ -185,6 +187,35 @@
     }
     
     return cell;
+}
+
+- (void) mediaPicker: (MPMediaPickerController *) mediaPicker didPickMediaItems: (MPMediaItemCollection *) collection {
+    
+    
+    MPMediaItem *item = [[collection items] objectAtIndex:0];
+    
+    self.selectedSoundName = [item valueForProperty:MPMediaItemPropertyTitle];
+    [self.musicDictionary setValue:[item valueForProperty:MPMediaItemPropertyTitle] forKey:@"title"];
+    [self.musicDictionary setValue:[item valueForProperty:MPMediaItemPropertyAssetURL]forKey:@"url"];
+    
+    NSURL *url = [item valueForProperty:MPMediaItemPropertyAssetURL];
+    //Play the item using AVPlayer
+    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+    [self.player play];
+}
+
+-(void)mediaPickerDidCancel:(MPMediaPickerController *)mediaPicker{
+    /*insert your code*/
+    [self dismissModalViewControllerAnimated:YES];
+    [self.player stop];
+   
+    if([self.selectedMusiclist containsObject:self.musicDictionary] == NO){
+        [self.selectedMusiclist addObject:self.musicDictionary];
+        NSIndexPath *indexPathAudioRow = [NSIndexPath indexPathForRow:[self.selectedMusiclist count]-1 inSection:1];
+        UITableViewCell *cell = [self.soundTable cellForRowAtIndexPath:indexPathAudioRow];
+        cell.detailTextLabel.text = self.selectedSoundName;
+
+    }
 }
 
 - (void)loadSound

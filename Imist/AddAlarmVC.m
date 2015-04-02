@@ -107,8 +107,8 @@
     _table.delegate = self;
     _table.dataSource = self;
     _table.showsVerticalScrollIndicator = NO;
-    _table.separatorStyle=UITableViewCellSeparatorStyleSingleLine;
-    _table.backgroundColor=[UIColor colorWith256Red:245 green:245 blue:250];
+    _table.separatorStyle=UITableViewCellSeparatorStyleNone;
+    _table.backgroundColor=[UIColor clearColor];//[UIColor colorWith256Red:245 green:245 blue:250];
     _table.scrollEnabled = NO;
     
     self.wakeSettingTable=_table;
@@ -146,6 +146,10 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg_scancell_green.png"]];
+        cell.backgroundColor = [UIColor clearColor];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.detailTextLabel.textColor = [UIColor whiteColor];
     }
     switch (indexPath.row) {
         case 0:
