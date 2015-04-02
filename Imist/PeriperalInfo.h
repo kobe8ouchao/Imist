@@ -49,6 +49,7 @@
 @property (nonatomic, assign) BOOL doNotShowHint_Sensuality;
 @property (nonatomic, assign) BOOL diffuserWorkingState;
 @property (nonatomic, strong) NSData *macAddr;
+@property (nonatomic, assign) BOOL manualDisconnect;
 typedef enum{
     IDLE,
     GET_WATER_STATUS,

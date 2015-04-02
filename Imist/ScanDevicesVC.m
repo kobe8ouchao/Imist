@@ -411,6 +411,7 @@
 {
     NSLog(@"cell====%ld",(long)index);
     [self.appDelegate.defaultBTServer disConnect];
+    self.appDelegate.defaultBTServer.selectPeripheralInfo.manualDisconnect = YES;
 }
 
 - (void)refreshTable {

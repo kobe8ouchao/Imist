@@ -322,7 +322,7 @@ static BTServer* _defaultBTServer = nil;
 //        connectBlock = nil;
 //    }
     
-    
+    self.selectPeripheralInfo.manualDisconnect = NO;
     self.selectPeripheral = peripheral;
     self.selectPeripheral.delegate = self;
     serviceState = KING;
@@ -358,7 +358,7 @@ static BTServer* _defaultBTServer = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"PERIPHERAL_DISCONNECT" object:nil];
     }
     
-    if ([self.selectPeripheral.identifier.UUIDString isEqualToString:peripheral.identifier.UUIDString]) {
+    if ([self.selectPeripheral.identifier.UUIDString isEqualToString:peripheral.identifier.UUIDString] && self.selectPeripheralInfo.manualDisconnect==NO) {
         NSLog(@"Retrying");
         [self connect:self.selectPeripheralInfo];
     }

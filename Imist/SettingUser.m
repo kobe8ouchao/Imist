@@ -62,7 +62,7 @@
     [self setUpBar:CGRectMake(20, 210, self.view.frame.size.width - 40 ,80) withTitle:@"led color" withMin:1 withMax:100 withTag:3 withValue:self.colorValue];
 //    [self setUpBar:CGRectMake(20, 230, self.view.frame.size.width - 40 ,40) withTitle:@"led auto" withMin:0 withMax:50 withTag:4];
     
-    UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(0, 280, self.view.frame.size.width ,18)];
+    UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(0, 290, self.view.frame.size.width ,18)];
     [lable setFont:[UIFont boldSystemFontOfSize:18]];
     lable.textAlignment = NSTextAlignmentCenter;
     lable.text = @"led auto";
@@ -75,7 +75,7 @@
         [sureBtn setBackgroundImage:[UIImage imageNamed:@"user_set05.png"] forState:UIControlStateNormal];
     else
         [sureBtn setBackgroundImage:[UIImage imageNamed:@"user_set06.png"] forState:UIControlStateNormal];
-    [sureBtn setImage:[UIImage imageNamed:@"user_set01.png"]  forState:UIControlStateNormal];
+    [sureBtn setImage:[UIImage imageNamed:@"yes.png"]  forState:UIControlStateNormal];
     [sureBtn setTitle:@"" forState:UIControlStateNormal];
     sureBtn.tag = 100;
     [sureBtn setBackgroundColor:[UIColor clearColor]];
@@ -88,7 +88,7 @@
         [noBtn setBackgroundImage:[UIImage imageNamed:@"user_set06.png"] forState:UIControlStateNormal];
     else
         [noBtn setBackgroundImage:[UIImage imageNamed:@"user_set05.png"] forState:UIControlStateNormal];
-    [noBtn setImage:[UIImage imageNamed:@"user_set02.png"]  forState:UIControlStateNormal];
+    [noBtn setImage:[UIImage imageNamed:@"no.png"]  forState:UIControlStateNormal];
     [noBtn setTitle:@"" forState:UIControlStateNormal];
     noBtn.tag = 200;
     [noBtn setBackgroundColor:[UIColor clearColor]];

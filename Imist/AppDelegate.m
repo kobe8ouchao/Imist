@@ -393,10 +393,10 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         [self sendWakeupCmd];
         return 1;
     }
+    //else{
+    //    return 0;
+    //}
     else{
-        return 0;
-    }
-    /*else{
         NSArray *identifiers = [NSArray arrayWithObjects: self.defaultBTServer.selectPeripheralInfo.peripheral.identifier,nil];
         NSArray *result = [self.defaultBTServer retrievePeripheralsWithIdentifiers:identifiers];
         if([result count]){
@@ -413,7 +413,8 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
             }];
             
         }
-    }*/
+        return 0;
+    }
 }
 
 -(void) playAudio
