@@ -10,8 +10,9 @@
 #import "PickDayVC.h"
 #import "PickSoundVC.h"
 #import "AlertSettingCell.h"
+#import "RenameWakeup.h"
 
-@interface AddAlarmVC ()<UIPickerViewDelegate,UIPickerViewDataSource,pickDayDelegate,pickSoundDelegate,UIAlertViewDelegate>
+@interface AddAlarmVC ()<UIPickerViewDelegate,UIPickerViewDataSource,pickDayDelegate,pickSoundDelegate,pickWakeNameDelegate,UIAlertViewDelegate>
 @property (nonatomic,strong) NSArray *all;
 @property (nonatomic,strong) NSArray *hours;
 @property (nonatomic,strong) NSArray *minis;
@@ -190,8 +191,14 @@
             break;
         }
         case 1:
-            [self changeAlarmName];
+        {
+            //[self changeAlarmName];
+            renameWakeupVC *renameWake = [[renameWakeupVC alloc] init];
+            renameWake.editName = self.alarmName;
+            renameWake.delegate = self;
+            [self.navigationController pushViewController:renameWake animated:YES];
             break;
+        }
         case 2:
         {
             PickSoundVC *pickSound = [[PickSoundVC alloc] init];
@@ -381,6 +388,14 @@
         [self.wakeSettingTable reloadData];
     });
 
+}
+
+-(void)saveWakeName:(NSString *)wakeName
+{
+    self.alarmName = wakeName;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.wakeSettingTable reloadData];
+    });
 }
 
 - (void)getRepeatString{

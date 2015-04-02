@@ -609,6 +609,19 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         self.player1 = [[AVAudioPlayer alloc]
                         initWithContentsOfURL:url
                         error:nil];
+        if([soundurl isEqualToString:@"Wave"] || [soundurl isEqualToString:@"Zen"]){
+            self.player1.numberOfLoops = 2;
+        }
+        else if([soundurl isEqualToString:@"Rain"]){
+            self.player1.numberOfLoops = 20;
+        }
+        else if([soundurl isEqualToString:@"Chirp"] || [soundurl isEqualToString:@"Hill stream"] ){
+            self.player1.numberOfLoops = 15;
+        }
+        else{
+            self.player1.numberOfLoops = 10;
+        }
+
         self.player1.delegate = self;
         BOOL status = [self.player1 prepareToPlay];
         NSLog(@"preparePlayer1 state %@",[NSNumber numberWithBool:status]);
@@ -738,6 +751,18 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         self.player2 = [[AVAudioPlayer alloc]
                         initWithContentsOfURL:url
                         error:nil];
+        if([soundurl isEqualToString:@"Wave"] || [soundurl isEqualToString:@"Zen"]){
+            self.player2.numberOfLoops = 2;
+        }
+        else if([soundurl isEqualToString:@"Rain"]){
+            self.player2.numberOfLoops = 20;
+        }
+        else if([soundurl isEqualToString:@"Chirp"] || [soundurl isEqualToString:@"Hill stream"] ){
+            self.player2.numberOfLoops = 15;
+        }
+        else{
+            self.player2.numberOfLoops = 10;
+        }
         self.player2.delegate = self;
         BOOL status = [self.player2 prepareToPlay];
         NSLog(@"preparePlayer2 state %@",[NSNumber numberWithBool:status]);
@@ -872,6 +897,18 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
         self.player3 = [[AVAudioPlayer alloc]
                         initWithContentsOfURL:url
                         error:nil];
+        if([soundurl isEqualToString:@"Wave"] || [soundurl isEqualToString:@"Zen"]){
+            self.player3.numberOfLoops = 2;
+        }
+        else if([soundurl isEqualToString:@"Rain"]){
+            self.player3.numberOfLoops = 20;
+        }
+        else if([soundurl isEqualToString:@"Chirp"] || [soundurl isEqualToString:@"Hill stream"] ){
+            self.player3.numberOfLoops = 15;
+        }
+        else{
+            self.player3.numberOfLoops = 10;
+        }
         self.player3.delegate = self;
         BOOL status = [self.player3 prepareToPlay];
         NSLog(@"preparePlayer3 state %@",[NSNumber numberWithBool:status]);

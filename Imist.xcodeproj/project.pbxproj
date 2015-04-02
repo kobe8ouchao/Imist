@@ -29,6 +29,7 @@
 		A5BEA13E1ACC245300765B00 /* lauchScreen480@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5BEA1351ACC245300765B00 /* lauchScreen480@2x.png */; };
 		A5BEA1431ACC252200765B00 /* bg_scancell_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5BEA1411ACC252200765B00 /* bg_scancell_gray@2x.png */; };
 		A5BEA1441ACC252200765B00 /* bg_btn_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5BEA1421ACC252200765B00 /* bg_btn_gray@2x.png */; };
+		A5BEA1471ACCF6F100765B00 /* RenameWakeup.m in Sources */ = {isa = PBXBuildFile; fileRef = A5BEA1461ACCF6F100765B00 /* RenameWakeup.m */; };
 		A5C94C511ACA5F99009A6C6D /* bg_btn_red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5C94C501ACA5F99009A6C6D /* bg_btn_red@2x.png */; };
 		A5D19AC01AC6DE8C000A8D29 /* aboutScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5D19ABF1AC6DE8C000A8D29 /* aboutScreen@2x.png */; };
 		A5D19AC41AC7F5C0000A8D29 /* icon_60pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5D19AC11AC7F5C0000A8D29 /* icon_60pt@2x.png */; };
@@ -193,6 +194,8 @@
 		A5BEA1351ACC245300765B00 /* lauchScreen480@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lauchScreen480@2x.png"; sourceTree = "<group>"; };
 		A5BEA1411ACC252200765B00 /* bg_scancell_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_scancell_gray@2x.png"; sourceTree = "<group>"; };
 		A5BEA1421ACC252200765B00 /* bg_btn_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_btn_gray@2x.png"; sourceTree = "<group>"; };
+		A5BEA1451ACCF6F100765B00 /* RenameWakeup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenameWakeup.h; sourceTree = "<group>"; };
+		A5BEA1461ACCF6F100765B00 /* RenameWakeup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenameWakeup.m; sourceTree = "<group>"; };
 		A5C94C501ACA5F99009A6C6D /* bg_btn_red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_btn_red@2x.png"; sourceTree = "<group>"; };
 		A5D19ABF1AC6DE8C000A8D29 /* aboutScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aboutScreen@2x.png"; sourceTree = "<group>"; };
 		A5D19AC11AC7F5C0000A8D29 /* icon_60pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_60pt@2x.png"; sourceTree = "<group>"; };
@@ -666,6 +669,8 @@
 		C3A8A0C31A4EBF66004C9ADE /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				A5BEA1451ACCF6F100765B00 /* RenameWakeup.h */,
+				A5BEA1461ACCF6F100765B00 /* RenameWakeup.m */,
 				A57D2FF11ABC4E6600FC1264 /* SettingMenu.h */,
 				A57D2FF21ABC4E6600FC1264 /* SettingMenu.m */,
 				A57D2FEE1ABC20A400FC1264 /* ShareVC.h */,
@@ -948,6 +953,7 @@
 				C38819A61A524D02004A98CA /* AboutVC.m in Sources */,
 				A54EC4BA1AA97F2700EBD2DE /* Manager.m in Sources */,
 				A57D2FF31ABC4E6600FC1264 /* SettingMenu.m in Sources */,
+				A5BEA1471ACCF6F100765B00 /* RenameWakeup.m in Sources */,
 				C3422B471A56C4E90095B6AA /* EGORefreshTableHeaderView.m in Sources */,
 				C38819821A516DC7004A98CA /* PeriperalInfo.m in Sources */,
 				C3A8A0A11A4EBB9D004C9ADE /* BaseViewController.m in Sources */,
