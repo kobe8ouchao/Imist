@@ -33,9 +33,14 @@
 @synthesize all,hours,minis,pickerview,selectedHour,selectedMinis,ampm,editAlert;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Set Wakeup";
+    
+    AppDelegate *application = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    self.title = application.defaultBTServer.selectPeripheralInfo.name;
+
     UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
     self.navigationItem.rightBarButtonItem = saveItem;
+    self.navigationController.navigationBar.topItem.backBarButtonItem = [[UIBarButtonItem alloc]
+                                                                         initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     self.all = [NSArray arrayWithObjects:@"AM",@"PM",nil];
     self.hours = [NSArray arrayWithObjects:@"00",@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23",nil];

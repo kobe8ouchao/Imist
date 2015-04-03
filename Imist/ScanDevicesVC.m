@@ -41,6 +41,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // setup navigationBar
+    UIFont* naviFont = [UIFont boldSystemFontOfSize:20];
+    
+    //这里我们设置的是颜色，还可以设置shadow等，具体可以参见api
+    NSDictionary * dict = [NSDictionary dictionaryWithObject:naviFont forKey:UITextAttributeFont];
+    
+    //大功告成
+    self.navigationController.navigationBar.titleTextAttributes = dict;
     if(!self.title) self.title = @"Connect";
     
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
