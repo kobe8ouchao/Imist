@@ -62,6 +62,23 @@
     [self.window makeKeyAndVisible];
     self.defaultBTServer = [BTServer defaultBTServer];
     
+    UILocalNotification * localNotify = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if(localNotify)
+    {
+        if (self.player1) {
+            [self.player1 stop];
+            self.player1 = nil;
+        }
+        if (self.player2) {
+            [self.player2 stop];
+            self.player2 = nil;
+        }
+        if (self.player3) {
+            [self.player3 stop];
+            self.player3 = nil;
+        }
+    }
+    
     self.alarm1Timers = [[NSMutableArray alloc]init];
     self.alarm2Timers = [[NSMutableArray alloc]init];
     self.alarm3Timers = [[NSMutableArray alloc]init];
@@ -317,6 +334,19 @@
 didReceiveLocalNotification:(UILocalNotification *)notification {
     UIApplicationState state = application.applicationState;
     NSLog(@"%@,%ld",notification,state);
+    if (self.player1) {
+        [self.player1 stop];
+        self.player1 = nil;
+    }
+    if (self.player2) {
+        [self.player2 stop];
+        self.player2 = nil;
+    }
+    if (self.player3) {
+        [self.player3 stop];
+        self.player3 = nil;
+    }
+
     if (state == UIApplicationStateActive) {
         [self wakeup];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Diffuser Wakeup"

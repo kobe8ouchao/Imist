@@ -39,7 +39,7 @@
     self.navigationController.navigationBar.barTintColor=[UIColor colorWith256Red:129 green:189 blue:82];
     self.navigationController.navigationBar.translucent=NO;
     self.view.backgroundColor=[UIColor clearColor];
-    self.view.backgroundColor = [UIColor colorWith256Red:229 green:229 blue:229];
+    self.view.backgroundColor = [UIColor colorWith256Red:222 green:222 blue:221];
 }
 
 - (void)viewDidUnload

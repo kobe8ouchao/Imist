@@ -28,14 +28,15 @@ typedef enum{
     //if(!self.title) self.title = title;
     self.title = self.appDelegate.defaultBTServer.selectPeripheralInfo.name;
     self.navigationController.navigationBar.topItem.title = self.title;
-
+    
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [leftBtn setFrame:CGRectMake( 0, 0, 44, 44)];
     [leftBtn setImage:[UIImage imageNamed:@"back-arrow.png"] forState:UIControlStateNormal];
     [leftBtn addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
     self.navigationItem.leftBarButtonItem = leftItem;
-    self.view.backgroundColor=[UIColor whiteColor];
+    //self.view.backgroundColor=[UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWith256Red:222 green:222 blue:221];
     
     UILabel *automode = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, self.view.frame.size.width,18)];
     [automode setFont:[UIFont boldSystemFontOfSize:18]];

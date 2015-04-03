@@ -24,7 +24,8 @@
     //if(!self.title) self.title = title;
     self.title = self.appDelegate.defaultBTServer.selectPeripheralInfo.name;
     self.navigationController.navigationBar.topItem.title = self.title;
-    self.view.backgroundColor=[UIColor whiteColor];    
+    //self.view.backgroundColor=[UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWith256Red:222 green:222 blue:221];
     
     //init device tableview
     UITableView *_table=[[UITableView alloc] initWithFrame:CGRectMake(0, 20, self.view.frame.size.width,  self.view.frame.size.height) style:UITableViewStylePlain];

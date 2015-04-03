@@ -39,7 +39,8 @@
     
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
     self.navigationItem.leftBarButtonItem = leftItem;
-    self.view.backgroundColor=[UIColor whiteColor];
+    //self.view.backgroundColor=[UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWith256Red:222 green:222 blue:221];
     
     UIButton *modeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [modeBtn setBackgroundImage:[UIImage imageNamed:@"bg_btn_green.png"] forState:UIControlStateNormal];

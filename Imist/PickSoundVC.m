@@ -17,9 +17,10 @@
 @property (nonatomic,strong) NSMutableArray *defautlist;
 @property (nonatomic,strong) NSMutableArray *soundlist;
 @property (nonatomic,strong) NSMutableArray *musiclist;
-@property (nonatomic,strong) NSMutableArray *selectedMusiclist;
+@property (nonatomic,strong) NSMutableArray *selectedSonglist;
 @property (nonatomic,strong) AVAudioPlayer *player;
 @property (nonatomic,strong) NSMutableDictionary *musicDictionary;
+@property (nonatomic,assign) BOOL selectedInMediaPicker;
 @end
 
 @implementation PickSoundVC
@@ -45,6 +46,8 @@
 //    soundlist = [[NSMutableArray alloc] init];
     musiclist = [[NSMutableArray alloc] init];
     [self loadSound];
+    if(self.selectedSonglist==nil)
+        self.selectedSonglist = [[NSMutableArray alloc]init];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -90,7 +93,7 @@
     if(0 == section){
         return [self.defautlist count];
     }else if(1 == section){
-        return [self.musiclist count];
+        return ([self.selectedSonglist count]+1);
     }else{
         return 1;
     }
@@ -99,30 +102,53 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [player stop];
     if (indexPath.section == 0) {
-        [self playSound:[self.defautlist objectAtIndex:indexPath.row]];
 
         if ( self.selectedSound && [self.selectedSound isEqualToString:[self.defautlist objectAtIndex:indexPath.row] ])
         {
-            self.selectedSound = @"";
+            //self.selectedSound = @"";
+            if(player.isPlaying){
+                [player stop];
+            }
+            else{
+                [self playSound:[self.defautlist objectAtIndex:indexPath.row]];
+            }
         } else {
             self.selectedSound = [self.defautlist objectAtIndex:indexPath.row];
             self.selectedSoundName = self.selectedSound;
+            [self playSound:[self.defautlist objectAtIndex:indexPath.row]];
         }
         
-    }else if(1 == indexPath.section){
-        NSMutableDictionary *musicDict = [self.musiclist objectAtIndex:indexPath.row];
-        player = [[AVAudioPlayer alloc] initWithContentsOfURL:[musicDict objectForKey:@"url"] error:nil];
-        [player play];
-        if (  self.selectedSound && [self.selectedSound isEqualToString:[[musicDict objectForKey:@"url"] absoluteString]])
-        {
-            self.selectedSound = @"";
-        } else {
-            self.selectedSound = [[musicDict objectForKey:@"url"] absoluteString];
-            self.selectedSoundName = [musicDict objectForKey:@"title"];
+    }
+    else if(1 == indexPath.section){
+        if([self.selectedSonglist count] > 0 && indexPath.row < [self.selectedSonglist count]){
+            NSMutableDictionary *musicDict = [self.selectedSonglist objectAtIndex:indexPath.row];
+            
+            if (self.selectedSound && [self.selectedSound isEqualToString:[[musicDict objectForKey:@"url"] absoluteString]])
+            {
+                //self.selectedSound = @"";
+                if(player.isPlaying){
+                    [player stop];
+                }
+                else{
+                    player = [[AVAudioPlayer alloc] initWithContentsOfURL:[musicDict objectForKey:@"url"] error:nil];
+                    [player play];
+                }
+            } else {
+                self.selectedSound = [[musicDict objectForKey:@"url"] absoluteString];
+                self.selectedSoundName = [musicDict objectForKey:@"title"];
+                player = [[AVAudioPlayer alloc] initWithContentsOfURL:[musicDict objectForKey:@"url"] error:nil];
+                [player play];
+            }
         }
-    }else{
+        else{
+            MPMediaPickerController *picker = [[MPMediaPickerController alloc]init];
+            picker.delegate = self;
+            picker.allowsPickingMultipleItems = NO;
+            [self presentViewController:picker animated:YES completion:nil];
+        }
+    }
+    else{
 //        SystemSoundID soundID;
 //        AudioServicesCreateSystemSoundID((__bridge_retained CFURLRef)[self.soundlist objectAtIndex:indexPath.row],&soundID);
 //        AudioServicesPlaySystemSound(soundID);
@@ -156,18 +182,26 @@
         {
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
-    }else if(1 == indexPath.section){
-        NSMutableDictionary *musicDict = [self.musiclist objectAtIndex:indexPath.row];
-        if ( [self.selectedSound isEqualToString:[[musicDict objectForKey:@"url"]  absoluteString]])
-        {
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
+    else if(1 == indexPath.section){
+        if([self.selectedSonglist count]>0 && indexPath.row < [self.selectedSonglist count]){
+            NSMutableDictionary *musicDict = [self.selectedSonglist objectAtIndex:indexPath.row];
+            if ( [self.selectedSound isEqualToString:[[musicDict objectForKey:@"url"]  absoluteString]])
+            {
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            }
+            else
+            {
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
+            cell.textLabel.text = [musicDict valueForKey:@"title"];
         }
-        else
-        {
-            cell.accessoryType = UITableViewCellAccessoryNone;
+        else {
+            cell.textLabel.text = @"Pick a song";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
-        cell.textLabel.text = [musicDict valueForKey:@"title"];
-    }else {
+    }
+    else {
 //        cell.textLabel.text = [[self.soundlist objectAtIndex:indexPath.row] lastPathComponent];
 //        if ([self.selectedSound isEqualToString:[[self.soundlist objectAtIndex:indexPath.row] lastPathComponent]])
 //        {
@@ -194,27 +228,40 @@
     
     MPMediaItem *item = [[collection items] objectAtIndex:0];
     
-    self.selectedSoundName = [item valueForProperty:MPMediaItemPropertyTitle];
+    if(self.musicDictionary==nil)
+        self.musicDictionary = [[NSMutableDictionary alloc]init];
     [self.musicDictionary setValue:[item valueForProperty:MPMediaItemPropertyTitle] forKey:@"title"];
-    [self.musicDictionary setValue:[item valueForProperty:MPMediaItemPropertyAssetURL]forKey:@"url"];
+    [self.musicDictionary setValue:[item valueForProperty:MPMediaItemPropertyAssetURL] forKey:@"url"];
     
     NSURL *url = [item valueForProperty:MPMediaItemPropertyAssetURL];
     //Play the item using AVPlayer
     self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
     [self.player play];
+    self.selectedInMediaPicker = YES;
 }
 
 -(void)mediaPickerDidCancel:(MPMediaPickerController *)mediaPicker{
     /*insert your code*/
     [self dismissModalViewControllerAnimated:YES];
-    [self.player stop];
-   
-    if([self.selectedMusiclist containsObject:self.musicDictionary] == NO){
-        [self.selectedMusiclist addObject:self.musicDictionary];
-        NSIndexPath *indexPathAudioRow = [NSIndexPath indexPathForRow:[self.selectedMusiclist count]-1 inSection:1];
-        UITableViewCell *cell = [self.soundTable cellForRowAtIndexPath:indexPathAudioRow];
-        cell.detailTextLabel.text = self.selectedSoundName;
-
+    if(self.selectedInMediaPicker == YES){//selected some song
+        self.selectedInMediaPicker = NO;
+        [self.player stop];
+        self.selectedSoundName = [self.musicDictionary valueForKey:@"title"];
+        self.selectedSound =  [[self.musicDictionary valueForKey:@"url"] absoluteString];
+        if([self.selectedSonglist containsObject:self.musicDictionary] == NO){
+            [self.selectedSonglist addObject:self.musicDictionary];
+            self.musicDictionary = nil;
+            //NSIndexPath *indexPathAudioRow = [NSIndexPath indexPathForRow:[self.selectedSonglist count]-1 inSection:1];
+            //UITableViewCell *cell = [self.soundTable cellForRowAtIndexPath:indexPathAudioRow];
+            //cell.detailTextLabel.text = self.selectedSoundName;
+            //[self.soundTable beginUpdates];
+            //[self.soundTable insertRowsAtIndexPaths:@[indexPathAudioRow] withRowAnimation:UITableViewRowAnimationFade];
+            //[self.soundTable endUpdates];
+            [self.soundTable reloadData];
+        }
+        else{
+            [self.soundTable reloadData];//update the checkmark
+        }
     }
 }
 

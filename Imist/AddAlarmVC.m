@@ -101,7 +101,7 @@
     //    soundBtn.frame = CGRectMake((self.view.frame.size.width - 140)/2, 300, 140, 44);
     //    [soundBtn addTarget:self action:@selector(soundClick:) forControlEvents:UIControlEventTouchUpInside];
     //    [self.view addSubview:soundBtn];
-    UITableView *_table=[[UITableView alloc] initWithFrame:CGRectMake(0, 260, self.view.frame.size.width,  self.view.frame.size.height) style:UITableViewStyleGrouped];
+    UITableView *_table=[[UITableView alloc] initWithFrame:CGRectMake(10, 260, self.view.frame.size.width-20,  self.view.frame.size.height-260) style:UITableViewStyleGrouped];
     _table.autoresizingMask = (UIViewAutoresizingFlexibleWidth |
                                UIViewAutoresizingFlexibleHeight);
     _table.delegate = self;
