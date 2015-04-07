@@ -56,6 +56,7 @@
 
     if(self.selectedSonglist==nil)
         self.selectedSonglist = [[NSMutableArray alloc]init];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -282,6 +283,13 @@
             [self.soundTable reloadData];//update the checkmark
         }
     }
+
+    NSArray * selectedCopy = [NSArray arrayWithArray:self.selectedSonglist];
+    for(NSDictionary * musicDic in selectedCopy){
+        if([musiclist containsObject:musicDic] == NO){
+            [self.selectedSonglist removeObject:musicDic];
+        }
+    }
 }
 
 - (void)loadSound
@@ -295,7 +303,7 @@
             if ([song valueForProperty:  MPMediaItemPropertyAssetURL]) {
                  NSMutableDictionary *musicDict = [[NSMutableDictionary alloc] init];
                 [musicDict setValue:[song valueForProperty:MPMediaItemPropertyTitle] forKey:@"title"];
-                [musicDict setValue: [song valueForProperty:MPMediaItemPropertyAssetURL]forKey:@"url"];
+                [musicDict setValue: [[song valueForProperty:MPMediaItemPropertyAssetURL] absoluteString] forKey:@"url"];
                 [currentBlockSel_f.musiclist addObject:musicDict];
             }
         }

@@ -76,7 +76,7 @@
         [sureBtn setBackgroundImage:[UIImage imageNamed:@"user_set05.png"] forState:UIControlStateNormal];
     else
         [sureBtn setBackgroundImage:[UIImage imageNamed:@"user_set06.png"] forState:UIControlStateNormal];
-    [sureBtn setImage:[UIImage imageNamed:@"yes.png"]  forState:UIControlStateNormal];
+    [sureBtn setImage:[UIImage imageNamed:@"user_set01_40x40.png"]  forState:UIControlStateNormal];
     [sureBtn setTitle:@"" forState:UIControlStateNormal];
     sureBtn.tag = 100;
     [sureBtn setBackgroundColor:[UIColor clearColor]];
@@ -89,7 +89,9 @@
         [noBtn setBackgroundImage:[UIImage imageNamed:@"user_set06.png"] forState:UIControlStateNormal];
     else
         [noBtn setBackgroundImage:[UIImage imageNamed:@"user_set05.png"] forState:UIControlStateNormal];
-    [noBtn setImage:[UIImage imageNamed:@"no.png"]  forState:UIControlStateNormal];
+    noBtn.imageView.contentMode = UIViewContentModeCenter;
+    
+    [noBtn setImage:[UIImage imageNamed:@"user_set02_40x40.png"]  forState:UIControlStateNormal];
     [noBtn setTitle:@"" forState:UIControlStateNormal];
     noBtn.tag = 200;
     [noBtn setBackgroundColor:[UIColor clearColor]];
