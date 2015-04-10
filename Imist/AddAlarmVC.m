@@ -212,7 +212,7 @@
         {
             PickSoundVC *pickSound = [[PickSoundVC alloc] init];
             pickSound.delegate = self;
-            pickSound.selectedSound = self.sound;
+            pickSound.selectedSoundUrlStr = self.sound;
             pickSound.selectedSoundName = self.soundName;
             [self.navigationController pushViewController:pickSound animated:YES];
             break;

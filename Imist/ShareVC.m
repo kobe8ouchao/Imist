@@ -87,7 +87,7 @@
 }
 
 -(void)shareContent{
-    NSString * message = @"IMSIT is cool! Come to explore this Smart Arooma diffuser by downloading IMIST APP on the APP Store or getting in on Google Play.";
+    NSString * message = @"IMSIT is cool! Come to explore this Smart Aroma diffuser by downloading IMIST APP on the APP Store or getting in on Google Play.\nThanks!\nParlex Household Industrial Company Limited\n";
     NSURL *url = [NSURL URLWithString:@"http://www.ghcn.com/"];
     UIImage * image = [UIImage imageNamed:@"aboutScreen"];
     NSArray * shareItems = @[message, url, image];
@@ -114,7 +114,7 @@
     if([SLComposeViewController isAvailableForServiceType:serviceType]){
         SLComposeViewController *shareView = [SLComposeViewController composeViewControllerForServiceType:serviceType];
         
-        [shareView setInitialText:@"IMSIT is cool! Come to explore this Smart Arooma diffuser by downloading IMIST APP on the APP Store or getting in on Google Play."];
+        [shareView setInitialText:@"IMSIT is cool! Come to explore this Smart Aroma diffuser by downloading IMIST APP on the APP Store or getting in on Google Play."];
         [shareView addURL:[NSURL URLWithString:@"http://www.ghcn.com/"]];
         [shareView addImage:[UIImage imageNamed:@"aboutScreen"]];
         [shareView setCompletionHandler:^(SLComposeViewControllerResult result) {

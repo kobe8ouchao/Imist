@@ -48,6 +48,7 @@
     [modeBtn setBackgroundColor:[UIColor clearColor]];
     modeBtn.frame = CGRectMake((self.view.frame.size.width - 130)/2, 10, 130, 40);
     modeBtn.tag = 202;
+    modeBtn.userInteractionEnabled = NO;
     [self.view addSubview:modeBtn];
     
     self.imistValue = [self.appDelegate.defaultBTServer.selectPeripheralInfo.imist integerValue];

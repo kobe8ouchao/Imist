@@ -109,13 +109,13 @@ static BTServer* _defaultBTServer = nil;
     //0:retrive
 #if 1
     //method 1:
-    NSArray *atmp = [NSArray arrayWithObjects:[CBUUID UUIDWithString:UUIDPrimaryService], nil];
+   /* NSArray *atmp = [NSArray arrayWithObjects:[CBUUID UUIDWithString:UUIDPrimaryService], nil];
     NSArray *retrivedArray = [myCenter retrieveConnectedPeripheralsWithServices:atmp];
     NSLog(@"retrivedArray:\n%@",retrivedArray);
 
     for (CBPeripheral* peripheral in retrivedArray) {
         [self addPeripheral:peripheral advertisementData:nil  RSSI:nil];
-    }
+    }*/
     
     //method 2:
 //    [myCenter retrieveConnectedPeripherals];//XXX: deprecated\ˈdɛprɪˌket\ but still work
@@ -292,6 +292,7 @@ static BTServer* _defaultBTServer = nil;
         if([manuData length]>=8){
             NSRange macRange = {2,6};
             pi.macAddr = [manuData subdataWithRange:macRange];
+            NSLog(@"pi.macAddr == %@",pi.macAddr);
         }
     }
 
@@ -347,12 +348,12 @@ static BTServer* _defaultBTServer = nil;
     
     UIApplication *app=[UIApplication sharedApplication];
     if (app.applicationState == UIApplicationStateBackground) {
-        UIUserNotificationSettings *notifySettings=[[UIApplication sharedApplication] currentUserNotificationSettings];
+        /*UIUserNotificationSettings *notifySettings=[[UIApplication sharedApplication] currentUserNotificationSettings];
         if ((notifySettings.types & UIUserNotificationTypeAlert)!=0) {
             UILocalNotification *notification=[UILocalNotification new];
             notification.alertBody=@"Diffuser Disconnected";
             [app presentLocalNotificationNow:notification];
-        }
+        }*/
     }
     else{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"PERIPHERAL_DISCONNECT" object:nil];
@@ -447,8 +448,8 @@ static BTServer* _defaultBTServer = nil;
         if([service.UUID isEqual:[CBUUID UUIDWithString:UUIDPrimaryService]]) {
             for (CBCharacteristic *characteristic in service.characteristics) {
                 NSLog(@"discovered characteristic %@", characteristic.UUID);
-                if([characteristic.UUID isEqual:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]) {
-                    NSLog(@"Found Write Characteristic %@", characteristic);
+                if([characteristic.UUID isEqual:[CBUUID UUIDWithString:CODE_TX_CHARACTERISTIC]]) {
+                    NSLog(@"Found code tx Characteristic %@", characteristic);
                     [self sendRandomSeed];
                 }
                 if([characteristic.UUID isEqual:[CBUUID UUIDWithString:NOTIFY_CHARACTERISTIC]]) {
@@ -458,6 +459,8 @@ static BTServer* _defaultBTServer = nil;
                         connectBlock(peripheral,true,nil);
                         connectBlock = nil;
                     }
+                    else
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"PERIPHERAL_RECONNECT" object:nil];
 
                 }
             }
@@ -500,7 +503,8 @@ static BTServer* _defaultBTServer = nil;
         [self.respPassword appendData:characteristic.value];
         if([self.respPassword length]>= 5){
             if([self comparePassword:self.respPassword] == NO){
-                //[self disConnect];
+                NSLog(@"trying to disconnect due to password is incorrect");
+                [self disConnect];
             }
             [self.respPassword setLength:0];
         }
@@ -564,8 +568,13 @@ static BTServer* _defaultBTServer = nil;
 - (BOOL) comparePassword:(NSData *) returnedPass
 {
     UInt8 password_ret[5];
-    const UInt8 * Mac = [self.selectPeripheralInfo.macAddr bytes];
-
+    const UInt8 * Mac;
+    if(self.selectPeripheralInfo.macAddr){
+        Mac = [self.selectPeripheralInfo.macAddr bytes];
+    }
+    else{
+        return NO;
+    }
     password_ret[0] = ((Mac[0] ^ seed[0]) / 11) ^ (seed[1] | seed[2]);
     password_ret[1] = ((Mac[2] + Mac[3] + seed[3]) * 35) ^ (seed[4] - Mac[5]) ;
     password_ret[2] = (password_ret[0] ^ Mac[3]);

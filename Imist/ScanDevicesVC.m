@@ -82,7 +82,10 @@
                                              selector:@selector(peripheralDidDisconnect:)
                                                  name:@"PERIPHERAL_DISCONNECT"
                                                object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(peripheralDidReconnect:)
+                                                 name:@"PERIPHERAL_RECONNECT"
+                                               object:nil];
     
 }
 
@@ -145,7 +148,8 @@
                 self.appDelegate.defaultBTServer.selectPeripheralInfo.water = [NSNumber numberWithInt:0];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"WATER_STATUS_UPDATED" object:nil];
             }
-            if(self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction == INIT_SET_WORK_MODE){
+            if(self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction == INIT_SET_WORK_MODE ||
+               self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction == SHOW_WORK_MODE){
                 SettingUser *thirdViewController = [[SettingUser alloc] init];
                 thirdViewController.title = self.appDelegate.defaultBTServer.selectPeripheralInfo.name;
                 SettingModeVC *firstViewController = [[SettingModeVC alloc] init];
@@ -171,6 +175,9 @@
             [defaults setObject:encodedObject forKey:self.appDelegate.defaultBTServer.selectPeripheralInfo.uuid];
             [defaults synchronize];
 
+        }
+        else if(self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd == GET_WORK_MODE){
+            self.appDelegate.defaultBTServer.selectPeripheralInfo.workingMode = dataByte[2];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.deviceTable reloadData];
@@ -206,23 +213,64 @@
 {
     
     ScanDeviceCell *cell = (ScanDeviceCell*)[tableView cellForRowAtIndexPath:indexPath];
+    if([self.appDelegate.defaultBTServer.discoveredPeripherals count]>0){
     PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
     selectRow = indexPath.row;
     NSLog(@"%li",(long)indexPath.row);
     if ([pi.state isEqualToString:@"connected"]) {
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
-        SettingUser *thirdViewController = [[SettingUser alloc] init];
-        thirdViewController.title = pi.name;
-        SettingModeVC *firstViewController = [[SettingModeVC alloc] init];
-        firstViewController.title = pi.name;
-        SettingAlerm *secondViewController = [[SettingAlerm alloc] init];
-        secondViewController.title = pi.name;
+        NSMutableData* data = [NSMutableData data];
+        if(self.appDelegate.defaultBTServer.selectPeripheralInfo.mode){
+            if(self.appDelegate.defaultBTServer.selectPeripheralInfo.workingMode <= 1){
+                NSUInteger query = 0xa1;
+                [data appendBytes:&query length:1];
+                NSUInteger imist = 0x00;
+                [data appendBytes:&imist length:1];
+                NSUInteger led = 0x00;
+                [data appendBytes:&led length:1];
+                NSUInteger color1 = 0x00;
+                [data appendBytes:&color1 length:1];
+                NSUInteger color2 = 0x00;
+                [data appendBytes:&color2 length:1];
+                NSUInteger color3 = 0x00;
+                [data appendBytes:&color3 length:1];
+
+                self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction = INIT_SET_WORK_MODE;
+            }
+            else{
+                SettingUser *thirdViewController = [[SettingUser alloc] init];
+                thirdViewController.title = pi.name;
+                SettingModeVC *firstViewController = [[SettingModeVC alloc] init];
+                firstViewController.title = pi.name;
+                SettingAlerm *secondViewController = [[SettingAlerm alloc] init];
+                secondViewController.title = pi.name;
+                
+                RDVTabBarController *tabBarController = [[RDVTabBarController alloc] init];
+                [tabBarController setViewControllers:@[firstViewController, secondViewController,thirdViewController]];
+                [self customizeTabBarForController:tabBarController];
+                tabBarController.title = pi.name;
+                [self.navigationController pushViewController:tabBarController animated:YES];
+                self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction =  SHOW_WORK_MODE;
+            }
+        }
+        else{
+            SettingUser *thirdViewController = [[SettingUser alloc] init];
+            thirdViewController.title = pi.name;
+            SettingModeVC *firstViewController = [[SettingModeVC alloc] init];
+            firstViewController.title = pi.name;
+            SettingAlerm *secondViewController = [[SettingAlerm alloc] init];
+            secondViewController.title = pi.name;
+            
+            RDVTabBarController *tabBarController = [[RDVTabBarController alloc] init];
+            [tabBarController setViewControllers:@[firstViewController, secondViewController,thirdViewController]];
+            [self customizeTabBarForController:tabBarController];
+            tabBarController.title = pi.name;
+            [self.navigationController pushViewController:tabBarController animated:YES];
+            self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction =  SHOW_WORK_MODE;
+        }
         
-        RDVTabBarController *tabBarController = [[RDVTabBarController alloc] init];
-        [tabBarController setViewControllers:@[firstViewController, secondViewController,thirdViewController]];
-        [self customizeTabBarForController:tabBarController];
-        tabBarController.title = pi.name;
-        [self.navigationController pushViewController:tabBarController animated:YES];
+        self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = GET_WATER_STATUS;
+        [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
     }else if([pi.state isEqualToString:@"disConnected"]) {
         for(PeriperalInfo * pi in self.appDelegate.defaultBTServer.discoveredPeripherals)
         {
@@ -308,6 +356,7 @@
             });
         }];
     }
+    }
     
 }
 
@@ -319,7 +368,7 @@
         cell = [[ScanDeviceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+    if([self.appDelegate.defaultBTServer.discoveredPeripherals count] >0){
     PeriperalInfo *pi = (PeriperalInfo*)[self.appDelegate.defaultBTServer.discoveredPeripherals objectAtIndex:indexPath.row];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSData *encodedDataObject = [defaults objectForKey:pi.uuid];
@@ -376,7 +425,7 @@
     //    }else if(rssi > -90){
     //        cell.RSSI.textColor = [UIColor blackColor];
     //    }
-    
+    }
     return cell;
 }
 
@@ -423,6 +472,9 @@
 
 - (void)refreshTable {
     //TODO: refresh your data
+    dispatch_async(dispatch_get_main_queue(), ^{
+    [self.deviceTable reloadData];
+    });
     [self.appDelegate.defaultBTServer startScan];
 }
 
@@ -556,6 +608,33 @@
         [currentBlockSel_f.deviceTable reloadData];
     });
     
+}
+
+-(void) peripheralDidReconnect:(NSNotification*)notification{
+    
+    self.appDelegate.defaultBTServer.selectPeripheralInfo.state = @"connected";
+    dispatch_async(dispatch_get_main_queue(), ^{
+            NSMutableData* data = [NSMutableData data];
+            NSUInteger query = 0xa0;
+            [data appendBytes:&query length:1];
+            NSUInteger imist = 0x00;
+            [data appendBytes:&imist length:1];
+            NSUInteger led = 0x00;
+            [data appendBytes:&led length:1];
+            NSUInteger color1 = 0x00;
+            [data appendBytes:&color1 length:1];
+            NSUInteger color2 = 0x00;
+            [data appendBytes:&color2 length:1];
+            NSUInteger color3 = 0x00;
+            [data appendBytes:&color3 length:1];
+            
+            //self.appDelegate.defaultBTServer.selectPeripheralInfo.intentAction = INIT_SET_WORK_MODE;
+            
+            self.appDelegate.defaultBTServer.selectPeripheralInfo.curCmd = GET_WORK_MODE;
+            [self.appDelegate.defaultBTServer writeValue:[self.appDelegate.defaultBTServer converCMD:data] withCharacter:[self.appDelegate.defaultBTServer findCharacteristicFromUUID:[CBUUID UUIDWithString:WRITE_CHARACTERISTIC]]];
+    });
+    [self.deviceTable reloadData];
+
 }
 
 @end
